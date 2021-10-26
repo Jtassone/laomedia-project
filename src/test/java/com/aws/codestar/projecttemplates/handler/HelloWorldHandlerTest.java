@@ -19,12 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HelloWorldHandlerTest {
 
     private static final String EXPECTED_CONTENT_TYPE = "application/json";
-    private static final String EXPECTED_RESPONSE_VALUE = "Hello World!";
+    private static final String EXPECTED_RESPONSE_VALUE = "Hello World! Laomedia";
     private static final int EXPECTED_STATUS_CODE_SUCCESS = 200;
 
     // A mock class for com.amazonaws.services.lambda.runtime.Context
     private final MockLambdaContext mockLambdaContext = new MockLambdaContext();
     private final Object input = new Object();
+
 
     /**
      * Initializing variables before we run the tests.

@@ -1,0 +1,17 @@
+spring:
+  profiles: cloud
+  datasource:
+    url: jdbc:mysql://laomedia.cffhqwuildxe.us-east-1.rds.amazonaws.com
+    uername: admin
+    password: Thisisatestdatabase
+
+cloud:
+  aws:
+    rds:
+      laomedia:
+        databaseName: "-"
+        username: admin
+        password: Thisisatestdatabase
+  jpa:
+    hibernate:
+      ddl-auto: create-drop

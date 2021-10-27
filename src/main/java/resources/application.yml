@@ -1,5 +1,4 @@
 spring:
-  profiles: cloud
   datasource:
     url: jdbc:mysql://laomedia.cffhqwuildxe.us-east-1.rds.amazonaws.com
     uername: admin

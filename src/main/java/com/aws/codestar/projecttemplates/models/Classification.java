@@ -1,14 +1,15 @@
 package com.aws.codestar.projecttemplates.models;
 
-
+import com.aws.codestar.projecttemplates.handler.Algorithm;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Instance")
-public class Instance {
+@Table(name = "classification")
+public class Classification {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -19,14 +20,12 @@ public class Instance {
     @Column(name = "name")
     public String name;
 
-    @Column(name = "s3_size")
-    public String s3Size;
+    @Column(name = "sub_classifications")
+    @OneToMany(fetch = FetchType.LAZY)
+    public List<Classification> subClassification;
 
-    @Column(name = "s3_etag")
-    public String s3Etag;
+    @Column
+    @OneToMany(fetch = FetchType.LAZY)
+    public List<Algorithm> algorithms;
 
-    @Column(name = "s3_last_modified")
-    public String s3LastModified;
-
-    public Instance() {}
 }

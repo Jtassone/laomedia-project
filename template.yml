@@ -57,6 +57,23 @@ Resources:
           Properties:
             Path: /
             Method: post
+
+  testAlgorithm:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postAlgorithm'
+      Handler: com.aws.codestar.projecttemplates.handler.AlgorithmHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /algorithm
+            Method: get
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role

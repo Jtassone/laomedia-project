@@ -15,14 +15,23 @@ logging:
 
 cloud:
   aws:
+    region:
+      auto: false
+      static: us-east-1
+    credentials:
+      profile-name: JTASSONE
     stack:
       auto: false
     rds:
       laomedia:
-        databaseName: "-"
+        db-instance-identifier: laomedia
+        databaseName: laoData
         username: admin
         password: Thisisatestdatabase
 spring:
   jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       ddl-auto: create

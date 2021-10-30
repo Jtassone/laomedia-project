@@ -8,7 +8,7 @@
 /httpRequests/
 .idea
 target/
-
+.aws-sam
 # Created by https://www.toptal.com/developers/gitignore/api/eclipse,java,visualstudiocode,macos,linux,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java,visualstudiocode,macos,linux,windows
 

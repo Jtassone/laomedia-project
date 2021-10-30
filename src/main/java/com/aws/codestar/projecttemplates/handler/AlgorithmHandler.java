@@ -16,17 +16,21 @@ import java.util.HashMap;
 
 public class AlgorithmHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
     private static Connection getRemoteConnection() {
-            try {
-                String jdbcUrl = "jdbc:mysql://laomedia.cffhqwuildxe.us-east-1.rds.amazonaws.com:3306/laoData?user=admin&password=Thisisatestdatabase";
-                return DriverManager.getConnection(jdbcUrl);
-            }
-            catch (SQLException e) {
-                System.out.println(e);
-                return null;
-            }
+        try {
+            String jdbcUrl = "jdbc:mysql://laomedia.cffhqwuildxe.us-east-1.rds.amazonaws.com:3306/laoData?user=admin&password=Thisisatestdatabase";
+            return DriverManager.getConnection(jdbcUrl);
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    Connection sqlConnection;
+
+    public AlgorithmHandler() {
+        this.sqlConnection = getRemoteConnection();
     }
 
     @Override
@@ -34,7 +38,7 @@ public class AlgorithmHandler implements RequestHandler<APIGatewayProxyRequestEv
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         HashMap<String, String> headers = new HashMap<String, String>();
         System.out.println("Prior to getting the sql connection");
-        Connection sqlConnection = getRemoteConnection();
+
         try {
             System.out.println("Inside the try of the try catch");
             ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from algorithms");

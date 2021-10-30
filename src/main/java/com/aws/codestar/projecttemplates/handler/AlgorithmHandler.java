@@ -4,15 +4,14 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
+import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class AlgorithmHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -39,17 +38,18 @@ public class AlgorithmHandler implements RequestHandler<APIGatewayProxyRequestEv
         HashMap<String, String> headers = new HashMap<String, String>();
          String name = null;
          try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from algorithms")) {
-            while (sqlResponse.next()) {
+             while (sqlResponse.next()) {
                 name = sqlResponse.getString("name");
-            }
+             }
+             String jsonResponse = String.format("{ name: %s }", name);
+             response.setBody(jsonResponse);
+             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);
             response.setStatusCode(500);
         }
-        response.setBody(name);
-        response.setStatusCode(200);
         headers.put("Content-Type", "application/json");
-        System.out.println(event);
+        System.out.println("The response is" + response);
         return response;
     }
 }

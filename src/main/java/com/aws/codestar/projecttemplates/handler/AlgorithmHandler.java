@@ -37,18 +37,17 @@ public class AlgorithmHandler implements RequestHandler<APIGatewayProxyRequestEv
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         HashMap<String, String> headers = new HashMap<String, String>();
-        System.out.println("Prior to getting the sql connection");
-
-        try {
-            System.out.println("Inside the try of the try catch");
-            ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from algorithms");
-            response.setBody(sqlResponse.toString());
-            response.setStatusCode(200);
-        } catch (Exception e) {
-            System.out.println("In the catch of the try catch ");
+         String name = null;
+         try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from algorithms")) {
+            while (sqlResponse.next()) {
+                name = sqlResponse.getString("name");
+            }
+        } catch (SQLException e) {
             System.out.println(e);
             response.setStatusCode(500);
         }
+        response.setBody(name);
+        response.setStatusCode(200);
         headers.put("Content-Type", "application/json");
         System.out.println(event);
         return response;

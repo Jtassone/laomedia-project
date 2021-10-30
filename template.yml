@@ -74,6 +74,7 @@ Resources:
           Properties:
             Path: /algorithm
             Method: get
+
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role

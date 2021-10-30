@@ -41,8 +41,7 @@ public class AlgorithmHandler implements RequestHandler<APIGatewayProxyRequestEv
              while (sqlResponse.next()) {
                 name = sqlResponse.getString("name");
              }
-             String jsonResponse = String.format("{ name: %s }", name);
-             response.setBody(jsonResponse);
+             response.setBody(new JSONObject().put("name", name).toString());
              response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);

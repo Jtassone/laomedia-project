@@ -58,11 +58,11 @@ Resources:
             Path: /
             Method: post
 
-  testAlgorithm:
+  getAlgorithms:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postAlgorithm'
-      Handler: com.aws.codestar.projecttemplates.handler.AlgorithmHandler
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getAlgorithms'
+      Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmHandler
       Runtime: java11
       Role:
         Fn::GetAtt:

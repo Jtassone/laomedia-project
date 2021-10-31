@@ -1,6 +1,6 @@
 package com.aws.codestar.projecttemplates.models;
 
-import com.aws.codestar.projecttemplates.handler.Algorithm;
+import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

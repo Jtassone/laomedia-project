@@ -21,6 +21,12 @@ public class Classification {
 
         public Classification parentClassification;
 
+        public Classification(){}
+
+        public Classification(String name) {
+        this.name = name;
+    }
+
         public Classification(String id, String name, String classificationDetails) {
             this.id = id;
             this.name = name;

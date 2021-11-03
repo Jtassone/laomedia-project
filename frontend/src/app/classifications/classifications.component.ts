@@ -10,12 +10,12 @@ import { simpleClassifications } from '../data/classifications.data';
 })
 export class ClassificationsComponent implements OnInit {
 
-  classifications: Classification[];
+  root: Classification;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.classifications = simpleClassifications;
+    this.root = new Classification('root', 'root', [], simpleClassifications)
   }
 
 }

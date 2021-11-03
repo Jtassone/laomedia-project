@@ -1,8 +1,15 @@
 <a>
   Classification: {{this.classification.name}}
 </a>
+<button mat-mini-fab (click)="debug()">
+  <mat-icon>delete</mat-icon>
+</button>
 <ul *ngIf="this.classification.children.length > 0">
-  <li *ngFor="let c of this.classification.children">
-      <lao-classification [classification]='c'></lao-classification>
+  <li *ngFor="let c of this.classification.children; index as i">
+    <mat-checkbox (change)="toggleCheck(i)"></mat-checkbox>
+    <button mat-flat-button color="primary" [disabled]="!(mergable() && this.checked[i])">
+      Merge
+    </button>
+    <lao-classification [classification]='c'></lao-classification>
   </li>
 </ul>

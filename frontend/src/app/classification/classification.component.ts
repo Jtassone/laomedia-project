@@ -9,10 +9,34 @@ import { Classification } from '../model/classification.model';
 export class ClassificationComponent implements OnInit {
 
   @Input() classification: Classification;
+  checked: boolean[];
+
+  mergable(): boolean {
+    let count = 0;
+    for (let item of this.checked) {
+      if (item) {
+        count++;
+      }
+    }
+    return count === 2;
+  }
+
+  toggleCheck(i: number): boolean {
+    this.checked[i] = !this.checked[i];
+    return this.checked[i];
+  }
 
   constructor() { }
 
   ngOnInit(): void {
+    this.checked = [];
+    for (let i = 0; i < this.classification.children.length; i++) {
+      this.checked.push(false);
+    }
+  }
+
+  debug(): void {
+    debugger;
   }
 
 }

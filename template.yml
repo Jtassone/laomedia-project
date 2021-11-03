@@ -75,6 +75,23 @@ Resources:
             Path: /algorithm
             Method: get
 
+ getClassification:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getClassification'
+      Handler: com.aws.codestar.projecttemplates.handler.Classification.ClassificationHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /classifications
+            Method: get
+
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role

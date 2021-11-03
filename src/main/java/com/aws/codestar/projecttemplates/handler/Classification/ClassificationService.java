@@ -18,8 +18,13 @@ public class ClassificationService {
             while (sqlResponse.next()) {
                 String id = sqlResponse.getString("id");;
                 String name = sqlResponse.getString("name");
-                String classificationDetails = sqlResponse.getString("classification_details");
-                Classification classification = new Classification(id, name, classificationDetails);
+                String subClassificationID = sqlResponse.getString("sub_classification_id");
+                Classification classification;
+                if (subClassificationID == null) {
+                    classification = new Classification(id, name);
+                } else {
+                    classification = new Classification(id, name, UUID.fromString(subClassificationID));
+                }
                 classificationList.add(classification);
             }
         } catch (SQLException e) {

@@ -15,11 +15,9 @@ public class Classification {
 
         public String name;
 
-        public String implementationDetails;
+        public UUID subClassificationId;
 
-        public List<Algorithm> algorithms = new ArrayList<Algorithm>();
-
-        public Classification parentClassification;
+        public List<Classification> subClassifications;
 
         public Classification(){}
 
@@ -27,17 +25,15 @@ public class Classification {
         this.name = name;
     }
 
-        public Classification(String id, String name, String classificationDetails) {
+        public Classification(String id, String name) {
             this.id = id;
             this.name = name;
-            this.implementationDetails = classificationDetails;
         }
 
-        public Classification(String id, String name, String classificationDetails, Classification parentClassification) {
+        public Classification(String id, String name, UUID parentClassificationId) {
             this.id = id;
             this.name = name;
-            this.implementationDetails = classificationDetails;
-            this.parentClassification = parentClassification;
+            this.subClassificationId = parentClassificationId;
         }
     }
 

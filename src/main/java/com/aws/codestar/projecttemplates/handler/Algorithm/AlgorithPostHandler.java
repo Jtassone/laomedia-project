@@ -19,7 +19,7 @@ public class AlgorithPostHandler implements RequestHandler<APIGatewayProxyReques
 
     Connection sqlConnection;
     Gson gson;
-
+//
     public AlgorithPostHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();

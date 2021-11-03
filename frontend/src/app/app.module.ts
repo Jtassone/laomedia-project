@@ -9,12 +9,15 @@ import { AlgorithmComponent } from './algorithm/algorithm.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { ClassificationComponent } from './classification/classification.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClassificationsComponent,
-    AlgorithmComponent
+    AlgorithmComponent,
+    ClassificationComponent
   ],
   imports: [
     BrowserModule,
@@ -22,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
+    MatListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

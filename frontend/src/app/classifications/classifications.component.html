@@ -1,1 +1,7 @@
-<p>classifications works!</p>
+<h1>Classification Hierarchy</h1>
+
+<ul>
+  <li *ngFor="let c of this.classifications">
+      <lao-classification [classification]='c'></lao-classification>
+  </li>
+</ul>

@@ -1,0 +1,8 @@
+<a>
+  Classification: {{this.classification.name}}
+</a>
+<ul *ngIf="this.classification.children.length > 0">
+  <li *ngFor="let c of this.classification.children">
+      <lao-classification [classification]='c'></lao-classification>
+  </li>
+</ul>

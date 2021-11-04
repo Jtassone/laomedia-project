@@ -20,6 +20,8 @@ import { SelectedClassificationComponent } from './selected-classification/selec
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { ImplementationComponent } from './implementation/implementation.component';
+import { InstanceComponent } from './instance/instance.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { MatCardModule } from '@angular/material/card';
     ClassificationsComponent,
     AlgorithmComponent,
     ClassificationComponent,
-    SelectedClassificationComponent
+    SelectedClassificationComponent,
+    ImplementationComponent,
+    InstanceComponent
   ],
   imports: [
     BrowserModule,

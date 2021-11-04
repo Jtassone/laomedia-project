@@ -1,5 +1,5 @@
 <span *ngIf="!this.isRoot">
-  <a>
+  <a [routerLink]="'../classification-view/' + this.classification.id">
     Classification: {{this.classification.name}}
   </a>
   <button mat-mini-fab (click)="debug()">

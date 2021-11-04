@@ -1,4 +1,5 @@
 import { Classification } from "../model/classification.model";
+import { algoData } from "./algorithms.data";
 
 let simpleClassifications: Classification[] = [
   {
@@ -46,4 +47,11 @@ let simpleClassifications: Classification[] = [
   },
 ]
 
-export { simpleClassifications }
+let algoClassification: Classification = {
+  id: 'algo-classification',
+  name: 'algo-classification',
+  algos: [algoData, algoData, algoData],
+  children: []
+}
+
+export { simpleClassifications, algoClassification }

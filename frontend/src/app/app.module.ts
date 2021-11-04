@@ -16,13 +16,17 @@ import { ClassificationComponent } from './classification/classification.compone
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { SelectedClassificationComponent } from './selected-classification/selected-classification.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClassificationsComponent,
     AlgorithmComponent,
-    ClassificationComponent
+    ClassificationComponent,
+    SelectedClassificationComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +39,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatCheckboxModule,
     MatIconModule,
+    MatSelectModule,
+    MatFormFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

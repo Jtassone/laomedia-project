@@ -1,0 +1,22 @@
+<h1>Selected Classification: {{this.classification.name}}</h1>
+<h2>Algorithms</h2>
+<button mat-flat-button color="primary">Add Algorithm</button>
+<ul>
+  <li *ngFor="let algo of this.classification.algos; index as i">
+    <mat-checkbox (change)="toggleCheck(i)"></mat-checkbox>
+    <a [routerLink]="['/algorithm', algo.id]">
+      {{algo.name}}
+    </a>
+    <button mat-mini-fab>
+      <mat-icon>delete</mat-icon>
+    </button>
+  </li>
+</ul>
+<br>
+<button mat-flat-button color="primary" [disabled]="!(reclassification && selectionExists())">Reclassify Selected As</button>
+<mat-form-field appearance="fill">
+  <mat-label>New Classification</mat-label>
+  <mat-select [(value)]="reclassification">
+    <mat-option *ngFor="let c of this.classifications" [value]="c.name">{{c.name}}</mat-option>
+  </mat-select>
+</mat-form-field>

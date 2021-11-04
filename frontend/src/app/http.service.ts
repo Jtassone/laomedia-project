@@ -22,4 +22,11 @@ export class HttpService {
     )
   }
 
+  getClassification(id: string): Observable<Classification> {
+    const url = `${this.baseURL}classification/${id}`;
+    return this._http.get<Classification>(url).pipe(
+      tap(data => console.log(`Data: ${JSON.stringify(data)}`))
+    )
+  }
+
 }

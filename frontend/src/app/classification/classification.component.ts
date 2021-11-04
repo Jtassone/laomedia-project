@@ -9,6 +9,7 @@ import { Classification } from '../model/classification.model';
 export class ClassificationComponent implements OnInit {
 
   @Input() classification: Classification;
+  @Input() isRoot = false;
   checked: boolean[];
 
   mergable(): boolean {

@@ -7,10 +7,10 @@ import { SelectedClassificationComponent } from './selected-classification/selec
 
 
 const routes: Routes = [
-  { path: 'classifications', component: ClassificationsComponent },
+  { path: 'classifications-view', component: ClassificationsComponent },
   { path: 'classification-view/:id', component: SelectedClassificationComponent },
-  { path: 'algorithm', component: AlgorithmComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full'}
+  { path: 'algorithm-view/:id', component: AlgorithmComponent },
+  { path: '', redirectTo: '/classifications-view', pathMatch: 'full'}
 ];
 
 @NgModule({

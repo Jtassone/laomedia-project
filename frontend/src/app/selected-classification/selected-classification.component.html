@@ -4,7 +4,7 @@
 <ul>
   <li *ngFor="let algo of this.classification.algos; index as i">
     <mat-checkbox (change)="toggleCheck(i)"></mat-checkbox>
-    <a [routerLink]="['/algorithm', algo.id]">
+    <a [routerLink]="['/algorithm-view', algo.id]">
       {{algo.name}}
     </a>
     <button mat-mini-fab>

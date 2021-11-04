@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SelectedClassificationComponent } from './selected-classification/selected-classification.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatIconModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

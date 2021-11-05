@@ -16,7 +16,7 @@ public class AlgorithmService {
             while (sqlResponse.next()) {
                 UUID id = UUID.nameUUIDFromBytes(sqlResponse.getBytes("id"));
                 String name = sqlResponse.getString("name");
-                String algorithmDetails = sqlResponse.getString("algorithm_details");
+                String algorithmDetails = sqlResponse.getString("implementation");
                 Algorithm algorithm = new Algorithm(id, name, algorithmDetails);
                 algorithmList.add(algorithm);
             }
@@ -36,14 +36,17 @@ public class AlgorithmService {
         String name1= algorithm.name;
         String implementationDetails= algorithm.implementationDetails;
         try {
-            Connection conn=(Connection) DriverManager.getConnection("laomedia.cffhqwuildxe.us-east-1.rds.amazonaws.com","root","pass"); // need password
+            sqlConnection.createStatement().executeQuery("INSERT INTO algorithms (name, implementation) VALUES (name1, implementationDetails)");
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw e;
+        }
+    }
 
-            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO algorithms(name,implementation ) VALUES (?,? )");
-            pstmt.setString(1, name1);
-            pstmt.setString(2, implementationDetails);
-
-            pstmt.executeUpdate();
-
+    public static void deleteAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException{
+        String name1= algorithm.name;
+        try {
+            sqlConnection.createStatement().executeQuery("DELETE FROM algorithms WHERE name = name1");
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

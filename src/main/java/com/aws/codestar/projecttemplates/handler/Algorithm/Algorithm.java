@@ -24,6 +24,11 @@ public class Algorithm {
         this.name = name;
     }
 
+    public Algorithm(String name, String algorithmDetails) {
+        this.name = name;
+        this.implementationDetails = algorithmDetails;
+    }
+
     public Algorithm(UUID id, String name, String algorithmDetails) {
         this.id = id;
         this.name = name;

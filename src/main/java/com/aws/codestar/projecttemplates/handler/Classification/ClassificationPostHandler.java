@@ -27,7 +27,7 @@ public class ClassificationPostHandler implements RequestHandler<APIGatewayProxy
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
-        HashMap<String, String> headers = new HashMap<String, String>();
+        HashMap<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         try {
             JSONObject eventBody = new JSONObject(event.getBody());

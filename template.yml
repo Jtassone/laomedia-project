@@ -75,6 +75,23 @@ Resources:
             Path: /algorithm
             Method: get
 
+  getOptions:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-options'
+      Handler: com.aws.codestar.projecttemplates.handler.OptionsHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /algorithm
+            Method: options
+
   postAlgorithm:
     Type: AWS::Serverless::Function
     Properties:

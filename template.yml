@@ -96,7 +96,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postAlgorithm'
-      Handler: com.aws.codestar.projecttemplates.handler.AlgorithmPostHandler
+      Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmPostHandler
       Runtime: java11
       Role:
         Fn::GetAtt:

@@ -75,7 +75,24 @@ Resources:
             Path: /algorithm
             Method: get
 
- getClassification:
+  PostAlgorithm:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PostHelloWorld'
+      Handler: com.aws.codestar.projecttemplates.handler.AlgorithmPostHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /algorithms
+            Method: post
+
+  getClassification:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getClassification'

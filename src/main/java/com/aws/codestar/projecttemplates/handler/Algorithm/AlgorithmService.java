@@ -2,7 +2,6 @@ package com.aws.codestar.projecttemplates.handler.Algorithm;
 
 import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
 
-import javax.print.DocFlavor;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +31,12 @@ public class AlgorithmService {
 //    }
 
 
-    public static void postAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException{
-        String name1= algorithm.name;
-        String implementationDetails= algorithm.implementationDetails;
+    public static void postAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException {
+        String name = algorithm.name;
+        String algorithmDetails = algorithm.algorithmDetails;
         try {
-            sqlConnection.createStatement().executeQuery("INSERT INTO algorithms (name, implementation) VALUES (name1, implementationDetails)");
+            String sqlQuery = "INSERT INTO algorithms (id, name, algorithm_details) VALUES (uuid_to_bin(uuid()), " + name + ", " + algorithmDetails + ")";
+            sqlConnection.prepareStatement(sqlQuery).executeQuery();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
@@ -44,9 +44,9 @@ public class AlgorithmService {
     }
 
     public static void deleteAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException{
-        String name1= algorithm.name;
+        String name = algorithm.name;
         try {
-            sqlConnection.createStatement().executeQuery("DELETE FROM algorithms WHERE name = name1");
+            sqlConnection.createStatement().executeQuery("DELETE FROM algorithms WHERE name = name");
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

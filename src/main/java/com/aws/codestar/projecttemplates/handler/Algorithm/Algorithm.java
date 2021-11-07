@@ -12,7 +12,7 @@ public class Algorithm {
 
     public String name;
 
-    public String implementationDetails;
+    public String algorithmDetails;
 
     public List<Instance> instances = new ArrayList<Instance>();
 
@@ -26,12 +26,12 @@ public class Algorithm {
 
     public Algorithm(String name, String algorithmDetails) {
         this.name = name;
-        this.implementationDetails = algorithmDetails;
+        this.algorithmDetails = algorithmDetails;
     }
 
     public Algorithm(UUID id, String name, String algorithmDetails) {
         this.id = id;
         this.name = name;
-        this.implementationDetails = algorithmDetails;
+        this.algorithmDetails = algorithmDetails;
     }
 }

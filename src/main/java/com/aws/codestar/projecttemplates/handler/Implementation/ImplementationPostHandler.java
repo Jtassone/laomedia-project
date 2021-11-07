@@ -1,4 +1,4 @@
-package com.aws.codestar.projecttemplates.handler.Classification;
+package com.aws.codestar.projecttemplates.handler.Implementation;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -15,11 +15,11 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ClassificationPostHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class ImplementationPostHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     Connection sqlConnection;
     Gson gson;
 
-    public ClassificationPostHandler() {
+    public ImplementationPostHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();
     }
@@ -27,20 +27,19 @@ public class ClassificationPostHandler implements RequestHandler<APIGatewayProxy
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
-        HashMap<String, String> headers = new HashMap<>();
+        HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
         try {
             JSONObject eventBody = new JSONObject(event.getBody());
             String name = eventBody.getString("name");
-            String subClassificationId = eventBody.optString("subClassificationId");
-            Classification classification;
-            if (subClassificationId.length() == 0) {
-                classification = new Classification(name);
-            } else {
-                classification = new Classification(name, UUID.fromString(subClassificationId));
-            }
-            ClassificationService.postClassification(sqlConnection, classification);
-            response.setBody(new JSONObject().put("classification added", gson.toJson(classification)).toString());
+            String implementationDetails = eventBody.getString("implementationDetails");
+            String algorithmId = eventBody.getString("algorithmId");
+            Implementation implementation = new Implementation(name, implementationDetails, UUID.fromString(algorithmId));
+            ImplementationService.postImplementation(sqlConnection, implementation);
+            System.out.println(implementation);
+            JSONObject implementationJson = new JSONObject(implementation);
+            System.out.println(implementationJson);
+            response.setBody(new JSONObject().put("implementation added", implementationJson).toString());
             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);

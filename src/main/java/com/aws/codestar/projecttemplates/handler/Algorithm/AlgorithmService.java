@@ -35,8 +35,9 @@ public class AlgorithmService {
     public static void postAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException {
         String name = algorithm.name;
         String algorithmDetails = algorithm.algorithmDetails;
+        UUID classificationId = algorithm.classificationId;
         try {
-            String sqlQuery = "INSERT INTO algorithms (id, name, algorithm_details) VALUES (uuid_to_bin(uuid()),\"" + name + "\" , \"" + algorithmDetails + "\")";
+            String sqlQuery = "INSERT INTO algorithms (id, name, algorithm_details, classification_id) VALUES (uuid_to_bin(uuid()),\"" + name + "\" , \"" + algorithmDetails + "\" , uuid_to_bin(" + "\"" + classificationId + "\"" + "))";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (SQLException e) {

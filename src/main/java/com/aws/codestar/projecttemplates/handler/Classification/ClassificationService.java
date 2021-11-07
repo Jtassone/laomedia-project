@@ -40,7 +40,7 @@ public class ClassificationService {
     public static void postClassification(Connection sqlConnection,Classification classification ) throws SQLException {
         String name = classification.name;
         try {
-            String sqlQuery = "INSERT INTO classifications (name) VALUES (uuid_to_bin(uuid()),\"" + name + "\")";
+            String sqlQuery = "INSERT INTO classifications (id, name) VALUES (uuid_to_bin(uuid()),\"" + name + "\")";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (SQLException e) {

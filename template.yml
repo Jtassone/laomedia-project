@@ -75,10 +75,10 @@ Resources:
             Path: /algorithm
             Method: get
 
-  PostAlgorithm:
+  postAlgorithm:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PostHelloWorld'
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postAlgorithm'
       Handler: com.aws.codestar.projecttemplates.handler.AlgorithmPostHandler
       Runtime: java11
       Role:

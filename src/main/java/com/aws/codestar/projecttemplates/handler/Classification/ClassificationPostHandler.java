@@ -39,8 +39,8 @@ public class ClassificationPostHandler implements RequestHandler<APIGatewayProxy
             } else {
                 classification = new Classification(name, UUID.fromString(subClassificationId));
             }
-            Classification postedClassification = ClassificationService.postClassification(sqlConnection, classification);
-            response.setBody(new JSONObject().put("classification added", gson.toJson(postedClassification)).toString());
+            ClassificationService.postClassification(sqlConnection, classification);
+            response.setBody(new JSONObject().put("classification added", gson.toJson(classification)).toString());
             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class RDSClient {
     public static Connection getRemoteConnection() {
         try {
-            String jdbcUrl = "jdbc:mysql://laomedia.cffhqwuildxe.us-east-1.rds.amazonaws.com:3306/laoData?user=admin&password=Thisisatestdatabase";
+            String jdbcUrl = "jdbc:mysql://laomedia.cffhqwuildxe.us-east-1.rds.amazonaws.com:3306/laoData?user=admin&password=Thisisatestpassword!";
             return DriverManager.getConnection(jdbcUrl);
         }
         catch (SQLException e) {

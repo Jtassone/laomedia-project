@@ -15,8 +15,9 @@ public class AlgorithmService {
             while (sqlResponse.next()) {
                 UUID id = UUID.nameUUIDFromBytes(sqlResponse.getBytes("id"));
                 String name = sqlResponse.getString("name");
-                String algorithmDetails = sqlResponse.getString("implementation");
-                Algorithm algorithm = new Algorithm(id, name, algorithmDetails);
+                String algorithmDetails = sqlResponse.getString("algorithm_details");
+                UUID classificationId = UUID.nameUUIDFromBytes(sqlResponse.getBytes("classification_id"));
+                Algorithm algorithm = new Algorithm(id, name, algorithmDetails, classificationId);
                 algorithmList.add(algorithm);
             }
         } catch (SQLException e) {
@@ -35,8 +36,9 @@ public class AlgorithmService {
         String name = algorithm.name;
         String algorithmDetails = algorithm.algorithmDetails;
         try {
-            String sqlQuery = "INSERT INTO algorithms (id, name, algorithm_details) VALUES (uuid_to_bin(uuid()), " + name + ", " + algorithmDetails + ")";
-            sqlConnection.prepareStatement(sqlQuery).executeQuery();
+            String sqlQuery = "INSERT INTO algorithms (id, name, algorithm_details) VALUES (uuid_to_bin(uuid()),\"" + name + "\" , \"" + algorithmDetails + "\")";
+            System.out.println(sqlQuery);
+            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

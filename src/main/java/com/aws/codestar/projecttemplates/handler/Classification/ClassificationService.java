@@ -20,10 +20,11 @@ public class ClassificationService {
                 String name = sqlResponse.getString("name");
                 String subClassificationID = sqlResponse.getString("sub_classification_id");
                 Classification classification;
+                UUID uuid = UUID.fromString(id);
                 if (subClassificationID == null) {
-                    classification = new Classification(id, name);
+                    classification = new Classification(uuid, name);
                 } else {
-                    classification = new Classification(id, name, UUID.fromString(subClassificationID));
+                    classification = new Classification(uuid, name, UUID.fromString(subClassificationID));
                 }
                 classificationList.add(classification);
             }
@@ -32,9 +33,9 @@ public class ClassificationService {
             throw e;
         }
         return classificationList;
+    }
 
-
-
-
+    public static Classification postClassification(Connection sqlConnection, Classification classification) throws SQLException {
+        return new Classification();
     }
 }

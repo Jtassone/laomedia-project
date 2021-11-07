@@ -14,9 +14,7 @@ public class Algorithm {
 
     public String algorithmDetails;
 
-    public List<Instance> instances = new ArrayList<Instance>();
-
-    public List<Implementation> implementations = new ArrayList<Implementation>();
+    public UUID classificationId;
 
     public Algorithm(){}
 
@@ -29,9 +27,16 @@ public class Algorithm {
         this.algorithmDetails = algorithmDetails;
     }
 
-    public Algorithm(UUID id, String name, String algorithmDetails) {
+    public Algorithm( String name, String algorithmDetails, UUID classificationId) {
+        this.name = name;
+        this.algorithmDetails = algorithmDetails;
+        this.classificationId = classificationId;
+    }
+
+    public Algorithm(UUID id, String name, String algorithmDetails, UUID classificationId) {
         this.id = id;
         this.name = name;
         this.algorithmDetails = algorithmDetails;
+        this.classificationId = classificationId;
     }
 }

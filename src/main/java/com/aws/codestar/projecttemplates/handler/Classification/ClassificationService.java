@@ -35,7 +35,17 @@ public class ClassificationService {
         return classificationList;
     }
 
-    public static Classification postClassification(Connection sqlConnection, Classification classification) throws SQLException {
-        return new Classification();
+
+
+    public static void postClassification(Connection sqlConnection,Classification classification ) throws SQLException {
+        String name = classification.name;
+        try {
+            String sqlQuery = "INSERT INTO classifications (name) VALUES (uuid_to_bin(uuid()),\"" + name + "\")";
+            System.out.println(sqlQuery);
+            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw e;
+        }
     }
 }

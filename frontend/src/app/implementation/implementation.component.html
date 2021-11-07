@@ -9,6 +9,11 @@
 
 <h2>Problem Instance List</h2>
 <ul>
+  <li *ngFor="let inst of this.implmentation.instances">
+    <a [routerLink]="['/instance-view', inst.id]">
+      {{inst.name}}
+    </a>
+  </li>
 </ul>
 
 <button mat-flat-button color="primary">Download This Implementation</button>

@@ -33,7 +33,7 @@ public class ImplementationHandler implements RequestHandler<APIGatewayProxyRequ
         headers.put("Content-Type", "application/json");
         try {
             List<Implementation> implementationList = ImplementationService.getAllImplementations(sqlConnection);
-            response.setBody(new JSONObject().put("implementations", gson.toJson(implementationList)).toString());
+            response.setBody(gson.toJson(implementationList));
             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);

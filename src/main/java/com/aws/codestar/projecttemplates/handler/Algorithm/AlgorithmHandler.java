@@ -30,7 +30,7 @@ public class AlgorithmHandler implements RequestHandler<APIGatewayProxyRequestEv
         headers.put("Content-Type", "application/json");
         try {
             List<Algorithm> algorithmList = AlgorithmService.getAllAlgorithms(sqlConnection);
-            response.setBody(new JSONObject().put("algorithms", gson.toJson(algorithmList)).toString());
+            response.setBody(gson.toJson(algorithmList));
             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);

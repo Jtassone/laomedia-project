@@ -32,7 +32,7 @@ public class ClassificationHandler implements RequestHandler<APIGatewayProxyRequ
         headers.put("Content-Type", "application/json");
         try {
             List<Classification> classificationList = ClassificationService.getAllClassifications(sqlConnection);
-            response.setBody(new JSONObject().put("classifications", gson.toJson(classificationList)).toString());
+            response.setBody(gson.toJson(classificationList));
             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);

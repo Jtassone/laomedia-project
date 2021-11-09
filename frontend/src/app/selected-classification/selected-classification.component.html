@@ -1,8 +1,8 @@
-<h1>Selected Classification: {{this.classification.name}}</h1>
+<h1>Selected Classification: {{id}}</h1>
 <h2>Algorithms</h2>
 <button mat-flat-button color="primary">Add Algorithm</button>
 <ul>
-  <li *ngFor="let algo of this.classification.algos; index as i">
+  <li *ngFor="let algo of this.algos; index as i">
     <mat-checkbox (change)="toggleCheck(i)"></mat-checkbox>
     <a [routerLink]="['/algorithm-view', algo.id]">
       {{algo.name}}

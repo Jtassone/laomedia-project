@@ -50,6 +50,13 @@ export class HttpService {
     );
   }
 
+  getAlgorithms(): Observable<Algorithm[]> {
+    const url = this.urls.get['algo'];
+    return this._http.get<Algorithm[]>(url).pipe(
+      tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
+    )
+  }
+
   helloWorld(): any {
     // const url = `${this.baseURL}`;
     const url = 'https://jsp4qhazd6.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-getAlgorithms'

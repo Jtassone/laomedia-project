@@ -75,7 +75,41 @@ Resources:
             Path: /algorithm
             Method: get
 
- getClassification:
+  getOptions:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-options'
+      Handler: com.aws.codestar.projecttemplates.handler.OptionsHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /algorithm
+            Method: options
+
+  postAlgorithm:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postAlgorithm'
+      Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmPostHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /algorithms
+            Method: post
+
+  getClassification:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getClassification'
@@ -90,6 +124,57 @@ Resources:
           Type: Api
           Properties:
             Path: /classifications
+            Method: get
+
+  postClassification:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postClassification'
+      Handler: com.aws.codestar.projecttemplates.handler.Classification.ClassificationPostHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /classifications
+            Method: post
+
+  postImplementation:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postImplementation'
+      Handler: com.aws.codestar.projecttemplates.handler.Implementation.ImplementationPostHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /implementations
+            Method: post
+
+  getImplementation:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getImplementation'
+      Handler: com.aws.codestar.projecttemplates.handler.Implementation.ImplementationHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /implementations
             Method: get
 
   LambdaExecutionRole:

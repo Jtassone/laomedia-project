@@ -13,12 +13,9 @@ public class Implementation {
 
     public String name;
 
-    public String fileName;
-
     public String implementationDetails;
 
-    public List<Benchmark> BenchmarkResults = new ArrayList<Benchmark>();
-
+    public UUID algorithmId;
 
     public Implementation(){}
 
@@ -26,10 +23,16 @@ public class Implementation {
         this.name = name;
     }
 
-    public Implementation(UUID id, String name, String fileName, String implementationDetails) {
+    public Implementation(UUID id, String name, String implementationDetails, UUID algorithmId) {
         this.id = id;
         this.name = name;
-        this.fileName = fileName;
         this.implementationDetails = implementationDetails;
+        this.algorithmId = algorithmId;
+    }
+
+    public Implementation(String name, String implementationDetails, UUID algorithmId) {
+        this.name = name;
+        this.implementationDetails = implementationDetails;
+        this.algorithmId = algorithmId;
     }
 }

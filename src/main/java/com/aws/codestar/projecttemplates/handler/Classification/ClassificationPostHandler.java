@@ -13,14 +13,13 @@ import org.json.JSONObject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
+import java.util.UUID;
 
-public class ClassificationHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
-
+public class ClassificationPostHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     Connection sqlConnection;
     Gson gson;
 
-    public ClassificationHandler() {
+    public ClassificationPostHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();
     }
@@ -28,11 +27,20 @@ public class ClassificationHandler implements RequestHandler<APIGatewayProxyRequ
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
-        HashMap<String, String> headers = new HashMap<String, String>();
+        HashMap<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         try {
-            List<Classification> classificationList = ClassificationService.getAllClassifications(sqlConnection);
-            response.setBody(gson.toJson(classificationList));
+            JSONObject eventBody = new JSONObject(event.getBody());
+            String name = eventBody.getString("name");
+            String subClassificationId = eventBody.optString("subClassificationId");
+            Classification classification;
+            if (subClassificationId.length() == 0) {
+                classification = new Classification(name);
+            } else {
+                classification = new Classification(name, UUID.fromString(subClassificationId));
+            }
+            ClassificationService.postClassification(sqlConnection, classification);
+            response.setBody(new JSONObject().put("classification added", gson.toJson(classification)).toString());
             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);
@@ -41,4 +49,5 @@ public class ClassificationHandler implements RequestHandler<APIGatewayProxyRequ
         System.out.println("The response is" + response);
         return response;
     }
+
 }

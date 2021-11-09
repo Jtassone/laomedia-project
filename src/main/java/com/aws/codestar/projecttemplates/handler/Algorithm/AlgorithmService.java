@@ -2,7 +2,6 @@ package com.aws.codestar.projecttemplates.handler.Algorithm;
 
 import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
 
-import javax.print.DocFlavor;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,8 @@ public class AlgorithmService {
                 UUID id = UUID.nameUUIDFromBytes(sqlResponse.getBytes("id"));
                 String name = sqlResponse.getString("name");
                 String algorithmDetails = sqlResponse.getString("algorithm_details");
-                Algorithm algorithm = new Algorithm(id, name, algorithmDetails);
+                UUID classificationId = UUID.nameUUIDFromBytes(sqlResponse.getBytes("classification_id"));
+                Algorithm algorithm = new Algorithm(id, name, algorithmDetails, classificationId);
                 algorithmList.add(algorithm);
             }
         } catch (SQLException e) {
@@ -32,18 +32,24 @@ public class AlgorithmService {
 //    }
 
 
-    public static void postAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException{
-        String name1= algorithm.name;
-        String implementationDetails= algorithm.implementationDetails;
+    public static void postAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException {
+        String name = algorithm.name;
+        String algorithmDetails = algorithm.algorithmDetails;
+        UUID classificationId = algorithm.classificationId;
         try {
-            Connection conn=(Connection) DriverManager.getConnection("laomedia.cffhqwuildxe.us-east-1.rds.amazonaws.com","root","pass"); // need password
+            String sqlQuery = "INSERT INTO algorithms (id, name, algorithm_details, classification_id) VALUES (uuid_to_bin(uuid()),\"" + name + "\" , \"" + algorithmDetails + "\" , uuid_to_bin(" + "\"" + classificationId + "\"" + "))";
+            System.out.println(sqlQuery);
+            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw e;
+        }
+    }
 
-            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO algorithms(name,implementation ) VALUES (?,? )");
-            pstmt.setString(1, name1);
-            pstmt.setString(2, implementationDetails);
-
-            pstmt.executeUpdate();
-
+    public static void deleteAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException{
+        String name = algorithm.name;
+        try {
+            sqlConnection.createStatement().executeQuery("DELETE FROM algorithms WHERE name = name");
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

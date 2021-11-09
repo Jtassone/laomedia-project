@@ -11,13 +11,11 @@ import java.util.UUID;
 public class Classification {
 
 
-        private String id;
+        private UUID id;
 
         public String name;
 
         public UUID subClassificationId;
-
-        public List<Classification> subClassifications;
 
         public Classification(){}
 
@@ -25,12 +23,17 @@ public class Classification {
         this.name = name;
     }
 
-        public Classification(String id, String name) {
+        public Classification(UUID id, String name) {
             this.id = id;
             this.name = name;
         }
 
-        public Classification(String id, String name, UUID parentClassificationId) {
+    public Classification (String name, UUID subClassificationId) {
+        this.name = name;
+        this.subClassificationId = subClassificationId;
+    }
+
+        public Classification(UUID id, String name, UUID parentClassificationId) {
             this.id = id;
             this.name = name;
             this.subClassificationId = parentClassificationId;

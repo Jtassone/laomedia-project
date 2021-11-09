@@ -24,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SelectedClassificationComponent } from './selected-classification/selected-classification.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SelectedClassificationComponent } from './selected-classification/selec
     ImplementationComponent,
     InstanceComponent,
     SelectedClassificationComponent,
+    LoginComponent,
   ],
   imports: [
     AppRoutingModule,

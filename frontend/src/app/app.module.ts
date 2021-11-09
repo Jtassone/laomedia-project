@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AlgorithmComponent } from './algorithm/algorithm.component';
 import { AppComponent } from './app.component';
@@ -49,6 +50,7 @@ import { SelectedClassificationComponent } from './selected-classification/selec
     MatSelectModule,
     MatTableModule,
     MatToolbarModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -31,8 +31,10 @@ export class ClassificationComponent implements OnInit {
 
   ngOnInit(): void {
     this.checked = [];
-    for (let i = 0; i < this.classification.children.length; i++) {
-      this.checked.push(false);
+    if (this.classification.children) {
+      for (let i = 0; i < this.classification.children.length; i++) {
+        this.checked.push(false);
+      }
     }
   }
 

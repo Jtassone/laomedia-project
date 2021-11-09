@@ -1,0 +1,59 @@
+<h1>Active Instance: {{instance.name}}</h1>
+
+<h2>Body</h2>
+<mat-card>
+  <code>
+    id: {{instance.id}}
+  </code>
+</mat-card>
+
+<h2>Benchmark List</h2>
+<ul>
+  <li *ngFor="let bench of this.instance.benchmarks">
+    {{bench.id}}
+  </li>
+</ul>
+
+<mat-table [dataSource]="instance.benchmarks" class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.id}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="core">
+    <mat-header-cell *matHeaderCellDef> Core </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig.core}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="L1">
+    <mat-header-cell *matHeaderCellDef> L1 </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['L1']}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="L2">
+    <mat-header-cell *matHeaderCellDef> L2 </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['L2']}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="L3">
+    <mat-header-cell *matHeaderCellDef> L3 </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['L3']}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="CPU">
+    <mat-header-cell *matHeaderCellDef> CPU </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['CPU']}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="RAM">
+    <mat-header-cell *matHeaderCellDef> RAM </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['RAM']}} </mat-cell>
+  </ng-container>
+
+
+  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+</mat-table>
+
+<button mat-flat-button color="primary">Download This Instance</button>
+<button mat-flat-button color="primary">Add Instance</button>

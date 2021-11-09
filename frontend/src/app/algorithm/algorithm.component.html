@@ -1,1 +1,22 @@
-<p>algorithm works!</p>
+<h1>Active Algorithm: {{this.algorithm.name}}</h1>
+
+<h2>Body</h2>
+<mat-card>
+  <code>
+    id: {{algorithm.id}}
+  </code>
+</mat-card>
+
+<h2>Implementations</h2>
+<ul>
+  <li *ngFor="let imp of this.algorithm.imps">
+    <a [routerLink]="['/implementation-view', imp.id]">
+      {{imp.name}}
+    </a>
+    <button mat-mini-fab>
+      <mat-icon>delete</mat-icon>
+    </button>
+  </li>
+</ul>
+
+<button mat-flat-button color="primary">Upload Implementation</button>

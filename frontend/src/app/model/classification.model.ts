@@ -3,8 +3,9 @@ import Algorithm from "./algorithm.model";
 class Classification {
   id: string;
   name: string;
-  algos: Algorithm[];
-  children: Classification[]
+  algos?: Algorithm[];
+  children?: Classification[]
+  subClassificationId?: string;
 
   constructor(id: string, name: string, algos: Algorithm[], children: Classification[]) {
     this.id = id;

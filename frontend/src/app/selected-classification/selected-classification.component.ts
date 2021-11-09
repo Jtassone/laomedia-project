@@ -15,6 +15,7 @@ export class SelectedClassificationComponent implements OnInit {
   classification: Classification;
   id: string
   classifications: Classification[];
+  algos: Algorithm[];
   reclassification: "";
   selected: boolean[] = [];
 
@@ -39,16 +40,16 @@ export class SelectedClassificationComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')
-    this.http.getClassification(this.id).subscribe({
+    this.http.getAlgorithms().subscribe({
       next: data => {
-        this.classification = data;
-        for(let algo of this.classification.algos) {
+        this.algos = data;
+        for(let algo of data) {
           this.selected.push(false)
         }
       }, error: err => {
         console.error(`error: ${JSON.stringify(err)}`);
-        this.classification = algoClassification;
-        for(let algo of this.classification.algos) {
+        this.algos = algoClassification.algos;
+        for(let algo of this.algos) {
           this.selected.push(false)
         }
       }

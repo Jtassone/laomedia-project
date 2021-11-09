@@ -3,9 +3,9 @@ import { Implementation } from "./implementation.model";
 
 export default class Algorithm {
   id: string;
-  ins: Instance[];
+  ins?: Instance[];
   name: string;
-  imps: Implementation[];
+  imps?: Implementation[];
 }
 
 export { Algorithm }

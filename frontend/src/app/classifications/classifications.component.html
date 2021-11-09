@@ -1,3 +1,17 @@
 <h1>Classification Hierarchy</h1>
 <lao-classification [classification]='this.root' [isRoot]="true"></lao-classification>
-<button mat-flat-button color="primary">Add Classification</button>
+
+<h2>New Classification</h2>
+
+<form [formGroup]="newClassForm">
+
+  <mat-form-field appearance="fill">
+    <mat-label for="name">New Classification Name</mat-label>
+    <input matInput id="name" type="text" formControlName="name" />
+  </mat-form-field>
+  <button mat-flat-button color="primary" type="submit" [disabled]="!this.newClassForm.valid" (click)="addClassification()">
+    Add Classification
+  </button>
+
+</form>
+

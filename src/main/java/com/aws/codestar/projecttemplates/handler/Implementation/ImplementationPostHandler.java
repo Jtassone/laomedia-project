@@ -36,10 +36,7 @@ public class ImplementationPostHandler implements RequestHandler<APIGatewayProxy
             String algorithmId = eventBody.getString("algorithmId");
             Implementation implementation = new Implementation(name, implementationDetails, UUID.fromString(algorithmId));
             ImplementationService.postImplementation(sqlConnection, implementation);
-            System.out.println(implementation);
-            JSONObject implementationJson = new JSONObject(implementation);
-            System.out.println(implementationJson);
-            response.setBody(new JSONObject().put("implementation added", implementationJson).toString());
+            response.setBody(gson.toJson(implementation));
             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);

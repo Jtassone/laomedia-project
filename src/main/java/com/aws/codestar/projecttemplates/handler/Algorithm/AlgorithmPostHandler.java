@@ -34,8 +34,7 @@ public class AlgorithmPostHandler implements RequestHandler<APIGatewayProxyReque
             String classificationId = eventBody.getString("classificationId");
             Algorithm algo = new Algorithm(name, algorithmDetails, UUID.fromString(classificationId));
             AlgorithmService.postAlgorithms(sqlConnection, algo);
-            JSONObject algoJson = new JSONObject(algo);
-            response.setBody(new JSONObject().put("algorithm added", algoJson).toString());
+            response.setBody(gson.toJson(algo));
             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);

@@ -1,4 +1,14 @@
-<h1>Classification Hierarchy</h1>
+<h1>Classifications</h1>
+<h2>Welcome!</h2>
+<p>This page is currently a bit buggy. The page seems not to update sometimes unless you click the 'debug' button. I guess it jitters the JavaScript? There's something with Amplify that isn't playing nice with our code.</p>
+<p>Anyway, click the <code>Debug</code> button after changing the text in the text box and after submitting the form.</p>
+<p>If nothing is loading, navigate to 'Classifications' through the top bar!</p>
+
+<h2>Classification Hierarchy</h2>
+<ng-container *ngIf="this.state === 'loading'">
+  <p>Loading Classifications. If this is taking a while, try navigating to 'Classifications' through the top bar.</p>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-container>
 <lao-classification [classification]='this.root' [isRoot]="true"></lao-classification>
 
 <h2>New Classification</h2>
@@ -9,9 +19,10 @@
     <mat-label for="name">New Classification Name</mat-label>
     <input matInput id="name" type="text" formControlName="name" />
   </mat-form-field>
-  <button mat-flat-button color="primary" type="submit" [disabled]="!this.newClassForm.valid" (click)="addClassification()">
+  <button mat-flat-button color="primary" type="submit" [disabled]="!this.newClassForm.valid && this.state !== 'submitting'" (click)="addClassification()">
     Add Classification
+    <mat-progress-bar *ngIf="this.state==='submitting'" mode="indeterminate"></mat-progress-bar>
   </button>
-
 </form>
+<button mat-flat-button color="warn" (click)="debug()" *ngIf="this.debugMode">Debug</button>
 

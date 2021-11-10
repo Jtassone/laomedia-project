@@ -12,17 +12,22 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class ClassificationsComponent implements OnInit {
 
+  debugMode: boolean = true;
+  state: string = "default";
+
   root: Classification;
   newClassForm = this.fb.group({
     name: ['', Validators.required],
   })
 
-  resetClassifications() {
+  resetClassificationsComponent() {
+    this.state = "loading";
     this.root = new Classification('root', 'root', [], []);
     this.http.getClassifications().subscribe({
       next: data => {
         console.log(`Classifications: ${JSON.stringify(data)}`);
         this.root = new Classification('root', 'root', [], data);
+        this.state="default"
       }, error: err => {
         console.error(`Falling back. Classification error: ${JSON.stringify(err)}`);
         this.root = new Classification('root', 'root', [], simpleClassifications);
@@ -35,14 +40,19 @@ export class ClassificationsComponent implements OnInit {
   }
 
   addClassification() {
+    this.state = "submitting"
     if (!this.newClassForm.valid) {
       return;
     }
     this.http.addClassification(this.newClassForm.get('name').value).subscribe({
       next: data => {
-        this.resetClassifications();
+        this.resetClassificationsComponent();
       }
     })
+  }
+
+  debug() {
+    debugger;
   }
 
   constructor(
@@ -51,25 +61,7 @@ export class ClassificationsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.root = new Classification('root', 'root', [], []);
-    this.http.getClassifications().subscribe({
-      next: data => {
-        console.log(`Classifications: ${JSON.stringify(data)}`);
-        this.root = new Classification('root', 'root', [], data);
-      }, error: err => {
-        console.error(`Falling back. Classification error: ${JSON.stringify(err)}`);
-        this.root = new Classification('root', 'root', [], simpleClassifications);
-      }
-    });
-
-    // this.http.postTest().subscribe({
-    //   next: data => {
-    //     console.log(`The data again: ${JSON.stringify(data)}`)
-    //   }, error: err => {
-    //     console.error(`The hello world endpoint isn't working: ${JSON.stringify(err)}\n\nMessage: ${err.message}`);
-    //   }
-    // });
-
+    this.resetClassificationsComponent();
   }
 
 }

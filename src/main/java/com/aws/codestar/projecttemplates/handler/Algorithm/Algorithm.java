@@ -1,9 +1,5 @@
 package com.aws.codestar.projecttemplates.handler.Algorithm;
 
-
-import com.aws.codestar.projecttemplates.models.Implementation;
-import com.aws.codestar.projecttemplates.models.Instance;
-import java.util.*;
 import java.util.UUID;
 
 public class Algorithm {

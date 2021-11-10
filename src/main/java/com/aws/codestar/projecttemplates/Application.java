@@ -1,6 +1,5 @@
 package com.aws.codestar.projecttemplates;
 
-import com.aws.codestar.projecttemplates.models.BenchmarkRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

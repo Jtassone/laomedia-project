@@ -1,11 +1,5 @@
 package com.aws.codestar.projecttemplates.handler.Classification;
 
-import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
-import com.aws.codestar.projecttemplates.models.Implementation;
-import com.aws.codestar.projecttemplates.models.Instance;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class Classification {

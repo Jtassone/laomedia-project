@@ -1,10 +1,5 @@
 package com.aws.codestar.projecttemplates.handler.Implementation;
 
-import com.aws.codestar.projecttemplates.models.Benchmark;
-import com.aws.codestar.projecttemplates.models.Instance;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class Implementation {

@@ -1,11 +1,15 @@
+import Amplify, { Auth } from 'aws-amplify';
+
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+// @ts-ignore
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
-import Amplify from 'aws-amplify';
-import {awsconfig} from 'backend-aws-exports/dev/aws-exports';
+//import {awsconfig} from 'backend-aws-exports/dev/aws-exports';
 
 /* Configure Amplify resources */
-Amplify.configure(awsconfig);
+
+import awsconfig from '../../src/aws-exports.js';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -33,6 +37,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { SelectedClassificationComponent } from './selected-classification/selected-classification.component';
 import { LoginComponent } from './login/login.component';
 
+Amplify.configure(awsconfig);
+
 @NgModule({
 
   declarations: [
@@ -46,6 +52,7 @@ import { LoginComponent } from './login/login.component';
     LoginComponent,
   ],
   imports: [
+    AmplifyUIAngularModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,

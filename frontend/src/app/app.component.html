@@ -6,6 +6,15 @@
     <mat-icon>person</mat-icon>
   </button>
 </mat-toolbar>
-<div class="page-container">
-  <router-outlet></router-outlet>
+<amplify-authenticator *ngIf="authState !== 'signedin'"></amplify-authenticator>
+
+<div *ngIf="authState === 'signedin' && user" class="App">
+  <amplify-sign-out></amplify-sign-out>
+  <div>Hello, {{user.username}}</div>
+  <div>
+    <div class="page-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
+

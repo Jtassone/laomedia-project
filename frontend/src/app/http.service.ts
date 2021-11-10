@@ -45,16 +45,29 @@ export class HttpService {
 
   addClassification(name: string): Observable<Classification> {
     const url = this.urls.post['class'];
-    return this._http.post<Classification>(url, JSON.stringify({name: name})).pipe(
+    const body = JSON.stringify({name: name});
+    return this._http.post<Classification>(url, body).pipe(
       tap(data => console.log(`Data from Hello World: ${JSON.stringify(data)}`))
     );
   }
 
   getAlgorithms(): Observable<Algorithm[]> {
-    const url = this.urls.get['algo'];
+    const url = this.urls.get['algos'];
     return this._http.get<Algorithm[]>(url).pipe(
       tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
     )
+  }
+
+  addAlgorithm(name: string, classificationId: string, algorithmDetails: string): Observable<any> {
+    const url = this.urls.post['algos'];
+    const body = {
+      name,
+      classificationId,
+      algorithmDetails
+    }
+    return this._http.post<any>(url, body).pipe(
+      tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
+    );
   }
 
   helloWorld(): any {

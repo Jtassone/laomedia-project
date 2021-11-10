@@ -1,0 +1,12 @@
+.grd {
+  display: grid;
+  grid-template-columns: 250px 1fr 100px;
+  column-gap: 20px;
+  // height: 40px;
+}
+
+form {
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 10px;
+}

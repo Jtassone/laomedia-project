@@ -1,6 +1,12 @@
 <h1>Selected Classification: {{id}}</h1>
-<h2>Algorithms</h2>
-<button mat-flat-button color="primary">Add Algorithm</button>
+<h2>Welcome!</h2>
+<p>This page is buggy for unknown reasons that we believe to be related to the CommonJS libraries used by our authentication service, Amplify.</p>
+<p>After making any change to the page (e.g. loading the algorithms, typing int the boxes, clicking the select), press the <code>Debug</code> button. This helps the JavaScript take effect.</p>
+<h2>All Algorithms</h2>
+<ng-container *ngIf="state === 'loading'">
+  <p>Loading Algorithms. If this is taking a while, try hitting the <code>Debug</code> button.</p>
+  <mat-progress-bar mode="indeterminate" ></mat-progress-bar>
+</ng-container>
 <ul>
   <li *ngFor="let algo of this.algos; index as i">
     <mat-checkbox (change)="toggleCheck(i)"></mat-checkbox>
@@ -13,10 +19,39 @@
   </li>
 </ul>
 <br>
-<button mat-flat-button color="primary" [disabled]="!(reclassification && selectionExists())">Reclassify Selected As</button>
-<mat-form-field appearance="fill">
-  <mat-label>New Classification</mat-label>
-  <mat-select [(value)]="reclassification">
-    <mat-option *ngFor="let c of this.classifications" [value]="c.name">{{c.name}}</mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="grd">
+  <button mat-flat-button color="primary" [disabled]="!(reclassification && selectionExists())">Reclassify Selected As</button>
+  <mat-form-field appearance="fill">
+    <mat-label>New Classification</mat-label>
+    <mat-select [(value)]="reclassification">
+      <mat-option *ngFor="let c of this.classifications" [value]="c.id">{{c.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-flat-button color="warn" (click)="debug()" *ngIf="debugMode">Debug</button>
+</div>
+
+<h2>Add Algorithm</h2>
+<form [formGroup]="newAlgoForm">
+  <mat-form-field appearance="fill">
+    <mat-label for="name">New Classification Name</mat-label>
+    <input matInput id="name" type="text" formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Parent Classification</mat-label>
+    <mat-select formControlName="classificationId">
+      <mat-option *ngFor="let c of this.classifications" [value]="c.id">{{c.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label for="algorithmDetails">Algorithm Details</mat-label>
+    <textarea matInput id="algorithmDetails" formControlName="algorithmDetails"></textarea>
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" [disabled]="!this.newAlgoForm.valid && this.state !== 'submitting'" (click)="addAlgo()">
+    Add Algorithm
+    <mat-progress-bar mode='indeterminate' *ngIf="this.state==='submitting'"></mat-progress-bar>
+  </button>
+
+</form>

@@ -1,15 +1,25 @@
-<h1>Active Algorithm: {{this.algorithm.name}}</h1>
+<h1>Active Algorithm: {{id}}</h1>
 
 <h2>Body</h2>
-<mat-card>
-  <code>
-    id: {{algorithm.id}}
-  </code>
-</mat-card>
+<ng-container *ngIf="this.algoState === 'loading'">
+  <p>Loading Algorithm Details</p>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-container>
+<ng-container *ngIf="this.algoState === 'default'">
+  <mat-card>
+    <code>
+      {{this.algorithm.algorithmDetails}}
+    </code>
+  </mat-card>
+</ng-container>
 
 <h2>Implementations</h2>
+<ng-container *ngIf="this.state === 'loading'">
+  <p>Loading Implementations</p>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-container>
 <ul>
-  <li *ngFor="let imp of this.algorithm.imps">
+  <li *ngFor="let imp of this.implementations">
     <a [routerLink]="['/implementation-view', imp.id]">
       {{imp.name}}
     </a>
@@ -19,4 +29,27 @@
   </li>
 </ul>
 
-<button mat-flat-button color="primary">Upload Implementation</button>
+<h2>Add Algorithm</h2>
+<form [formGroup]="newImpForm">
+  <mat-form-field appearance="fill">
+    <mat-label for="name">New Implementation Name</mat-label>
+    <input matInput id="name" type="text" formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Parent Algorithm</mat-label>
+    <mat-select formControlName="algorithmId">
+      <mat-option *ngFor="let a of this.algorithms" [value]="a.id">{{a.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label for="implementationDetails">Implementation Details</mat-label>
+    <textarea matInput id="implementationDetails" formControlName="implementationDetails"></textarea>
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" [disabled]="!this.newImpForm.valid || this.state === 'submitting'" (click)="addImp()">
+    Add Implementation
+    <mat-progress-bar mode='indeterminate' *ngIf="this.state==='submitting'"></mat-progress-bar>
+  </button>
+</form>

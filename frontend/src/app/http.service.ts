@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators'
 import { Observable } from 'rxjs';
 
 import { Classification } from './model/classification.model';
+import Implementation from './model/implementation.model';
 
 
 @Injectable({
@@ -67,6 +68,25 @@ export class HttpService {
     }
     return this._http.post<any>(url, body).pipe(
       tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
+    );
+  }
+
+  getImplementations(): Observable<Implementation[]> {
+    const url = this.urls.get['imp'];
+    return this._http.get<Implementation[]>(url).pipe(
+      tap(data => console.log(`List of All Implementations: ${JSON.stringify(data)}`))
+    )
+  }
+
+  addImplementation(name: string, algorithmId: string, implementationDetails: string): Observable<any> {
+    const url = this.urls.post['imp'];
+    const body = {
+      name,
+      algorithmId,
+      implementationDetails
+    }
+    return this._http.post<any>(url, body).pipe(
+      tap(data => console.log(`Implementation added: ${JSON.stringify(data)}`))
     );
   }
 

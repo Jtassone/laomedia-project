@@ -6,6 +6,7 @@ export default class Algorithm {
   ins?: Instance[];
   name: string;
   imps?: Implementation[];
+  algorithmDetails?: string;
 }
 
 export { Algorithm }

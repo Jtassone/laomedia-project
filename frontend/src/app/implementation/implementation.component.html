@@ -1,15 +1,19 @@
-<h1>Active Implementation: {{implmentation.name}}</h1>
+<h1>Active Implementation: {{implementation.name}}</h1>
 
 <h2>Body</h2>
-<mat-card>
+<ng-container *ngIf="this.state === 'loading'">
+  <p>Loading Implementation Details</p>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-container>
+<mat-card *ngIf="this.state !== 'loading'">
   <code>
-    id: {{implmentation.id}}
+    {{implementation.implementationDetails}}
   </code>
 </mat-card>
 
 <h2>Problem Instance List</h2>
 <ul>
-  <li *ngFor="let inst of this.implmentation.instances">
+  <li *ngFor="let inst of this.implementations">
     <a [routerLink]="['/instance-view', inst.id]">
       {{inst.name}}
     </a>

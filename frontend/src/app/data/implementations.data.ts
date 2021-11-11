@@ -9,4 +9,13 @@ let impData: Implementation = {
   BenchmarkResults: benchList
 }
 
-export { impData };
+let impList: Implementation[] = [
+  impData,
+  impData,
+  impData,
+  impData,
+  impData,
+  impData,
+]
+
+export { impData, impList };

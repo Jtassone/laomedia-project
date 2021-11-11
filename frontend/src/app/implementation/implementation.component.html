@@ -13,7 +13,7 @@
 
 <h2>Problem Instance List</h2>
 <ul>
-  <li *ngFor="let inst of this.implementations">
+  <li *ngFor="let inst of this.instances">
     <a [routerLink]="['/instance-view', inst.id]">
       {{inst.name}}
     </a>

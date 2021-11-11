@@ -55,8 +55,8 @@ export class AlgorithmComponent implements OnInit {
     this.state = "loading";
     this.http.getImplementations().subscribe({
       next: data => {
-        // this.implementations = data;
-        this.implementations = data.filter(imp => imp.algorithmId === this.trueId);
+        this.implementations = data;
+        // this.implementations = data.filter(imp => imp.algorithmId === this.trueId);
         this.state = "default";
       },
       error: err => {

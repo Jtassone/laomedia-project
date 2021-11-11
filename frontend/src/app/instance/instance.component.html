@@ -8,11 +8,6 @@
 </mat-card>
 
 <h2>Benchmark List</h2>
-<ul>
-  <li *ngFor="let bench of this.instance.benchmarks">
-    {{bench.id}}
-  </li>
-</ul>
 
 <mat-table [dataSource]="instance.benchmarks" class="mat-elevation-z8">
   <ng-container matColumnDef="id">

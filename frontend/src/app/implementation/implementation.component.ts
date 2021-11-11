@@ -4,6 +4,8 @@ import { HttpService } from '../http.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Implementation } from '../model/implementation.model';
+import { Instance } from '../model/instance.model';
+import { instList } from '../data/instances.data';
 
 @Component({
   selector: 'lao-implementation',
@@ -14,6 +16,7 @@ export class ImplementationComponent implements OnInit {
 
   implementations: Implementation[] = [];
   implementation: Implementation;
+  instances: Instance[] = instList;
   id: string;
   state: string;
 

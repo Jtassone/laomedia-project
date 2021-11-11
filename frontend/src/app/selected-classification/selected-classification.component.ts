@@ -17,7 +17,8 @@ export class SelectedClassificationComponent implements OnInit {
   formState: string;
 
   classification: Classification;
-  id: string
+  id: string;
+  trueId: string;
   classifications: Classification[];
   algos: Algorithm[];
   reclassification: "";
@@ -72,6 +73,7 @@ export class SelectedClassificationComponent implements OnInit {
     });
     this.http.getAlgorithms().subscribe({
       next: data => {
+        // this.algos = data.filter(algo => algo.classificationId === this.trueId);
         this.algos = data;
         for(let algo of data) {
           this.selected.push(false)
@@ -100,7 +102,7 @@ export class SelectedClassificationComponent implements OnInit {
 
   ngOnInit(): void {
     this.state = "loading";
-    this.id = this.route.snapshot.paramMap.get('id')
+    this.id = this.route.snapshot.paramMap.get('id');
     this.http.getClassifications().subscribe({
       next: data => {
         this.classifications = data;

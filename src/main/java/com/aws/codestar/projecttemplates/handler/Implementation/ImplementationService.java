@@ -32,7 +32,7 @@ public class ImplementationService {
     public static void postImplementation(Connection sqlConnection, Implementation implementation) throws SQLException {
         String name = implementation.name;
         String implementationDetails = implementation.implementationDetails;;
-        String algorithmId = implementation.algorithmId.toString();
+        UUID algorithmId = implementation.algorithmId;
         try {
             String sqlQuery = "INSERT INTO implementations (id, name, implementation_details, algorithm_id) VALUES (uuid_to_bin(uuid()),\"" + name + "\" , \"" + implementationDetails + "\" , uuid_to_bin(" + "\"" + algorithmId + "\"" + "))";
             System.out.println(sqlQuery);

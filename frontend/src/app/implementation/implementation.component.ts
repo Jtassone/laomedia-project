@@ -18,6 +18,7 @@ export class ImplementationComponent implements OnInit {
   implementation: Implementation;
   instances: Instance[] = instList;
   id: string;
+  trueId: string;
   state: string;
 
   constructor(
@@ -28,9 +29,11 @@ export class ImplementationComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
+    this.trueId = this.id;
     this.http.getImplementations().subscribe({
       next: data => {
-        this.implementations = data;
+        // this.implementations = data;
+        this.implementations = data.filter(imp => imp.id === this.trueId);
         for (let imp of data) {
           if (imp.id === this.id) {
             this.id = imp.id;

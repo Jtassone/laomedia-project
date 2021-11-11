@@ -12,7 +12,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 })
 export class SelectedClassificationComponent implements OnInit {
 
-  debugMode: boolean = false;
+  debugMode: boolean = true;
   state: string;
   formState: string;
 
@@ -73,8 +73,8 @@ export class SelectedClassificationComponent implements OnInit {
     });
     this.http.getAlgorithms().subscribe({
       next: data => {
-        // this.algos = data.filter(algo => algo.classificationId === this.trueId);
-        this.algos = data;
+        this.algos = data.filter(algo => algo.classificationId === this.trueId);
+        // this.algos = data;
         for(let algo of data) {
           this.selected.push(false)
         }
@@ -103,6 +103,7 @@ export class SelectedClassificationComponent implements OnInit {
   ngOnInit(): void {
     this.state = "loading";
     this.id = this.route.snapshot.paramMap.get('id');
+    this.trueId = this.id;
     this.http.getClassifications().subscribe({
       next: data => {
         this.classifications = data;

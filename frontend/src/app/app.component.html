@@ -5,7 +5,7 @@
   <span *ngIf="authState === 'signedin' && user" class="username">
     {{user.username}}
   </span>
-  <amplify-sign-out mat-flat-button></amplify-sign-out>
+  <amplify-sign-out mat-flat-button *ngIf="authState === 'signedin' && user"></amplify-sign-out>
 </mat-toolbar>
 <amplify-authenticator *ngIf="authState !== 'signedin'"></amplify-authenticator>
 

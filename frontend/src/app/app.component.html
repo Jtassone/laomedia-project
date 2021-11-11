@@ -1,16 +1,15 @@
 <mat-toolbar color='primary'>
   Laomedeia App
   <button mat-flat-button color="primary" routerLink="classifications-view">Classifications</button>
-  <button mat-flat-button color="primary" routerLink="algorithm-view">Algorithm</button>
-  <button mat-flat-button color="primary" routerLink="login">
-    <mat-icon>person</mat-icon>
-  </button>
+  <span class="spacer"></span>
+  <span *ngIf="authState === 'signedin' && user" class="username">
+    {{user.username}}
+  </span>
+  <amplify-sign-out mat-flat-button></amplify-sign-out>
 </mat-toolbar>
 <amplify-authenticator *ngIf="authState !== 'signedin'"></amplify-authenticator>
 
 <div *ngIf="authState === 'signedin' && user" class="App">
-  <amplify-sign-out></amplify-sign-out>
-  <div>Hello, {{user.username}}</div>
   <div>
     <div class="page-container">
       <router-outlet></router-outlet>

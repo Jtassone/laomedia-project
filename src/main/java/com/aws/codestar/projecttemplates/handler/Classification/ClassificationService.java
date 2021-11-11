@@ -1,6 +1,7 @@
 package com.aws.codestar.projecttemplates.handler.Classification;
 
 import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
+import com.aws.codestar.projecttemplates.utils.UUIDUtil;
 import javassist.bytecode.ByteArray;
 
 import java.sql.Connection;
@@ -17,14 +18,14 @@ public class ClassificationService {
         List<Classification> classificationList = new ArrayList<>();
         try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from classifications")) {
             while (sqlResponse.next()) {
-                UUID id = UUID.nameUUIDFromBytes(sqlResponse.getBytes("id"));;
+                UUID id = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("id"));;
                 String name = sqlResponse.getString("name");
                 byte[] subClassificationId = sqlResponse.getBytes("sub_classification_id");
                 Classification classification;
                 if (subClassificationId == null) {
                     classification = new Classification(id, name);
                 } else {
-                    classification = new Classification(id, name, UUID.nameUUIDFromBytes(subClassificationId));
+                    classification = new Classification(id, name, UUIDUtil.getUUIDFromBytes(subClassificationId));
                 }
                 classificationList.add(classification);
             }

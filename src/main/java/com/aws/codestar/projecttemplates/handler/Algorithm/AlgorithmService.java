@@ -16,12 +16,11 @@ public class AlgorithmService {
         try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from algorithms")) {
             while (sqlResponse.next()) {
                 byte[] sqlIdBytes = sqlResponse.getBytes("id");
-                System.out.println(UUIDUtil.getUUIDFromBytes(sqlIdBytes));
-                UUID id = UUID.nameUUIDFromBytes(sqlIdBytes);
-                System.out.println(id);
+                UUID id = UUIDUtil.getUUIDFromBytes(sqlIdBytes);
                 String name = sqlResponse.getString("name");
                 String algorithmDetails = sqlResponse.getString("algorithm_details");
-                UUID classificationId = UUID.nameUUIDFromBytes(sqlResponse.getBytes("classification_id"));
+                byte[] classificationIdBytes = sqlResponse.getBytes("classification_id");
+                UUID classificationId = UUIDUtil.getUUIDFromBytes(classificationIdBytes);
                 Algorithm algorithm = new Algorithm(id, name, algorithmDetails, classificationId);
                 algorithmList.add(algorithm);
             }

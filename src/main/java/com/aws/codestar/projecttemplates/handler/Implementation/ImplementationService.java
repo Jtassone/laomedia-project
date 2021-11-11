@@ -1,6 +1,7 @@
 package com.aws.codestar.projecttemplates.handler.Implementation;
 
 import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
+import com.aws.codestar.projecttemplates.utils.UUIDUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,9 +16,9 @@ public class ImplementationService {
         List<Implementation> implementationList = new ArrayList<>();
         try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from implementations")) {
             while (sqlResponse.next()) {
-                UUID id = UUID.nameUUIDFromBytes(sqlResponse.getBytes("id"));
+                UUID id = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("id"));
                 String name = sqlResponse.getString("name");
-                UUID algorithmId = UUID.nameUUIDFromBytes(sqlResponse.getBytes("algorithm_id"));
+                UUID algorithmId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("algorithm_id"));
                 String implementationDetails = sqlResponse.getString("implementation_details");
                 Implementation implementation = new Implementation(id, name , implementationDetails, algorithmId);
                 implementationList.add(implementation);

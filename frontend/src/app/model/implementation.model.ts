@@ -4,8 +4,9 @@ import { Instance } from './instance.model';
 export default class Implementation {
   id: string;
   name: string;
-  instances: Instance[];
-  BenchmarkResults: Benchmark[];
+  instances?: Instance[];
+  BenchmarkResults?: Benchmark[];
+  algorithmId?: string;
 }
 
 export { Implementation }

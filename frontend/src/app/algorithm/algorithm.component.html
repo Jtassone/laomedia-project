@@ -36,7 +36,7 @@
     <input matInput id="name" type="text" formControlName="name" />
   </mat-form-field>
 
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" *ngIf="false">
     <mat-label>Parent Algorithm</mat-label>
     <mat-select formControlName="algorithmId">
       <mat-option *ngFor="let a of this.algorithms" [value]="a.id">{{a.name}}</mat-option>
@@ -52,4 +52,7 @@
     Add Implementation
     <mat-progress-bar mode='indeterminate' *ngIf="this.state==='submitting'"></mat-progress-bar>
   </button>
+  <p *ngIf="this.state === 'error'">There was an error submitting the form data. It's possible that the lambda timed out and that the new implementation will show if the page is reloaded.</p>
 </form>
+
+<button mat-flat-button color="warn" (click)="debug()">Debug</button>

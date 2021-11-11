@@ -1,11 +1,16 @@
 <h1>Selected Classification: {{id}}</h1>
-<h2>Welcome!</h2>
+
+<!-- <h2>Welcome!</h2>
 <p>This page is buggy for unknown reasons that we believe to be related to the CommonJS libraries used by our authentication service, Amplify.</p>
-<p>After making any change to the page (e.g. loading the algorithms, typing int the boxes, clicking the select), press the <code>Debug</code> button. This helps the JavaScript take effect.</p>
+<p>After making any change to the page (e.g. loading the algorithms, typing int the boxes, clicking the select), press the <code>Debug</code> button. This helps the JavaScript take effect.</p> -->
+
 <h2>All Algorithms</h2>
 <ng-container *ngIf="state === 'loading'">
-  <p>Loading Algorithms. If this is taking a while, try hitting the <code>Debug</code> button.</p>
+  <p>Loading Algorithms.</p>
   <mat-progress-bar mode="indeterminate" ></mat-progress-bar>
+</ng-container>
+<ng-container *ngIf="state === 'error'">
+  <p>Error loading algorithms</p>
 </ng-container>
 <ul>
   <li *ngFor="let algo of this.algos; index as i">
@@ -33,11 +38,11 @@
 <h2>Add Algorithm</h2>
 <form [formGroup]="newAlgoForm">
   <mat-form-field appearance="fill">
-    <mat-label for="name">New Classification Name</mat-label>
+    <mat-label for="name">New Algorithm Name</mat-label>
     <input matInput id="name" type="text" formControlName="name" />
   </mat-form-field>
 
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" *ngIf="false">
     <mat-label>Parent Classification</mat-label>
     <mat-select formControlName="classificationId">
       <mat-option *ngFor="let c of this.classifications" [value]="c.id">{{c.name}}</mat-option>
@@ -49,9 +54,10 @@
     <textarea matInput id="algorithmDetails" formControlName="algorithmDetails"></textarea>
   </mat-form-field>
 
-  <button mat-flat-button color="primary" [disabled]="!this.newAlgoForm.valid && this.state !== 'submitting'" (click)="addAlgo()">
+  <button mat-flat-button color="primary" [disabled]="!this.newAlgoForm.valid || this.state === 'submitting'" (click)="addAlgo()">
     Add Algorithm
     <mat-progress-bar mode='indeterminate' *ngIf="this.state==='submitting'"></mat-progress-bar>
   </button>
+  <p *ngIf="formState === 'error'">There was an error submitting the form. It's possible that the lambda timed out, in which case refreshing the page should show the new algorithm.</p>
 
 </form>

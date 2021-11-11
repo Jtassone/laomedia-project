@@ -12,8 +12,9 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 })
 export class SelectedClassificationComponent implements OnInit {
 
-  debugMode: boolean = true;
+  debugMode: boolean = false;
   state: string;
+  formState: string;
 
   classification: Classification;
   id: string
@@ -24,7 +25,7 @@ export class SelectedClassificationComponent implements OnInit {
   newAlgoForm = this.fb.group({
     "name": ['', Validators.required],
     "algorithmDetails": ['', Validators.required],
-    "classificationId": ['', Validators.required]
+    // "classificationId": ['', Validators.required]
   })
 
   toggleCheck(i: number): boolean {
@@ -42,16 +43,49 @@ export class SelectedClassificationComponent implements OnInit {
   }
 
   addAlgo(): void {
+    if(!this.classification) {
+      console.error('Cannot add a new algorithm without a confirmed parent classification');
+    }
     this.state = 'submitting';
     this.http.addAlgorithm(
       this.newAlgoForm.get('name').value,
-      this.newAlgoForm.get('classificationId').value,
+      // this.newAlgoForm.get('classificationId').value,
+      this.classification.id,
       this.newAlgoForm.get('algorithmDetails').value,
     ).subscribe({
       next: data => {
-        this.ngOnInit();
+        this.resetComp();
+      }, error: err => {
+        this.formState = "error";
+        this.state = "default";
       }
     })
+  }
+
+  resetComp(): void {
+    this.state = "loading";
+    this.formState = "default";
+    this.newAlgoForm = this.fb.group({
+      "name": ['', Validators.required],
+      "algorithmDetails": ['', Validators.required],
+      // "classificationId": ['', Validators.required]
+    });
+    this.http.getAlgorithms().subscribe({
+      next: data => {
+        this.algos = data;
+        for(let algo of data) {
+          this.selected.push(false)
+        }
+        this.state = "default";
+      }, error: err => {
+        console.error(`error: ${JSON.stringify(err)}`);
+        this.algos = algoClassification.algos;
+        for(let algo of this.algos) {
+          this.selected.push(false)
+        }
+        this.state = "error";
+      }
+    });
   }
 
   debug(): void {
@@ -67,34 +101,21 @@ export class SelectedClassificationComponent implements OnInit {
   ngOnInit(): void {
     this.state = "loading";
     this.id = this.route.snapshot.paramMap.get('id')
-    this.http.getAlgorithms().subscribe({
-      next: data => {
-        this.algos = data;
-        for(let algo of data) {
-          this.selected.push(false)
-        }
-        this.state = "default";
-      }, error: err => {
-        console.error(`error: ${JSON.stringify(err)}`);
-        this.algos = algoClassification.algos;
-        for(let algo of this.algos) {
-          this.selected.push(false)
-        }
-      }
-    });
     this.http.getClassifications().subscribe({
       next: data => {
         this.classifications = data;
         for (let clss of this.classifications) {
           if (this.id === clss.id) {
             this.id = clss.name;  // Set a name rather than an ID
+            this.classification = clss;
           }
         }
       }, error: err => {
         console.error(`error: ${JSON.stringify(err)}`);
         this.classifications = simpleClassifications;
       }
-    })
+    });
+    this.resetComp();
   }
 
 }

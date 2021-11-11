@@ -16,12 +16,13 @@ export class AlgorithmComponent implements OnInit {
   state: string = "loading";
   algoState: string = "loading";
   id: string = "No Algorithm Selected";
+  trueId: string;
   algorithm: Algorithm = algoData;
   algorithms: Algorithm[] = [];
   implementations: Implementation[];
   newImpForm = this.fb.group({
     "name": ['', Validators.required],
-    "algorithmId": ['', Validators.required],
+    // "algorithmId": ['', Validators.required],
     "implementationDetails": ['', Validators.required],
   });
 
@@ -29,11 +30,16 @@ export class AlgorithmComponent implements OnInit {
     return JSON.stringify(this.newImpForm.value)
   }
 
+  debug(): void {
+    debugger;
+  }
+
   addImp(): void {
     this.state = "submitting";
     this.http.addImplementation(
       this.newImpForm.get('name').value,
-      this.newImpForm.get('algorithmId').value,
+      // this.newImpForm.get('algorithmId').value,
+      this.algorithm.id,
       this.newImpForm.get('implementationDetails').value
     ).subscribe({
       next: data => {
@@ -49,7 +55,8 @@ export class AlgorithmComponent implements OnInit {
     this.state = "loading";
     this.http.getImplementations().subscribe({
       next: data => {
-        this.implementations = data;
+        // this.implementations = data;
+        this.implementations = data.filter(imp => imp.algorithmId === this.trueId);
         this.state = "default";
       },
       error: err => {
@@ -61,7 +68,7 @@ export class AlgorithmComponent implements OnInit {
     });
     this.newImpForm = this.fb.group({
       "name": ['', Validators.required],
-      "algorithmId": ['', Validators.required],
+      // "algorithmId": ['', Validators.required],
       "implementationDetails": ['', Validators.required],
     });
   }
@@ -74,6 +81,7 @@ export class AlgorithmComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
+    this.trueId = this.id;
     this.http.getAlgorithms().subscribe({
       next: (data: Algorithm[]) => {
         for (let algo of data) {

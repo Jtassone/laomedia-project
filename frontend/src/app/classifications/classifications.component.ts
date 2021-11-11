@@ -12,8 +12,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class ClassificationsComponent implements OnInit {
 
-  debugMode: boolean = true;
+  debugMode: boolean = false;
   state: string = "default";
+  formError: boolean = false;
 
   root: Classification;
   newClassForm = this.fb.group({
@@ -22,13 +23,15 @@ export class ClassificationsComponent implements OnInit {
 
   resetClassificationsComponent() {
     this.state = "loading";
+    this.formError = false;
     this.root = new Classification('root', 'root', [], []);
     this.http.getClassifications().subscribe({
       next: data => {
         console.log(`Classifications: ${JSON.stringify(data)}`);
         this.root = new Classification('root', 'root', [], data);
-        this.state="default"
+        this.state="default";
       }, error: err => {
+        this.state="error";
         console.error(`Falling back. Classification error: ${JSON.stringify(err)}`);
         this.root = new Classification('root', 'root', [], simpleClassifications);
       }
@@ -36,19 +39,23 @@ export class ClassificationsComponent implements OnInit {
 
     this.newClassForm = this.fb.group({
       name: ['', Validators.required],
-    })
+    });
   }
 
   addClassification() {
-    this.state = "submitting"
+    this.state = "submitting";
+    this.formError = false;
     if (!this.newClassForm.valid) {
       return;
     }
     this.http.addClassification(this.newClassForm.get('name').value).subscribe({
       next: data => {
         this.resetClassificationsComponent();
+      }, error: err => {
+        this.formError = true;
+        this.state = "default";
       }
-    })
+    });
   }
 
   debug() {

@@ -10,6 +10,15 @@ export class AppComponent {
   title = 'laomedeia';
   user: CognitoUserInterface | undefined;
   authState: AuthState;
+  continueWithoutRegister: boolean = false;
+
+  letUserContinue(): void {
+    this.continueWithoutRegister = true;
+  }
+
+  letUserLeave(): void {
+    this.continueWithoutRegister = false;
+  }
 
   constructor(private ref: ChangeDetectorRef, private ngZone: NgZone) {}
 
@@ -20,7 +29,7 @@ export class AppComponent {
       this.ngZone.run(
         () => this.ref.detectChanges()
       );
-    })
+    });
   }
 
   ngOnDestroy() {

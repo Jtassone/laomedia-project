@@ -6,14 +6,19 @@
     {{user.username}}
   </span>
   <amplify-sign-out mat-flat-button *ngIf="authState === 'signedin' && user"></amplify-sign-out>
+  <ng-container *ngIf="authState !== 'signedin' && !this.continueWithoutRegister">
+    <button mat-flat-button color="accent" (click)="letUserContinue()">Continue Without Account</button>
+  </ng-container>
+  <ng-container *ngIf="continueWithoutRegister">
+    <button mat-flat-button color="accent" (click)="letUserLeave()">Return to Login</button>
+  </ng-container>
 </mat-toolbar>
-<amplify-authenticator *ngIf="authState !== 'signedin'"></amplify-authenticator>
 
-<div *ngIf="authState === 'signedin' && user" class="App">
-  <div>
-    <div class="page-container">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+<ng-container *ngIf="authState !== 'signedin' && !this.continueWithoutRegister">
+  <amplify-authenticator ></amplify-authenticator>
+</ng-container>
+
+<div *ngIf="authState === 'signedin' && user || continueWithoutRegister" class="App page-container">
+    <router-outlet></router-outlet>
 </div>
 

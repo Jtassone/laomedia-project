@@ -5,6 +5,7 @@ import com.aws.codestar.projecttemplates.utils.UUIDUtil;
 import javassist.bytecode.ByteArray;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,6 +48,19 @@ public class ClassificationService {
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
+        }
+    }
+    
+    public void deleteClassification(Connection sqlConnection, Classification classification) throws Exception {
+        try {
+            PreparedStatement ps = sqlConnection.prepareStatement("DELETE FROM classifications WHERE NAME = ?;");
+            //int numAffected = ps.executeUpdate();
+            ps.executeUpdate();
+            ps.close();
+           // return (numAffected >= 1);
+
+        } catch (Exception e) {
+            throw new Exception("Failed to delete Classification: " + e.getMessage());
         }
     }
 }

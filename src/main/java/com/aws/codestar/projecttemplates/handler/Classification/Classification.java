@@ -32,6 +32,10 @@ public class Classification {
             this.name = name;
             this.subClassificationId = parentClassificationId;
         }
+
+        public UUID getUUid(){
+            return this.id;
+        }
     }
 
 

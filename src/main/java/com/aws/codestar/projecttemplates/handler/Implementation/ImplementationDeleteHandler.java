@@ -1,9 +1,12 @@
-package com.aws.codestar.projecttemplates.handler.Algorithm;
+package com.aws.codestar.projecttemplates.handler.Implementation;
+
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.aws.codestar.projecttemplates.handler.Classification.Classification;
+import com.aws.codestar.projecttemplates.handler.Classification.ClassificationService;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
 import com.google.gson.Gson;
 
@@ -14,12 +17,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-public class AlgorithmDeleteHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class ImplementationDeleteHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     Connection sqlConnection;
     Gson gson;
     //
-    public AlgorithmDeleteHandler() {
+    public ImplementationDeleteHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();
     }
@@ -32,12 +35,11 @@ public class AlgorithmDeleteHandler implements RequestHandler<APIGatewayProxyReq
         headers.put("Content-Type", "application/json");
         try {
             String name = event.getPathParameters().get("name");
-            String implementation = event.getPathParameters().get("implementation");
-            Algorithm algo = new Algorithm(name, implementation);
-            AlgorithmService.deleteAlgorithms(sqlConnection, algo);
-            response.setBody(gson.toJson(algo));
+            Implementation imp = new Implementation(name);
+            ImplementationService.deleteImplementation(sqlConnection, imp);
+            response.setBody(gson.toJson(imp));
             response.setStatusCode(200);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println(e);
             response.setStatusCode(500);
         }
@@ -45,3 +47,4 @@ public class AlgorithmDeleteHandler implements RequestHandler<APIGatewayProxyReq
         return response;
     }
 }
+

@@ -51,13 +51,13 @@ public class ClassificationService {
         }
     }
     
-    public void deleteClassification(Connection sqlConnection, Classification classification) throws Exception {
+    public static void deleteClassification(Connection sqlConnection, Classification classification) throws Exception {
+        String name = classification.name;
         try {
-            PreparedStatement ps = sqlConnection.prepareStatement("DELETE FROM classifications WHERE NAME = ?;");
-            //int numAffected = ps.executeUpdate();
-            ps.executeUpdate();
-            ps.close();
-           // return (numAffected >= 1);
+            String deleteSQL = "DELETE FROM classifications WHERE name = ?";
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
+            preparedStatement.setString(1, name);
+            preparedStatement.executeUpdate();
 
         } catch (Exception e) {
             throw new Exception("Failed to delete Classification: " + e.getMessage());

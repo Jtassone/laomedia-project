@@ -1,4 +1,4 @@
-package com.aws.codestar.projecttemplates.handler.Algorithm;
+package com.aws.codestar.projecttemplates.handler.Classification;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -14,12 +14,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-public class AlgorithmDeleteHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class ClassificationDeleteHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     Connection sqlConnection;
     Gson gson;
     //
-    public AlgorithmDeleteHandler() {
+    public ClassificationDeleteHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();
     }
@@ -32,12 +32,11 @@ public class AlgorithmDeleteHandler implements RequestHandler<APIGatewayProxyReq
         headers.put("Content-Type", "application/json");
         try {
             String name = event.getPathParameters().get("name");
-            String implementation = event.getPathParameters().get("implementation");
-            Algorithm algo = new Algorithm(name, implementation);
-            AlgorithmService.deleteAlgorithms(sqlConnection, algo);
-            response.setBody(gson.toJson(algo));
+            Classification classif = new Classification(name);
+            ClassificationService.deleteClassification(sqlConnection, classif);
+            response.setBody(gson.toJson(classif));
             response.setStatusCode(200);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println(e);
             response.setStatusCode(500);
         }

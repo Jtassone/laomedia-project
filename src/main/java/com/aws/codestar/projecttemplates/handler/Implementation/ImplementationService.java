@@ -4,6 +4,7 @@ import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
 import com.aws.codestar.projecttemplates.utils.UUIDUtil;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,6 +39,19 @@ public class ImplementationService {
             String sqlQuery = "INSERT INTO implementations (id, name, implementation_details, algorithm_id) VALUES (uuid_to_bin(uuid()),\"" + name + "\" , \"" + implementationDetails + "\" , uuid_to_bin(" + "\"" + algorithmId + "\"" + "))";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw e;
+        }
+    }
+
+    public static void deleteImplementation(Connection sqlConnection,Implementation implementation) throws SQLException{
+        String name = implementation.name;
+        try {
+            String deleteSQL = "DELETE FROM implementations WHERE name = ?";
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
+            preparedStatement.setString(1, name);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

@@ -53,7 +53,10 @@ public class AlgorithmService {
     public static void deleteAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException{
         String name = algorithm.name;
         try {
-            sqlConnection.createStatement().executeQuery("DELETE FROM algorithms WHERE name = name");
+            String deleteSQL = "DELETE FROM algorithms WHERE name = ?";
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
+            preparedStatement.setString(1, name);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

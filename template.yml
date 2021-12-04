@@ -109,6 +109,23 @@ Resources:
             Path: /algorithms
             Method: post
 
+  deleteAlgorithm:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-deleteAlgorithm'
+      Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmDeleteHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /algorithms
+            Method: delete
+
   getClassification:
     Type: AWS::Serverless::Function
     Properties:
@@ -143,6 +160,23 @@ Resources:
             Path: /classifications
             Method: post
 
+  deleteClassification:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-deleteClassification'
+      Handler: com.aws.codestar.projecttemplates.handler.Classification.ClassificationDeleteHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /classifications
+            Method: delete
+
   postImplementation:
     Type: AWS::Serverless::Function
     Properties:
@@ -176,6 +210,23 @@ Resources:
           Properties:
             Path: /implementations
             Method: get
+
+  deleteImplementation:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-deleteImplementation'
+      Handler: com.aws.codestar.projecttemplates.handler.Implementation.ImplementationDeleteHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /implementations
+            Method: delete
 
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda

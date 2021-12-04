@@ -50,12 +50,11 @@ public class AlgorithmService {
         }
     }
 
-    public static void deleteAlgorithms(Connection sqlConnection,Algorithm algorithm ) throws SQLException{
-        String name = algorithm.name;
+    public static void deleteAlgorithms(Connection sqlConnection,String id ) throws SQLException{
+        UUID algo_uuid = UUID.fromString(id);
         try {
-            String deleteSQL = "DELETE FROM algorithms WHERE name = ?";
+            String deleteSQL = "DELETE FROM algorithms WHERE id = uuid_to_bin(" + "\"" + algo_uuid + "\"" + ")";
             PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
-            preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

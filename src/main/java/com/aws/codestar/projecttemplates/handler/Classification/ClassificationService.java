@@ -51,12 +51,11 @@ public class ClassificationService {
         }
     }
     
-    public static void deleteClassification(Connection sqlConnection, Classification classification) throws Exception {
-        String name = classification.name;
+    public static void deleteClassification(Connection sqlConnection, String id) throws Exception {
+        UUID class_uuid = UUID.fromString(id);
         try {
-            String deleteSQL = "DELETE FROM classifications WHERE name = ?";
+            String deleteSQL = "DELETE FROM classifications WHERE id = uuid_to_bin(" + "\"" + class_uuid + "\"" + ")";
             PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
-            preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
 
         } catch (Exception e) {

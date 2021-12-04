@@ -34,10 +34,9 @@ public class ImplementationDeleteHandler implements RequestHandler<APIGatewayPro
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
         try {
-            String name = event.getPathParameters().get("name");
-            Implementation imp = new Implementation(name);
-            ImplementationService.deleteImplementation(sqlConnection, imp);
-            response.setBody(gson.toJson(imp));
+            String id = event.getPathParameters().get("uuid");
+            ImplementationService.deleteImplementation(sqlConnection, id);
+            response.setBody(gson.toJson(id));
             response.setStatusCode(200);
         } catch (Exception e) {
             System.out.println(e);

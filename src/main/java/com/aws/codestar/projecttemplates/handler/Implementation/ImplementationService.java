@@ -45,12 +45,11 @@ public class ImplementationService {
         }
     }
 
-    public static void deleteImplementation(Connection sqlConnection,Implementation implementation) throws SQLException{
-        String name = implementation.name;
+    public static void deleteImplementation(Connection sqlConnection,String id) throws SQLException{
+        UUID imp_uuid = UUID.fromString(id);
         try {
-            String deleteSQL = "DELETE FROM implementations WHERE name = ?";
+            String deleteSQL = "DELETE FROM implementations WHERE id = uuid_to_bin(" + "\"" + imp_uuid + "\"" + ")";
             PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
-            preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

@@ -34,7 +34,7 @@ public class ImplementationDeleteHandler implements RequestHandler<APIGatewayPro
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
         try {
-            String id = event.getPathParameters().get("uuid");
+            String id = event.getPathParameters().get("proxy").split("/")[1];
             ImplementationService.deleteImplementation(sqlConnection, id);
             response.setBody(gson.toJson(id));
             response.setStatusCode(200);

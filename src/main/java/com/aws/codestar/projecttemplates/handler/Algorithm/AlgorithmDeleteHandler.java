@@ -32,6 +32,7 @@ public class AlgorithmDeleteHandler implements RequestHandler<APIGatewayProxyReq
         headers.put("Content-Type", "application/json");
         try {
             String id = event.getPathParameters().get("proxy").split("/")[1];
+            System.out.println(id);
             AlgorithmService.deleteAlgorithms(sqlConnection, id);
             response.setBody(gson.toJson(id));
             response.setStatusCode(200);

@@ -1,7 +1,7 @@
 package com.aws.codestar.projecttemplates.handler.Implementation;
 
-import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
 import com.aws.codestar.projecttemplates.utils.UUIDUtil;
+import com.aws.codestar.projecttemplates.utils.S3Client;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,14 +31,18 @@ public class ImplementationService {
         return implementationList;
     }
 
-    public static void postImplementation(Connection sqlConnection, Implementation implementation) throws SQLException {
+    public static void saveImplementation(Connection sqlConnection, S3Client s3Client, Implementation implementation) throws SQLException {
         String name = implementation.name;
         String implementationDetails = implementation.implementationDetails;;
+        UUID implementationId = UUID.randomUUID();
         UUID algorithmId = implementation.algorithmId;
         try {
-            String sqlQuery = "INSERT INTO implementations (id, name, implementation_details, algorithm_id) VALUES (uuid_to_bin(uuid()),\"" + name + "\" , \"" + implementationDetails + "\" , uuid_to_bin(" + "\"" + algorithmId + "\"" + "))";
+            String sqlQuery = "INSERT INTO implementations (id, name, implementation_details, algorithm_id) " +
+                    "VALUES (uuid_to_bin(" + "\"" + implementationId + "\"" + "),\"" + name + "\" , \"" + implementationDetails + "\" ," +
+                    " uuid_to_bin(" + "\"" + algorithmId + "\"" + "))";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+            s3Client.uploadImplementationToS3("laoimplementationbucket", implementationId.toString(), implementationDetails );
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
@@ -46,9 +50,9 @@ public class ImplementationService {
     }
 
     public static void deleteImplementation(Connection sqlConnection,String id) throws SQLException{
-        UUID imp_uuid = UUID.fromString(id);
+        UUID implementationId = UUID.fromString(id);
         try {
-            String deleteSQL = "DELETE FROM implementations WHERE id = uuid_to_bin(" + "\"" + imp_uuid + "\"" + ")";
+            String deleteSQL = "DELETE FROM implementations WHERE id = uuid_to_bin(" + "\"" + implementationId + "\"" + ")";
             PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

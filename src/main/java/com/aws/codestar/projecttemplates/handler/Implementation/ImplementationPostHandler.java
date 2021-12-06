@@ -4,9 +4,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
-import com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmService;
+import com.amazonaws.services.s3.AmazonS3;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
+import com.aws.codestar.projecttemplates.utils.S3Client;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -18,10 +18,12 @@ import java.util.UUID;
 public class ImplementationPostHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     Connection sqlConnection;
     Gson gson;
+    S3Client s3Client;
 
     public ImplementationPostHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();
+        s3Client = new S3Client();
     }
 
     @Override
@@ -35,7 +37,7 @@ public class ImplementationPostHandler implements RequestHandler<APIGatewayProxy
             String implementationDetails = eventBody.getString("implementationDetails");
             String algorithmId = eventBody.getString("algorithmId");
             Implementation implementation = new Implementation(name, implementationDetails, UUID.fromString(algorithmId));
-            ImplementationService.postImplementation(sqlConnection, implementation);
+            ImplementationService.saveImplementation(sqlConnection,s3Client, implementation);
             response.setBody(gson.toJson(implementation));
             response.setStatusCode(200);
         } catch (SQLException e) {

@@ -4,11 +4,8 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
-import com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmService;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
 import com.google.gson.Gson;
-import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.SQLException;

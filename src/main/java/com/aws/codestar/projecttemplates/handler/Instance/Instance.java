@@ -4,8 +4,19 @@ import java.util.UUID;
 
 public class Instance {
 
-    private UUID id;
+    public UUID id;
 
     public String name;
+
+    public UUID algorithmId;
+
+    public UUID implementationId;
+
+    public Instance(UUID id, String name, UUID algorithmId, UUID implementationId) {
+        this.id = id;
+        this.name = name;
+        this.algorithmId = algorithmId;
+        this.implementationId = implementationId;
+    }
 
 }

@@ -228,6 +228,23 @@ Resources:
             Path: /implementations
             Method: delete
 
+  postInstance:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postInstance'
+      Handler: com.aws.codestar.projecttemplates.handler.Instance.InstancePostHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /instances
+            Method: post
+
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role

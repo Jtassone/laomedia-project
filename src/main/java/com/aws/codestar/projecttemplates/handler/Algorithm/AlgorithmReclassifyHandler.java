@@ -7,6 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
 import com.google.gson.Gson;
+import org.json.JSONObject;
 
 
 import java.io.FileReader;
@@ -32,11 +33,11 @@ public class AlgorithmReclassifyHandler implements RequestHandler<APIGatewayProx
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
         try {
-            String id = event.getPathParameters().get("proxy").split("/")[1];
-            String newClassification = event.getPathParameters().get("proxy").split("/")[2];
-            System.out.println(id);
-            AlgorithmService.reclassifyAlgorithm(sqlConnection, id, newClassification);
-            response.setBody(gson.toJson(id));
+            JSONObject eventBody = new JSONObject(event.getBody());
+            String classificationID= eventBody.getString("classificationID");
+            String algorithmId = eventBody.getString("algorithmID");
+            AlgorithmService.reclassifyAlgorithm(sqlConnection, algorithmId, classificationID);
+            response.setBody(gson.toJson(algorithmId));
             response.setStatusCode(200);
         } catch (SQLException e) {
             System.out.println(e);

@@ -9,7 +9,7 @@ public class Classification {
 
         public String name;
 
-        public UUID subClassificationId;
+        public UUID parentClassificationId;
 
         public Classification(){}
 
@@ -22,15 +22,15 @@ public class Classification {
             this.name = name;
         }
 
-    public Classification (String name, UUID subClassificationId) {
+    public Classification (String name, UUID parentClassificationId) {
         this.name = name;
-        this.subClassificationId = subClassificationId;
+        this.parentClassificationId = parentClassificationId;
     }
 
         public Classification(UUID id, String name, UUID parentClassificationId) {
             this.id = id;
             this.name = name;
-            this.subClassificationId = parentClassificationId;
+            this.parentClassificationId = parentClassificationId;
         }
 
         public UUID getUUid(){

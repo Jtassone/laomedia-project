@@ -32,14 +32,15 @@ public class ClassificationPostHandler implements RequestHandler<APIGatewayProxy
         try {
             JSONObject eventBody = new JSONObject(event.getBody());
             String name = eventBody.getString("name");
-            String subClassificationId = eventBody.optString("subClassificationId");
+            String parentClassificationId = eventBody.optString("parentClassificationId");
             Classification classification;
-            if (subClassificationId.length() == 0) {
+            if (parentClassificationId.length() == 0) {
                 classification = new Classification(name);
+                ClassificationService.postClassification(sqlConnection, classification);
             } else {
-                classification = new Classification(name, UUID.fromString(subClassificationId));
+                classification = new Classification(name, UUID.fromString(parentClassificationId));
+                ClassificationService.postSubClassification(sqlConnection, classification);
             }
-            ClassificationService.postClassification(sqlConnection, classification);
             response.setBody(gson.toJson(classification));
             response.setStatusCode(200);
         } catch (SQLException e) {

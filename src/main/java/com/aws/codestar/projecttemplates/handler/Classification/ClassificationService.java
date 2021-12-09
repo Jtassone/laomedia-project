@@ -1,8 +1,6 @@
 package com.aws.codestar.projecttemplates.handler.Classification;
 
-import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
 import com.aws.codestar.projecttemplates.utils.UUIDUtil;
-import javassist.bytecode.ByteArray;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,12 +19,12 @@ public class ClassificationService {
             while (sqlResponse.next()) {
                 UUID id = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("id"));;
                 String name = sqlResponse.getString("name");
-                byte[] subClassificationId = sqlResponse.getBytes("sub_classification_id");
+                byte[] parentClassificationId = sqlResponse.getBytes("parent_classification_id");
                 Classification classification;
-                if (subClassificationId == null) {
+                if (parentClassificationId == null) {
                     classification = new Classification(id, name);
                 } else {
-                    classification = new Classification(id, name, UUIDUtil.getUUIDFromBytes(subClassificationId));
+                    classification = new Classification(id, name, UUIDUtil.getUUIDFromBytes(parentClassificationId));
                 }
                 classificationList.add(classification);
             }
@@ -43,6 +41,19 @@ public class ClassificationService {
         String name = classification.name;
         try {
             String sqlQuery = "INSERT INTO classifications (id, name) VALUES (uuid_to_bin(uuid()),\"" + name + "\")";
+            System.out.println(sqlQuery);
+            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw e;
+        }
+    }
+
+    public static void postSubClassification(Connection sqlConnection,Classification classification ) throws SQLException {
+        String name = classification.name;
+        UUID parentClassificationId = classification.parentClassificationId;
+        try {
+            String sqlQuery = "INSERT INTO classifications (id, name) VALUES (uuid_to_bin(uuid()),\"" + name + "\" + uuid_to_bin(" + "\"" + parentClassificationId + "\"" + "))";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (SQLException e) {

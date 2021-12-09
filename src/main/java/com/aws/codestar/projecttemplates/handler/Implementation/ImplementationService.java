@@ -14,6 +14,7 @@ import java.util.UUID;
 
 public class ImplementationService {
 
+    //TODO need to handle if there is an implementation in s3 that is not in the database for some reason
     public static List<Implementation> getAllImplementations(Connection sqlConnection, S3Client s3Client) throws SQLException, IOException {
         List<Implementation> implementationList = new ArrayList<>();
         try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from implementations")) {
@@ -38,8 +39,8 @@ public class ImplementationService {
         UUID implementationId = UUID.randomUUID();
         UUID algorithmId = implementation.algorithmId;
         try {
-            String sqlQuery = "INSERT INTO implementations (id, name, implementation_details, algorithm_id) " +
-                    "VALUES (uuid_to_bin(" + "\"" + implementationId + "\"" + "),\"" + name + "\" , \"" + implementationDetails + "\" ," +
+            String sqlQuery = "INSERT INTO implementations (id, name, algorithm_id) " +
+                    "VALUES (uuid_to_bin(" + "\"" + implementationId + "\"" + "),\"" + name + "\"  ," +
                     " uuid_to_bin(" + "\"" + algorithmId + "\"" + "))";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();

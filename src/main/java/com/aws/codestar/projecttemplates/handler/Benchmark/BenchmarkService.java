@@ -6,10 +6,7 @@ import com.aws.codestar.projecttemplates.utils.UUIDUtil;
 import com.aws.codestar.projecttemplates.utils.S3Client;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,31 +18,41 @@ public class BenchmarkService {
         try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from benchmarks")) {
             while (sqlResponse.next()) {
                 UUID id = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("id"));
-                String name = sqlResponse.getString("name");
+                Date date = sqlResponse.getDate("date");
                 UUID implementationId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("implementation_id"));
-                String benchmarkDetails = s3Client.downloadFileFromS3("laobenchmarkbucket", id.toString());
-                Benchmark benchmark = new Benchmark(id, name , benchmarkDetails, implementationId);
+                UUID instanceId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("instance_id"));
+                UUID machineConfigId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("machine_config_id"));
+                Benchmark benchmark = new Benchmark(id, date , machineConfigId, instanceId, implementationId);
                 benchmarkList.add(benchmark);
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             System.out.println(e);
             throw e;
         }
         return benchmarkList;
     }
 
-    public static void saveBenchmark(Connection sqlConnection, S3Client s3Client, Benchmark benchmark) throws SQLException {
-        String name = benchmark.name;
-        String benchmarkDetails = benchmark.benchmarkDetails;;
-        UUID benchmarkId = UUID.randomUUID();
-        UUID implementationId = benchmark.implementationId;
+    public static void saveBenchmark(Connection sqlConnection, Benchmark benchmark) throws SQLException {
         try {
-            String sqlQuery = "INSERT INTO benchmarks (id, name, benchmarkDetails, implementationId) " +
-                    "VALUES (uuid_to_bin(" + "\"" + benchmarkId + "\"" + "),\"" + name + "\" , \"" + benchmarkDetails + "\" ," +
-                    " uuid_to_bin(" + "\"" + implementationId + "\"" + "))";
+            String sqlQuery = "INSERT INTO benchmarks (id, date, implementationId, instance_id, machine_config_id) " +
+                    "VALUES (uuid_to_bin(" + "\"" + benchmark.id + "\"" + "),\"" + benchmark.date + "\" , uuid_to_bin(" + "\"" + benchmark.implementationId + "\"" + ") ," +
+                    " uuid_to_bin(" + "\"" + benchmark.instanceId + "\"" + ") , " + "uuid_to_bin(" + "\"" + benchmark.machineConfigId + "\"" + "))";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
-            s3Client.uploadFileToS3("laobenchmarkbucket", benchmarkId.toString(), benchmarkDetails );
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw e;
+        }
+    }
+
+    public static void saveMachineConfig(Connection sqlConnection, MachineConfig machineConfig) throws SQLException {
+        try {
+            String sqlQuery = "INSERT INTO machine_config (id, cpu, core, l1, l2, l3, num_threads, ram) " +
+                    "VALUES (uuid_to_bin(" + "\"" + machineConfig.id + "\"" + "),\"" + machineConfig.core + "\" , \"" + machineConfig.cpu + "\" ," +
+                    "\" , \"" + machineConfig.l1 + "\" ," + "\" , \"" + machineConfig.l2 + "\" ," + "\" , \"" + machineConfig.l3 + "\" ," +
+                    "\" , \"" + machineConfig.numThreads + "\" ," + "\" , \"" + machineConfig.ram + ")";
+            System.out.println(sqlQuery);
+            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

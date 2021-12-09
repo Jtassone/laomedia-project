@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
@@ -20,12 +21,10 @@ import java.util.UUID;
 public class BenchmarkPostHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     Connection sqlConnection;
     Gson gson;
-    S3Client s3Client;
 
     public BenchmarkPostHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();
-        s3Client = new S3Client();
     }
 
     @Override
@@ -35,11 +34,20 @@ public class BenchmarkPostHandler implements RequestHandler<APIGatewayProxyReque
         headers.put("Content-Type", "application/json");
         try {
             JSONObject eventBody = new JSONObject(event.getBody());
-            String name = eventBody.getString("name");
-            String benchmarkDetails = eventBody.getString("benchmarkDetails");
+            String date = eventBody.getString("date");
+            String instanceId = eventBody.getString("instanceId");
             String implementationId = eventBody.getString("implementationId");
-            Benchmark benchmark = new Benchmark(name, benchmarkDetails, UUID.fromString(implementationId));
-            BenchmarkService.saveBenchmark(sqlConnection,s3Client, benchmark);
+            String core = eventBody.getString("core");
+            String cpu = eventBody.getString("cpu");
+            String l1 = eventBody.getString("l1");
+            String l2 = eventBody.getString("l2");
+            String l3 = eventBody.getString("l3");
+            String numberThreads = eventBody.getString("numberThreads");
+            String ram = eventBody.getString("ram");
+            MachineConfig machineConfig = new MachineConfig(UUID.randomUUID(), core, cpu, l1, l2, l3, Integer.parseInt(numberThreads), ram);
+            Benchmark benchmark = new Benchmark(UUID.randomUUID(), Date.valueOf(date), machineConfig.id, UUID.fromString(instanceId), UUID.fromString(implementationId));
+            BenchmarkService.saveMachineConfig(sqlConnection, machineConfig);
+            BenchmarkService.saveBenchmark(sqlConnection, benchmark);
             response.setBody(gson.toJson(benchmark));
             response.setStatusCode(200);
         } catch (SQLException e) {

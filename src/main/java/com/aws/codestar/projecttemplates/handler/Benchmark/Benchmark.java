@@ -6,7 +6,7 @@ import java.util.UUID;
 public class Benchmark {
 
 
-    private UUID id;
+    public UUID id;
 
     public Date date;
 

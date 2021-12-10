@@ -30,10 +30,7 @@ Resources:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-GetHelloWorld'
       Handler: com.aws.codestar.projecttemplates.handler.HelloWorldHandler
       Runtime: java11
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         GetEvent:
           Type: Api
@@ -48,10 +45,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.HelloWorldHandler
       Runtime: java11
       MemorySize: 256
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
           Type: Api
@@ -66,10 +60,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmHandler
       Runtime: java11
       MemorySize: 256
-      Role:
-        Fn::GetAtt:
-          - LambdaExecutionRole
-          - Arn
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
           Type: Api
@@ -84,10 +75,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.OptionsHandler
       Runtime: java11
       MemorySize: 256
-      Role:
-        Fn::GetAtt:
-          - LambdaExecutionRole
-          - Arn
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
           Type: Api

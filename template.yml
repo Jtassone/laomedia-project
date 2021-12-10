@@ -17,7 +17,7 @@ Parameters:
 
 Globals:
   Function:
-    AutoPublishAlias: live
+#    AutoPublishAlias: live
     DeploymentPreference:
       Enabled: true
       Type: Canary10Percent5Minutes

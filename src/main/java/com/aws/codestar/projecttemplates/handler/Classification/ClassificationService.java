@@ -35,7 +35,19 @@ public class ClassificationService {
         return classificationList;
     }
 
-
+    public static void mergeClassification(Connection sqlConnection, UUID classificationId, UUID oldClassificationID, String classificationName) throws SQLException {
+        try {
+            deleteClassification(sqlConnection, oldClassificationID.toString());
+            String sqlQuery = "UPDATE classifications SET parent_classification_id = uuid_to_bin(\"" + classificationId + "\") WHERE parent_classification_id = uuid_to_bin(\"" + oldClassificationID + "\")";
+            System.out.println(sqlQuery);
+            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+            sqlQuery = "UPDATE classifications SET name = " + classificationName + " WHERE id = uuid_to_bin(\"" + classificationId + "\")";
+            System.out.println(sqlQuery);
+            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void postClassification(Connection sqlConnection,Classification classification ) throws SQLException {
         String name = classification.name;

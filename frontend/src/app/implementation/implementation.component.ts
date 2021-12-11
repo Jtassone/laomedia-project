@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { impData, impList } from '../data/implementations.data';
 import { HttpService } from '../http.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Implementation } from '../model/implementation.model';
 import { Instance } from '../model/instance.model';
@@ -20,6 +20,7 @@ export class ImplementationComponent implements OnInit {
   id: string;
   trueId: string;
   state: string;
+  impForm: FormGroup;
 
   constructor(
     private http: HttpService,
@@ -49,6 +50,11 @@ export class ImplementationComponent implements OnInit {
         this.implementations = impList;
       }
     });
+    this.fb.group({
+      "name": ['', Validators.required],
+      "details": ['', Validators.required],
+      "instanceFile": ['', Validators.required],
+    })
   }
 
 }

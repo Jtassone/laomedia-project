@@ -7,6 +7,7 @@ export default class Implementation {
   instances?: Instance[];
   BenchmarkResults?: Benchmark[];
   algorithmId?: string;
+  implementationDetails?: string;
 }
 
 export { Implementation }

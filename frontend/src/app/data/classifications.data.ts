@@ -11,39 +11,46 @@ let simpleClassifications: Classification[] = [
         id: 'one-a',
         name: 'one-a',
         algos: [],
-        children: []
+        children: [],
+        parentClassificationId: 'one',
       },
       {
         id: 'one-b',
         name: 'one-b',
         algos: [],
-        children: []
+        children: [],
+        parentClassificationId: 'one',
       },
       {
         id: 'one-c',
         name: 'one-c',
         algos: [],
-        children: []
+        children: [],
+        parentClassificationId: 'one',
       },
-    ]
+    ],
+    parentClassificationId: null,
   },
   {
     id: 'two',
     name: 'two',
     algos: [],
-    children: []
+    children: [],
+    parentClassificationId: null,
   },
   {
     id: 'three',
     name: 'three',
     algos: [],
-    children: []
+    children: [],
+    parentClassificationId: null,
   },
   {
     id: 'four',
     name: 'four',
     algos: [],
-    children: []
+    children: [],
+    parentClassificationId: null,
   },
 ]
 
@@ -51,7 +58,8 @@ let algoClassification: Classification = {
   id: 'algo-classification',
   name: 'algo-classification',
   algos: [algoData, algoData, algoData],
-  children: []
+  children: [],
+  parentClassificationId: null
 }
 
 export { simpleClassifications, algoClassification }

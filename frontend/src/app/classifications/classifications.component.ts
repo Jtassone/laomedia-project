@@ -24,16 +24,16 @@ export class ClassificationsComponent implements OnInit {
   resetClassificationsComponent() {
     this.state = "loading";
     this.formError = false;
-    this.root = new Classification('root', 'root', [], []);
+    this.root = new Classification('root', 'root', [], [], null);
     this.http.getClassifications().subscribe({
       next: data => {
         console.log(`Classifications: ${JSON.stringify(data)}`);
-        this.root = new Classification('root', 'root', [], data);
+        this.root = new Classification('root', 'root', [], data, null);
         this.state="default";
       }, error: err => {
         this.state="error";
         console.error(`Falling back. Classification error: ${JSON.stringify(err)}`);
-        this.root = new Classification('root', 'root', [], simpleClassifications);
+        this.root = new Classification('root', 'root', [], simpleClassifications, null);
       }
     });
 

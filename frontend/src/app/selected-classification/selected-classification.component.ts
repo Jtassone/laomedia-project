@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Classification } from '../model/classification.model';
+import { Algorithm, Algorithm2 } from '../model/algorithm.model';
 import { algoClassification, simpleClassifications } from '../data/classifications.data';
 import { HttpService } from '../http.service';
 import { ActivatedRoute } from '@angular/router';
@@ -20,7 +21,7 @@ export class SelectedClassificationComponent implements OnInit {
   id: string;
   trueId: string;
   classifications: Classification[];
-  algos: Algorithm[];
+  algos: Algorithm2[];
   reclassification: "";
   selected: boolean[] = [];
   newAlgoForm = this.fb.group({

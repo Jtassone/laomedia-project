@@ -9,10 +9,10 @@ public class MachineConfig {
     public String l1;
     public String l2;
     public String l3;
-    public Integer numThreads;
+    public String numThreads;
     public String ram;
 
-    public MachineConfig(UUID id, String core, String cpu, String l1, String l2, String l3, Integer num_threads, String ram){
+    public MachineConfig(UUID id, String core, String cpu, String l1, String l2, String l3, String num_threads, String ram){
         this.id=id;
         this.core=core;
         this.cpu=cpu;

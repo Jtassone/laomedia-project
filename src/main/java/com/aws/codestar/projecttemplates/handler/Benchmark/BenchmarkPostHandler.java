@@ -44,7 +44,7 @@ public class BenchmarkPostHandler implements RequestHandler<APIGatewayProxyReque
             String l3 = eventBody.getString("l3");
             String numberThreads = eventBody.getString("numberThreads");
             String ram = eventBody.getString("ram");
-            MachineConfig machineConfig = new MachineConfig(UUID.randomUUID(), core, cpu, l1, l2, l3, Integer.parseInt(numberThreads), ram);
+            MachineConfig machineConfig = new MachineConfig(UUID.randomUUID(), core, cpu, l1, l2, l3, numberThreads, ram);
             Benchmark benchmark = new Benchmark(UUID.randomUUID(), Date.valueOf(date), machineConfig.id, UUID.fromString(instanceId), UUID.fromString(implementationId));
             BenchmarkService.saveMachineConfig(sqlConnection, machineConfig);
             BenchmarkService.saveBenchmark(sqlConnection, benchmark);

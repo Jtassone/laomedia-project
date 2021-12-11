@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public class Benchmark {
 
+    public MachineConfig machineConfig;
 
     public UUID id;
 
@@ -16,7 +17,14 @@ public class Benchmark {
 
     public UUID implementationId;
 
-
+    public Benchmark(UUID id, Date date, UUID machineConfigId, MachineConfig machineConfig, UUID instanceId, UUID implementationId) {
+        this.id = id;
+        this.date = date;
+        this.machineConfigId = machineConfigId;
+        this.machineConfig = machineConfig;
+        this.instanceId = instanceId;
+        this.implementationId = implementationId;
+    }
 
     public Benchmark(UUID id, Date date, UUID machineConfigId, UUID instanceId, UUID implementationId) {
         this.id = id;

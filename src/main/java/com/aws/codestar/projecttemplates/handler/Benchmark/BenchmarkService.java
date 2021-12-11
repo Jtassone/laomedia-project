@@ -23,6 +23,26 @@ public class BenchmarkService {
                 UUID instanceId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("instance_id"));
                 UUID machineConfigId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("machine_config_id"));
                 Benchmark benchmark = new Benchmark(id, date , machineConfigId, instanceId, implementationId);
+                try (ResultSet sqlResponse2 = sqlConnection.createStatement().executeQuery("select * from machine_config")) {
+                    while (sqlResponse.next()) {
+                        if (machineConfigId.equals(UUIDUtil.getUUIDFromBytes(sqlResponse2.getBytes("id")))){
+                            UUID id2 = UUIDUtil.getUUIDFromBytes(sqlResponse2.getBytes("id"));
+                            String core = sqlResponse2.getString("core");
+                            String cpu = sqlResponse2.getString("cpu");
+                            String l1 = sqlResponse2.getString("l1");
+                            String l2 = sqlResponse2.getString("l2");
+                            String l3 = sqlResponse2.getString("l3");
+                            String num_threads = sqlResponse2.getString("num_threads");
+                            String ram = sqlResponse2.getString("ram");
+                            MachineConfig config = new MachineConfig(id2, core, cpu, l1, l2, l3, num_threads, ram);
+                            benchmark = new Benchmark(id, date , machineConfigId, config, instanceId, implementationId);
+                        }
+                    }
+                }
+                    catch (SQLException e) {
+                        System.out.println(e);
+                        throw e;
+                    }
                 benchmarkList.add(benchmark);
             }
         } catch (SQLException e) {

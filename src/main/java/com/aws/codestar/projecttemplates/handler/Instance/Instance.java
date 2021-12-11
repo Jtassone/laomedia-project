@@ -8,6 +8,8 @@ public class Instance {
 
     public String name;
 
+    public String instanceFileString;
+
     public UUID algorithmId;
 
     public UUID implementationId;
@@ -17,6 +19,14 @@ public class Instance {
         this.name = name;
         this.algorithmId = algorithmId;
         this.implementationId = implementationId;
+    }
+
+    public Instance(UUID id, String name, UUID algorithmId, UUID implementationId, String instanceFileString) {
+        this.id = id;
+        this.name = name;
+        this.algorithmId = algorithmId;
+        this.implementationId = implementationId;
+        this.instanceFileString = instanceFileString;
     }
 
 }

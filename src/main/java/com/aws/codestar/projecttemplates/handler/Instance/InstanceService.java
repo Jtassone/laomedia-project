@@ -2,9 +2,11 @@ package com.aws.codestar.projecttemplates.handler.Instance;
 
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.aws.codestar.projecttemplates.handler.Classification.Classification;
+import com.aws.codestar.projecttemplates.handler.Implementation.Implementation;
 import com.aws.codestar.projecttemplates.utils.S3Client;
 import com.aws.codestar.projecttemplates.utils.UUIDUtil;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,19 +32,19 @@ public class InstanceService {
         }
     }
 
-    public static List<Instance> getAllInstances(Connection sqlConnection) throws SQLException {
+    public static List<Instance> getAllInstances(Connection sqlConnection, S3Client s3Client) throws SQLException, IOException {
         List<Instance> instanceList = new ArrayList<>();
         try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from instances")) {
             while (sqlResponse.next()) {
-                UUID id = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("id"));;
+                UUID id = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("id"));
                 String name = sqlResponse.getString("name");
-                byte[] parentAlgorithmId = sqlResponse.getBytes("parent_algorithm_id");
-                byte[] parentImplementationId = sqlResponse.getBytes("parent_implementation_id");
-                Instance instance = new Instance(id, name, UUIDUtil.getUUIDFromBytes(parentAlgorithmId),
-                        UUIDUtil.getUUIDFromBytes(parentImplementationId));
+                UUID algorithmId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("algorithm_id"));
+                UUID implementationId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("implementation_id"));
+                String fileString = s3Client.downloadFileFromS3("laoimplementationbucket", id.toString());
+                Instance instance = new Instance(id, name , algorithmId, implementationId, fileString);
                 instanceList.add(instance);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             System.out.println(e);
             throw e;
         }

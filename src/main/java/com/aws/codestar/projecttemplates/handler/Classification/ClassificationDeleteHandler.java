@@ -31,6 +31,9 @@ public class ClassificationDeleteHandler implements RequestHandler<APIGatewayPro
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
         try {
+            System.out.println(event.getPathParameters().toString());
+            System.out.println(event.getPathParameters());
+            System.out.println(event);
             String id = event.getPathParameters().get("proxy").split("/")[1];
             ClassificationService.deleteClassification(sqlConnection, id);
             response.setBody(gson.toJson(id));

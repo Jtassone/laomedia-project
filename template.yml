@@ -98,6 +98,15 @@ Resources:
             Path: /algorithms
             Method: post
 
+  reclassifyAlgorithm:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-reclassifyAlgorithm'
+      Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmReclassifyHandler
+      Runtime: java11
+      MemorySize: 256
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
+
   deleteAlgorithm:
     Type: AWS::Serverless::Function
     Properties:
@@ -202,6 +211,44 @@ Resources:
           Properties:
             Path: /implementations
             Method: delete
+
+  getBenchmarks:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getBenchmarks'
+      Handler: com.aws.codestar.projecttemplates.handler.Benchmark.BenchmarkHandler
+      Runtime: java11
+      MemorySize: 256
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
+
+  postBenchmark:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postBenchmark'
+      Handler: com.aws.codestar.projecttemplates.handler.Benchmark.BenchmarkPostHandler
+      Runtime: java11
+      MemorySize: 256
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
+
+  deleteBenchmark:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-deleteBenchmark'
+      Handler: com.aws.codestar.projecttemplates.handler.Benchmark.BenchmarkDeleteHandler
+      Runtime: java11
+      MemorySize: 256
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
+
+  mergeClassification:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-mergeClassification'
+      Handler: com.aws.codestar.projecttemplates.handler.Classification.MergeClassificationHandler
+      Runtime: java11
+      MemorySize: 256
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
+
+
 
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda

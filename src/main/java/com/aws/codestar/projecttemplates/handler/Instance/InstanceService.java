@@ -51,12 +51,13 @@ public class InstanceService {
         return instanceList;
     }
 
-    public static void deleteInstance(Connection sqlConnection, String id) throws Exception {
+    public static void deleteInstance(Connection sqlConnection, S3Client s3Client, String id) throws Exception {
         UUID class_uuid = UUID.fromString(id);
         try {
             String deleteSQL = "DELETE FROM instances WHERE id = uuid_to_bin(" + "\"" + class_uuid + "\"" + ")";
             PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
             preparedStatement.executeUpdate();
+            s3Client.deleteFileFromS3("laoinstancebucket", id.toString());
 
         } catch (Exception e) {
             throw new Exception("Failed to delete Classification: " + e.getMessage());

@@ -51,13 +51,14 @@ public class ImplementationService {
         }
     }
 
-    public static void deleteImplementation(Connection sqlConnection,String id) throws SQLException{
+    public static void deleteImplementation(Connection sqlConnection, S3Client s3Client, String id) throws SQLException, IOException {
         UUID implementationId = UUID.fromString(id);
         try {
             String deleteSQL = "DELETE FROM implementations WHERE id = uuid_to_bin(" + "\"" + implementationId + "\"" + ")";
             PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
+            s3Client.deleteFileFromS3("laoimplementationbucket", id.toString());
+        } catch (SQLException | IOException e) {
             System.out.println(e);
             throw e;
         }

@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
+import com.aws.codestar.projecttemplates.utils.S3Client;
 import com.google.gson.Gson;
 
 import java.sql.Connection;
@@ -12,13 +13,16 @@ import java.util.HashMap;
 
 public class ImplementationDeleteHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
+    S3Client s3Client;
     Connection sqlConnection;
     Gson gson;
 
     public ImplementationDeleteHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();
+        this.s3Client = new S3Client();
     }
+
 
 
     @Override
@@ -28,7 +32,7 @@ public class ImplementationDeleteHandler implements RequestHandler<APIGatewayPro
         headers.put("Content-Type", "application/json");
         try {
             String id = event.getPathParameters().get("proxy").split("/")[1];
-            ImplementationService.deleteImplementation(sqlConnection, id);
+            ImplementationService.deleteImplementation(sqlConnection, s3Client, id);
             response.setBody(gson.toJson(id));
             response.setStatusCode(200);
         } catch (Exception e) {

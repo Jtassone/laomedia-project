@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Classification } from '../model/classification.model';
 import { simpleClassifications } from '../data/classifications.data';
 import { HttpService } from '../http.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'lao-classifications',
@@ -16,10 +16,9 @@ export class ClassificationsComponent implements OnInit {
   state: string = "default";
   formError: boolean = false;
 
+  classificationList: Classification[];
   root: Classification;
-  newClassForm = this.fb.group({
-    name: ['', Validators.required],
-  })
+  newClassForm: FormGroup;
 
   resetClassificationsComponent() {
     this.state = "loading";
@@ -39,6 +38,7 @@ export class ClassificationsComponent implements OnInit {
 
     this.newClassForm = this.fb.group({
       name: ['', Validators.required],
+      parent: ['null', Validators.required]
     });
   }
 
@@ -48,7 +48,11 @@ export class ClassificationsComponent implements OnInit {
     if (!this.newClassForm.valid) {
       return;
     }
-    this.http.addClassification(this.newClassForm.get('name').value).subscribe({
+    let parent = null;
+    if (this.newClassForm.get('parent').value !== 'null') {
+      parent = this.newClassForm.get('parent').value;
+    }
+    this.http.addClassification(this.newClassForm.get('name').value, parent).subscribe({
       next: data => {
         this.resetClassificationsComponent();
       }, error: err => {

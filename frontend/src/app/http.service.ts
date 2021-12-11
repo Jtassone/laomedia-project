@@ -46,9 +46,9 @@ export class HttpService {
     )
   }
 
-  addClassification(name: string): Observable<Classification> {
+  addClassification(name: string, parent: string): Observable<Classification> {
     const url = this.urls.post['class'];
-    const body = JSON.stringify({name: name});
+    const body = JSON.stringify({name: name, parentClassificationId: parent});
     return this._http.post<Classification>(url, body).pipe(
       tap(data => console.log(`Data from Hello World: ${JSON.stringify(data)}`))
     );

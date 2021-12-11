@@ -63,9 +63,11 @@ public class AlgorithmService {
     }
 
     public static void reclassifyAlgorithm(Connection sqlConnection,String id, String newClassification ) throws SQLException{
-        UUID algo_uuid = UUID.fromString(id);
+        UUID algorithmId = UUID.fromString(id);
+        byte[] newClassificationId = UUIDUtil.getBytesFromUUID(UUID.fromString(newClassification));
         try {
-            String updateSQL = "UPDATE algorithms SET classification_id = (newClassification) WHERE id = uuid_to_bin(" + "\"" + algo_uuid + "\"" + ") VALUES (\" + newClassification + \")";
+            String updateSQL = "UPDATE algorithms SET classification_id = " + newClassificationId + " WHERE id = uuid_to_bin(" + "\"" + algorithmId + "\"" + ")";
+            System.out.println(updateSQL);
             PreparedStatement preparedStatement = sqlConnection.prepareStatement(updateSQL);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

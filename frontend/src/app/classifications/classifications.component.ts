@@ -23,11 +23,14 @@ export class ClassificationsComponent implements OnInit {
   resetClassificationsComponent() {
     this.state = "loading";
     this.formError = false;
+    this.classificationList = [];
     this.root = new Classification('root', 'root', [], [], null);
     this.http.getClassifications().subscribe({
       next: data => {
         console.log(`Classifications: ${JSON.stringify(data)}`);
-        this.root = new Classification('root', 'root', [], data, null);
+        let tree = this.buildClassificationTree(data);
+        this.root = new Classification('root', 'root', [], tree, null);
+        this.classificationList = data;
         this.state="default";
       }, error: err => {
         this.state="error";
@@ -60,6 +63,26 @@ export class ClassificationsComponent implements OnInit {
         this.state = "default";
       }
     });
+  }
+
+  buildClassificationTree (classifications: Classification[]): Classification[] {
+    let classTree = Object.create({});
+    let topClassifications: Classification[] = [];
+    for (let c of classifications) {
+      classTree[c.id] = c;
+    }
+    for (let c of classifications) {
+      if (c.parentClassificationId){
+        if (!classTree[c.parentClassificationId].children) {
+          classTree[c.parentClassificationId].children = []
+        }
+        classTree[c.parentClassificationId].children.push(c)
+      } else {
+        topClassifications.push(c);
+      }
+    }
+
+    return topClassifications;
   }
 
   debug() {

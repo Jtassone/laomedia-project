@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { HttpService } from '../http.service';
 import { Classification } from '../model/classification.model';
 
 @Component({
@@ -27,7 +28,7 @@ export class ClassificationComponent implements OnInit {
     return this.checked[i];
   }
 
-  constructor() { }
+  constructor(private http: HttpService) { }
 
   ngOnInit(): void {
     this.checked = [];
@@ -36,6 +37,14 @@ export class ClassificationComponent implements OnInit {
         this.checked.push(false);
       }
     }
+  }
+
+  deleteClassification(): void {
+    this.http.deleteClassification(this.classification.id).subscribe({
+      next: data => {
+        console.log(`yay: ${JSON.stringify(data)}`)
+      }
+    });
   }
 
   debug(): void {

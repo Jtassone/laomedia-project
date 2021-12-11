@@ -34,6 +34,7 @@ public class ClassificationPostHandler implements RequestHandler<APIGatewayProxy
             String name = eventBody.getString("name");
             String parentClassificationId = eventBody.optString("parentClassificationId");
             Classification classification;
+            System.out.println(parentClassificationId);
             if (parentClassificationId.length() == 0) {
                 classification = new Classification(name);
                 ClassificationService.postClassification(sqlConnection, classification);

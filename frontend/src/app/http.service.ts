@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators'
+import { map, tap } from 'rxjs/operators'
 import { Observable } from 'rxjs';
 
 import { Classification } from './model/classification.model';
+import { Algorithm2 } from './model/algorithm.model';
 import Implementation from './model/implementation.model';
+
 
 
 @Injectable({
@@ -52,9 +54,9 @@ export class HttpService {
     );
   }
 
-  getAlgorithms(): Observable<Algorithm[]> {
+  getAlgorithms(): Observable<Algorithm2[]> {
     const url = this.urls.get['algos'];
-    return this._http.get<Algorithm[]>(url).pipe(
+    return this._http.get<Algorithm2[]>(url).pipe(
       tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
     )
   }
@@ -74,8 +76,14 @@ export class HttpService {
   getImplementations(): Observable<Implementation[]> {
     const url = this.urls.get['imp'];
     return this._http.get<Implementation[]>(url).pipe(
-      tap(data => console.log(`List of All Implementations: ${JSON.stringify(data)}`))
-    )
+      tap(data => console.log(`List of All Implementations: ${JSON.stringify(data)}`)),
+      map(data => {
+        data.map(imp => {
+          imp.implementationDetails = atob(imp.implementationDetails)
+        })
+        return data;
+      })
+    );
   }
 
   addImplementation(name: string, algorithmId: string, implementationDetails: string): Observable<any> {

@@ -48,6 +48,8 @@
     <textarea matInput id="implementationDetails" formControlName="implementationDetails"></textarea>
   </mat-form-field>
 
+  <input id="upload" type="file" formControlName="upload" (change)="fileChanged($event)" />
+
   <button mat-flat-button color="primary" [disabled]="!this.newImpForm.valid || this.state === 'submitting'" (click)="addImp()">
     Add Implementation
     <mat-progress-bar mode='indeterminate' *ngIf="this.state==='submitting'"></mat-progress-bar>

@@ -20,7 +20,7 @@ public class AlgorithmReclassifyHandler implements RequestHandler<APIGatewayProx
 
     Connection sqlConnection;
     Gson gson;
-    //
+
     public AlgorithmReclassifyHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();

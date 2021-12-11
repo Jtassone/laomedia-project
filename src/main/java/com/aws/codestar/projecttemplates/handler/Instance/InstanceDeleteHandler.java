@@ -20,7 +20,7 @@ public class InstanceDeleteHandler implements RequestHandler<APIGatewayProxyRequ
 
     Connection sqlConnection;
     Gson gson;
-    //
+
     public InstanceDeleteHandler() {
         this.sqlConnection = RDSClient.getRemoteConnection();
         this.gson = new Gson();
@@ -44,6 +44,4 @@ public class InstanceDeleteHandler implements RequestHandler<APIGatewayProxyRequ
         System.out.println("The response is" + response);
         return response;
     }
-
-
 }

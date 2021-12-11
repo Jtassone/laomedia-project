@@ -3,6 +3,7 @@ package com.aws.codestar.projecttemplates.utils;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
@@ -44,6 +45,15 @@ public class S3Client {
             if (fullObject != null) {
                 fullObject.close();
             }
+        }
+    }
+
+    public void deleteFileFromS3(String bucketName, String strinObjKeyName) throws IOException {
+        try {
+            s3Client.deleteObject(new DeleteObjectRequest(bucketName, strinObjKeyName));
+        } catch (SdkClientException e) {
+            System.out.print(e);
+            throw e;
         }
     }
 }

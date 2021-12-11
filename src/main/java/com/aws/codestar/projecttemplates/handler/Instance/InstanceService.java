@@ -40,7 +40,7 @@ public class InstanceService {
                 String name = sqlResponse.getString("name");
                 UUID algorithmId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("algorithm_id"));
                 UUID implementationId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("implementation_id"));
-                String fileString = s3Client.downloadFileFromS3("laoimplementationbucket", id.toString());
+                String fileString = s3Client.downloadFileFromS3("laoinstancebucket", id.toString());
                 Instance instance = new Instance(id, name , algorithmId, implementationId, fileString);
                 instanceList.add(instance);
             }

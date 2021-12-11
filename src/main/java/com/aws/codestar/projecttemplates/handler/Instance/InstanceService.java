@@ -32,7 +32,7 @@ public class InstanceService {
 
     public static List<Instance> getAllInstances(Connection sqlConnection) throws SQLException {
         List<Instance> instanceList = new ArrayList<>();
-        try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from instance")) {
+        try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("select * from instances")) {
             while (sqlResponse.next()) {
                 UUID id = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("id"));;
                 String name = sqlResponse.getString("name");

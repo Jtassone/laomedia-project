@@ -57,7 +57,7 @@ public class ImplementationService {
             String deleteSQL = "DELETE FROM implementations WHERE id = uuid_to_bin(" + "\"" + implementationId + "\"" + ")";
             PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
             preparedStatement.executeUpdate();
-            s3Client.deleteFileFromS3("laoimplementationbucket", id.toString());
+            s3Client.deleteFileFromS3("laoimplementationbucket", id);
         } catch (SQLException | IOException e) {
             System.out.println(e);
             throw e;

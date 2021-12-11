@@ -57,7 +57,7 @@ public class InstanceService {
             String deleteSQL = "DELETE FROM instances WHERE id = uuid_to_bin(" + "\"" + class_uuid + "\"" + ")";
             PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
             preparedStatement.executeUpdate();
-            s3Client.deleteFileFromS3("laoinstancebucket", id.toString());
+            s3Client.deleteFileFromS3("laoinstancebucket", id);
 
         } catch (Exception e) {
             throw new Exception("Failed to delete Classification: " + e.getMessage());

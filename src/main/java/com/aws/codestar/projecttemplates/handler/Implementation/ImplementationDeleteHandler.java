@@ -23,8 +23,6 @@ public class ImplementationDeleteHandler implements RequestHandler<APIGatewayPro
         this.s3Client = new S3Client();
     }
 
-
-
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();

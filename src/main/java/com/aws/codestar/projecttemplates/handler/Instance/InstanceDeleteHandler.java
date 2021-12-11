@@ -29,7 +29,6 @@ public class InstanceDeleteHandler implements RequestHandler<APIGatewayProxyRequ
         this.s3Client = new S3Client();
     }
 
-
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();

@@ -25,8 +25,9 @@ export class HttpService {
       algos: "https://lnpmfr4e8l.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postAlgorithm",
       class: "https://6jj1ay30h6.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postClassification",
       imp: "https://h1l85l4gp8.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postImplementation",
+      classMerge: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/merge",
     }, delete: {
-      class: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/"
+      class: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/",
     }
   }
 
@@ -53,14 +54,26 @@ export class HttpService {
     const body = JSON.stringify({name: name, parentClassificationId: parent});
     return this._http.post<Classification>(url, body).pipe(
       tap(data => console.log(`Data from Hello World: ${JSON.stringify(data)}`))
-      );
-    }
+    );
+  }
 
-    deleteClassification(id: string): Observable<any> {
-      const url = this.urls.delete['class'] + id;
-      return this._http.delete<any>(url).pipe(
-        tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+  deleteClassification(id: string): Observable<any> {
+    const url = this.urls.delete['class'] + id;
+    return this._http.delete<any>(url).pipe(
+      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
     )
+  }
+
+  mergeClassifications(name: string, id1: string, id2: string) {
+    const body = {
+      newClassificationName: name,
+      classification1Id: id1,
+      classification2Id: id2,
+    }
+    const url = this.urls.post.classMerge;
+    return this._http.post<any>(url, body).pipe(
+      tap(data => console.log(`Merge status: ${JSON.stringify(data)}`))
+    );
   }
 
   getAlgorithms(): Observable<Algorithm2[]> {

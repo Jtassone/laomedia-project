@@ -47,6 +47,24 @@ export class ClassificationComponent implements OnInit {
     });
   }
 
+  mergeChildren(): boolean {
+    let ids: string[] = [];
+    for (let i = 0; i < this.checked.length; i++) {
+      if(this.checked[i]) {
+        ids.push(this.classification.children[i].id)
+      }
+    }
+    if (ids.length !== 2) {
+      return false;
+    }
+    this.http.mergeClassifications('hello', ids[0], ids[1]).subscribe({
+      next: data => {
+        console.log(`data: ${data}`);
+      }
+    })
+    return true
+  }
+
   debug(): void {
     debugger;
   }

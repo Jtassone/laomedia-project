@@ -65,7 +65,7 @@ public class ClassificationService {
         String name = classification.name;
         UUID parentClassificationId = classification.parentClassificationId;
         try {
-            String sqlQuery = "INSERT INTO classifications (id, name, parent_classification_id) VALUES (uuid_to_bin(uuid()),\"" + name + "\" + uuid_to_bin(" + "\"" + parentClassificationId + "\"" + "))";
+            String sqlQuery = "INSERT INTO classifications (id, name, parent_classification_id) VALUES (uuid_to_bin(uuid()),\"" + name + "\", + uuid_to_bin(" + "\"" + parentClassificationId + "\"" + "))";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (SQLException e) {

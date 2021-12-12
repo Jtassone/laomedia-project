@@ -36,12 +36,13 @@ public class ClassificationService {
     }
 
     public static void mergeClassification(Connection sqlConnection, UUID classificationId, UUID oldClassificationID, String classificationName) throws SQLException {
+        byte[] classifictionIdBinary = UUIDUtil.getBytesFromUUID(classificationId);
         try {
             deleteClassification(sqlConnection, oldClassificationID.toString());
             String sqlQuery = "UPDATE classifications SET parent_classification_id = uuid_to_bin(\"" + classificationId + "\") WHERE parent_classification_id = uuid_to_bin(\"" + oldClassificationID + "\")";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
-            sqlQuery = "UPDATE classifications SET name = \"" + classificationName + "\" WHERE id = uuid_to_bin(\"" + classificationId + "\")";
+            sqlQuery = "UPDATE classifications SET name = \"" + classificationName + "\" WHERE id = " + classifictionIdBinary;
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (Exception e) {

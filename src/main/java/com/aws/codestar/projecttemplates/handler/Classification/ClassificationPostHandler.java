@@ -6,7 +6,9 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
 import com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmService;
+import com.aws.codestar.projecttemplates.handler.User.UserEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
+import com.aws.codestar.projecttemplates.utils.UserEventService;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -32,6 +34,7 @@ public class ClassificationPostHandler implements RequestHandler<APIGatewayProxy
         try {
             JSONObject eventBody = new JSONObject(event.getBody());
             String name = eventBody.getString("name");
+            String userName = eventBody.getString("userName");
             String parentClassificationId = eventBody.optString("parentClassificationId");
             Classification classification;
             System.out.println(parentClassificationId);
@@ -42,6 +45,9 @@ public class ClassificationPostHandler implements RequestHandler<APIGatewayProxy
                 classification = new Classification(name, UUID.fromString(parentClassificationId));
                 ClassificationService.postSubClassification(sqlConnection, classification);
             }
+            String eventDetails = "classification with the name " + name;
+            UserEvent userEvent = new UserEvent(UUID.randomUUID(), userName, "CREATED", eventDetails);
+            UserEventService.logUserEvent(sqlConnection, userEvent);
             response.setBody(gson.toJson(classification));
             response.setStatusCode(200);
         } catch (SQLException e) {

@@ -248,7 +248,23 @@ Resources:
       MemorySize: 256
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
+  getUsers:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getUsers'
+      Handler: com.aws.codestar.projecttemplates.handler.User.UserHandler
+      Runtime: java11
+      MemorySize: 256
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
+  getUserEvents:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getUserEvents'
+      Handler: com.aws.codestar.projecttemplates.handler.User.UserEventHandler
+      Runtime: java11
+      MemorySize: 256
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda

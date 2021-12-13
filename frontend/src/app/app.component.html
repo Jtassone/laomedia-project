@@ -1,6 +1,13 @@
 <mat-toolbar color='primary'>
   Laomedeia App
-  <button mat-flat-button color="primary" routerLink="classifications-view">Classifications</button>
+  <button mat-flat-button color="primary" routerLink="classifications-view">
+    <mat-icon>language</mat-icon>
+    Classifications
+  </button>
+  <button mat-flat-button color="primary" routerLink="admin" *ngIf="isAdmin()">
+    <mat-icon>flutter_dash</mat-icon>
+    Admin
+  </button>
   <span class="spacer"></span>
   <span *ngIf="authState === 'signedin' && user" class="username">
     {{user.username}}

@@ -37,6 +37,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SelectedClassificationComponent } from './selected-classification/selected-classification.component';
 import { LoginComponent } from './login/login.component';
+import { AdminComponent } from './admin/admin.component';
 
 Amplify.configure(awsconfig);
 
@@ -51,6 +52,7 @@ Amplify.configure(awsconfig);
     InstanceComponent,
     SelectedClassificationComponent,
     LoginComponent,
+    AdminComponent,
   ],
   imports: [
     AmplifyUIAngularModule,

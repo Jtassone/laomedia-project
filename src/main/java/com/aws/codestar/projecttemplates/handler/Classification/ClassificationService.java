@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +43,7 @@ public class ClassificationService {
             String sqlQuery = "UPDATE classifications SET parent_classification_id = uuid_to_bin(\"" + classificationId + "\") WHERE parent_classification_id = uuid_to_bin(\"" + oldClassificationID + "\")";
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
-            sqlQuery = "UPDATE classifications SET name = \"" + classificationName + "\" WHERE id = " + classifictionIdBinary;
+            sqlQuery = "UPDATE classifications SET name = \"" + classificationName + "\" WHERE id = " + Arrays.toString(classifictionIdBinary);
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (Exception e) {

@@ -29,7 +29,7 @@ public class BenchmarkDeleteHandler implements RequestHandler<APIGatewayProxyReq
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
         try {
-            String id = event.getPathParameters().get("proxy").split("/")[1];
+            String id = event.getPathParameters().get("path").split("/")[2];
             BenchmarkService.deleteBenchmark(sqlConnection, id);
             response.setBody(gson.toJson(id));
             response.setStatusCode(200);

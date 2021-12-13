@@ -15,7 +15,7 @@ export class AppComponent {
 
   letUserContinue(): void {
     this.continueWithoutRegister = true;
-    this.http.username = 'unregistered user';
+    this.http.username = 'UnregisteredUser';
   }
 
   letUserLeave(): void {

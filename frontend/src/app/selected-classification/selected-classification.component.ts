@@ -64,6 +64,14 @@ export class SelectedClassificationComponent implements OnInit {
     })
   }
 
+  deleteAlgo(id: string): void {
+    this.http.deleteAlgorithm(id).subscribe({
+      next: data => {
+        console.log(`Algorithm deleted: ${JSON.stringify(data)}`);
+      }
+    })
+  }
+
   resetComp(): void {
     this.state = "loading";
     this.formState = "default";

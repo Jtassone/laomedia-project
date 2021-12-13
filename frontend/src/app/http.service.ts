@@ -15,7 +15,7 @@ import Implementation from './model/implementation.model';
 export class HttpService {
 
   baseURL = 'https://8jyixjqsxb.execute-api.us-east-1.amazonaws.com/Prod/';
-  username: string = 'unregistered user';
+  username: string = 'UnregisteredUser';
 
   urls = {
     get: {
@@ -29,7 +29,7 @@ export class HttpService {
       classMerge: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/merge",
     }, delete: {
       class: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/",
-      algos: "",
+      algos: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/algorithms/",
       imp: "",
     }
   }
@@ -37,31 +37,29 @@ export class HttpService {
   constructor(private _http: HttpClient) { }
 
   getClassifications(): Observable<Classification[]> {
-    // const url = `${this.baseURL}classifications`;
-    const url = this.urls.get['class'];
+    const url = `${this.urls.get['class']}?userName=${this.username}`;
     return this._http.get<Classification[]>(url).pipe(
       tap(data => console.log(`Classifications: ${JSON.stringify(data)}`))
     )
   }
 
   getClassification(id: string): Observable<Classification> {
-    // const url = `${this.baseURL}classification/${id}`;
-    const url = this.urls.get['class'];
+    const url = `${this.urls.get['class']}?userName=${this.username}`;
     return this._http.get<Classification>(url).pipe(
       tap(data => console.log(`Data: ${JSON.stringify(data)}`))
     )
   }
 
   addClassification(name: string, parent: string): Observable<Classification> {
-    const url = this.urls.post['class'];
+    const url = `${this.urls.post['class']}?userName=${this.username}`;
     const body = JSON.stringify({name: name, parentClassificationId: parent});
     return this._http.post<Classification>(url, body).pipe(
-      tap(data => console.log(`Data from Hello World: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Classification added: ${JSON.stringify(data)}`))
     );
   }
 
   deleteClassification(id: string): Observable<any> {
-    const url = this.urls.delete['class'] + id;
+    const url = `${this.urls.delete['class']}${id}?userName=${this.username}`;
     return this._http.delete<any>(url).pipe(
       tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
     )
@@ -73,21 +71,21 @@ export class HttpService {
       classification1Id: id1,
       classification2Id: id2,
     }
-    const url = this.urls.post.classMerge;
+    const url = `${this.urls.post.classMerge}?userName=${this.username}`;
     return this._http.post<any>(url, body).pipe(
       tap(data => console.log(`Merge status: ${JSON.stringify(data)}`))
     );
   }
 
   getAlgorithms(): Observable<Algorithm2[]> {
-    const url = this.urls.get['algos'];
+    const url = `${this.urls.get['algos']}?userName=${this.username}`;
     return this._http.get<Algorithm2[]>(url).pipe(
       tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
     )
   }
 
   addAlgorithm(name: string, classificationId: string, algorithmDetails: string): Observable<any> {
-    const url = this.urls.post['algos'];
+    const url = `${this.urls.post['algos']}?userName=${this.username}`;
     const body = {
       name,
       classificationId,
@@ -106,7 +104,7 @@ export class HttpService {
   }
 
   getImplementations(): Observable<Implementation[]> {
-    const url = this.urls.get['imp'];
+    const url = `${this.urls.get['imp']}?userName=${this.username}`;
     return this._http.get<Implementation[]>(url).pipe(
       tap(data => console.log(`List of All Implementations: ${JSON.stringify(data)}`)),
       map(data => {
@@ -119,7 +117,7 @@ export class HttpService {
   }
 
   addImplementation(name: string, algorithmId: string, implementationDetails: string): Observable<any> {
-    const url = this.urls.post['imp'];
+    const url = `${this.urls.post['imp']}?userName=${this.username}`;
     const body = {
       name,
       algorithmId,
@@ -138,7 +136,6 @@ export class HttpService {
   }
 
   helloWorld(): any {
-    // const url = `${this.baseURL}`;
     const url = 'https://jsp4qhazd6.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-getAlgorithms'
     return this._http.get(url).pipe(
       tap(data => console.log(`Data from Hello World: ${JSON.stringify(data)}`))

@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,14 +37,19 @@ public class ClassificationService {
 
     public static void mergeClassification(Connection sqlConnection, UUID classificationId, UUID oldClassificationID, String classificationName) throws SQLException {
         byte[] classifictionIdBinary = UUIDUtil.getBytesFromUUID(classificationId);
+        byte[] oldClassificaitonIdBinary = UUIDUtil.getBytesFromUUID(oldClassificationID);
         try {
             deleteClassification(sqlConnection, oldClassificationID.toString());
-            String sqlQuery = "UPDATE classifications SET parent_classification_id = uuid_to_bin(\"" + classificationId + "\") WHERE parent_classification_id = uuid_to_bin(\"" + oldClassificationID + "\")";
-            System.out.println(sqlQuery);
-            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
-            sqlQuery = "UPDATE classifications SET name = \"" + classificationName + "\" WHERE id = " + Arrays.toString(classifictionIdBinary);
-            System.out.println(sqlQuery);
-            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+            PreparedStatement statement1 = sqlConnection.prepareStatement("UPDATE classifications SET parent_classification_id = ? WHERE parent_classification_id = ?");
+            statement1.setBytes(1, classifictionIdBinary);
+            statement1.setBytes(2, oldClassificaitonIdBinary);
+            System.out.println(statement1);
+            statement1.executeUpdate();
+            PreparedStatement sqlStatement = sqlConnection.prepareStatement( "UPDATE classifications SET name = ? WHERE id = ?");
+            sqlStatement.setString(1, classificationName);
+            sqlStatement.setBytes(2, classifictionIdBinary);
+            System.out.println(sqlStatement);
+            sqlStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,10 +81,11 @@ public class ClassificationService {
     }
     
     public static void deleteClassification(Connection sqlConnection, String id) throws Exception {
-        UUID class_uuid = UUID.fromString(id);
+        byte[] classificationIdBytes = UUIDUtil.getBytesFromUUID(UUID.fromString(id));
         try {
             String deleteSQL = "DELETE FROM classifications WHERE id = uuid_to_bin(" + "\"" + class_uuid + "\"" + ")";
-            PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement("DELETE FROM classifications WHERE id =?");
+            preparedStatement.setBytes(1, classificationIdBytes );
             preparedStatement.executeUpdate();
 
         } catch (Exception e) {

@@ -85,6 +85,7 @@ public class ClassificationService {
         try {
             PreparedStatement preparedStatement = sqlConnection.prepareStatement("DELETE FROM classifications WHERE id =?");
             preparedStatement.setBytes(1, classificationIdBytes );
+            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
 
         } catch (Exception e) {

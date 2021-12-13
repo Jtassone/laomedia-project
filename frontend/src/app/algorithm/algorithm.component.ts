@@ -78,6 +78,14 @@ export class AlgorithmComponent implements OnInit {
     // })
   }
 
+  deleteImplementation(id: string): void {
+    this.http.deleteImplementation(id).subscribe({
+      next: data => {
+        console.log(`Deleted implementation ${JSON.stringify(data)}`);
+      }
+    })
+  }
+
   resetComp(): void {
     this.state = "loading";
     this.http.getImplementations().subscribe({

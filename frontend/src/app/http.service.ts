@@ -15,6 +15,7 @@ import Implementation from './model/implementation.model';
 export class HttpService {
 
   baseURL = 'https://8jyixjqsxb.execute-api.us-east-1.amazonaws.com/Prod/';
+  username: string = 'unregistered user';
 
   urls = {
     get: {
@@ -28,6 +29,8 @@ export class HttpService {
       classMerge: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/merge",
     }, delete: {
       class: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/",
+      algos: "",
+      imp: "",
     }
   }
 
@@ -95,6 +98,13 @@ export class HttpService {
     );
   }
 
+  deleteAlgorithm (id: string): Observable<any> {
+    const url = `${this.urls.delete['algos']}${id}?userName=${this.username}`;
+    return this._http.delete<any>(url).pipe(
+      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+    )
+  }
+
   getImplementations(): Observable<Implementation[]> {
     const url = this.urls.get['imp'];
     return this._http.get<Implementation[]>(url).pipe(
@@ -118,6 +128,13 @@ export class HttpService {
     return this._http.post<any>(url, body).pipe(
       tap(data => console.log(`Implementation added: ${JSON.stringify(data)}`))
     );
+  }
+
+  deleteImplementation (id: string): Observable<any> {
+    const url = `${this.urls.delete['imps']}${id}?userName=${this.username}`;
+    return this._http.delete<any>(url).pipe(
+      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+    )
   }
 
   helloWorld(): any {

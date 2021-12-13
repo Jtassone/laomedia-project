@@ -57,7 +57,7 @@ export class ClassificationComponent implements OnInit {
     if (ids.length !== 2) {
       return false;
     }
-    this.http.mergeClassifications('hello', ids[0], ids[1]).subscribe({
+    this.http.mergeClassifications('merge-test', ids[0], ids[1]).subscribe({
       next: data => {
         console.log(`data: ${data}`);
       }

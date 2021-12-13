@@ -23,7 +23,7 @@
     <a [routerLink]="['/implementation-view', imp.id]">
       {{imp.name}}
     </a>
-    <button mat-mini-fab>
+    <button mat-mini-fab (click)="deleteImplementation(imp.id)">
       <mat-icon>delete</mat-icon>
     </button>
   </li>

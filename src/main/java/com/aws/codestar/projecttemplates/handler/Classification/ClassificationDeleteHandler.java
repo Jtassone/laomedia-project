@@ -34,7 +34,7 @@ public class ClassificationDeleteHandler implements RequestHandler<APIGatewayPro
             System.out.println(event.getPathParameters().toString());
             System.out.println(event.getPathParameters());
             System.out.println(event);
-            String id = event.getPathParameters().get("path").split("/")[2];
+            String id = event.getPathParameters().get("UUID");
             ClassificationService.deleteClassification(sqlConnection, id);
             response.setBody(gson.toJson(id));
             response.setStatusCode(200);

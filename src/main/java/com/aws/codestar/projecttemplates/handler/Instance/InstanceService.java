@@ -55,7 +55,9 @@ public class InstanceService {
         UUID class_uuid = UUID.fromString(id);
         try {
             String deleteSQL = "DELETE FROM instances WHERE id = uuid_to_bin(" + "\"" + class_uuid + "\"" + ")";
-            PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement("DELETE FROM instances WHERE id = ?");
+            preparedStatement.setBytes(1, UUIDUtil.getBytesFromUUID(class_uuid));
+            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
             s3Client.deleteFileFromS3("laoinstancebucket", id);
 

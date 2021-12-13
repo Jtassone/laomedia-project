@@ -82,8 +82,9 @@ public class BenchmarkService {
     public static void deleteBenchmark(Connection sqlConnection,String id) throws SQLException{
         UUID benchmarkId = UUID.fromString(id);
         try {
-            String deleteSQL = "DELETE FROM benchmarks WHERE id = uuid_to_bin(" + "\"" + benchmarkId + "\"" + ")";
-            PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement("DELETE FROM benchmarks WHERE id = ?");
+            preparedStatement.setBytes(1, UUIDUtil.getBytesFromUUID(benchmarkId));
+            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

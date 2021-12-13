@@ -51,10 +51,11 @@ public class AlgorithmService {
     }
 
     public static void deleteAlgorithms(Connection sqlConnection,String id ) throws SQLException{
-        UUID algo_uuid = UUID.fromString(id);
+        byte[] algorithmIdBytes = UUIDUtil.getBytesFromUUID(UUID.fromString(id));
         try {
-            String deleteSQL = "DELETE FROM algorithms WHERE id = uuid_to_bin(" + "\"" + algo_uuid + "\"" + ")";
-            PreparedStatement preparedStatement = sqlConnection.prepareStatement(deleteSQL);
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement("DELETE FROM algorithms WHERE id = ?");
+            preparedStatement.setBytes(1, algorithmIdBytes);
+            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -66,9 +67,10 @@ public class AlgorithmService {
         UUID algorithmId = UUID.fromString(id);
         byte[] newClassificationId = UUIDUtil.getBytesFromUUID(UUID.fromString(newClassification));
         try {
-            String updateSQL = "UPDATE algorithms SET classification_id = " + newClassificationId + " WHERE id = uuid_to_bin(" + "\"" + algorithmId + "\"" + ")";
-            System.out.println(updateSQL);
-            PreparedStatement preparedStatement = sqlConnection.prepareStatement(updateSQL);
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement("UPDATE algorithms SET classification_id = ? WHERE id = ?");
+            preparedStatement.setBytes(1, newClassificationId);
+            preparedStatement.setBytes(2, UUIDUtil.getBytesFromUUID(algorithmId));
+            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

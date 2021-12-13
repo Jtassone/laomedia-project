@@ -83,7 +83,6 @@ public class ClassificationService {
     public static void deleteClassification(Connection sqlConnection, String id) throws Exception {
         byte[] classificationIdBytes = UUIDUtil.getBytesFromUUID(UUID.fromString(id));
         try {
-            String deleteSQL = "DELETE FROM classifications WHERE id = uuid_to_bin(" + "\"" + class_uuid + "\"" + ")";
             PreparedStatement preparedStatement = sqlConnection.prepareStatement("DELETE FROM classifications WHERE id =?");
             preparedStatement.setBytes(1, classificationIdBytes );
             preparedStatement.executeUpdate();

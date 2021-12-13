@@ -8,7 +8,7 @@ public class HandlerTests {
 
     private Context createContext() {
         TestContext tc = new TestContext();
-        ctx.setFunctionName("Your Function Name");
+        tc.setFunctionName("Your Function Name");
 
         return tc;
     }
@@ -17,10 +17,11 @@ public class HandlerTests {
     @Test
     public void testAlgosDelete(){
         APIGatewayProxyResponseEvent response_delete = new APIGatewayProxyResponseEvent();
+        APIGatewayProxyRequestEvent request_delete= new APIGatewayProxyRequestEvent();
         Context ct= createContext();
-        assertEquals(false, false);
+
         com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmDeleteHandler adh= new AlgorithmDeleteHandler();
-        adh.handleRequest(,ct); // what should the event be
+        adh.handleRequest(request_delete,ct); // what should the event be
 
         assertEquals(response_delete.statusCode,200);
 

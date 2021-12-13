@@ -1,4 +1,4 @@
-package com.aws.codestar.projecttemplates.handler;
+package java.com.aws.codestar.projecttemplates.handler;
 
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
 

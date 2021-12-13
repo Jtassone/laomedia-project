@@ -1,1 +1,29 @@
-<p>admin works!</p>
+<h1>Admin View</h1>
+<h2>Registered Users</h2>
+
+<mat-list>
+  <mat-list-item *ngFor="let user of registeredUsers">
+    <button mat-mini-fab>
+      <mat-icon>search</mat-icon>
+    </button>
+    {{user}}
+  </mat-list-item>
+</mat-list>
+
+<h2>Activity For Selected User</h2>
+<mat-table [dataSource]="events" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="user">
+    <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
+    <mat-cell *matCellDef="let event"> {{event.user}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="event">
+    <mat-header-cell *matHeaderCellDef> Event </mat-header-cell>
+    <mat-cell *matCellDef="let event"> {{event.event}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+</mat-table>
+

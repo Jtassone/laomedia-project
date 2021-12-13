@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Classification } from './model/classification.model';
 import { Algorithm2 } from './model/algorithm.model';
 import Implementation from './model/implementation.model';
+import { UserEvent } from './model/userEvent.model';
 
 
 
@@ -21,16 +22,20 @@ export class HttpService {
     get: {
       algos: "https://jsp4qhazd6.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-getAlgorithms",
       class: "https://idxllinx9l.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-getClassification",
-      imp: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-getImplementation"
+      imp: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-getImplementation",
+      events: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/users/",
+      users: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/users",
+      inst: "",
     }, post: {
       algos: "https://lnpmfr4e8l.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postAlgorithm",
       class: "https://6jj1ay30h6.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postClassification",
-      imp: "https://h1l85l4gp8.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postImplementation",
       classMerge: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/merge",
+      imp: "https://h1l85l4gp8.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postImplementation",
+      inst: "",
     }, delete: {
       class: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/",
       algos: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/algorithms/",
-      imp: "",
+      imp: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/implementations/",
     }
   }
 
@@ -52,7 +57,7 @@ export class HttpService {
 
   addClassification(name: string, parent: string): Observable<Classification> {
     const url = `${this.urls.post['class']}?userName=${this.username}`;
-    const body = JSON.stringify({name: name, parentClassificationId: parent});
+    const body = JSON.stringify({name: name, parentClassificationId: parent, userName: this.username});
     return this._http.post<Classification>(url, body).pipe(
       tap(data => console.log(`Classification added: ${JSON.stringify(data)}`))
     );
@@ -129,10 +134,20 @@ export class HttpService {
   }
 
   deleteImplementation (id: string): Observable<any> {
-    const url = `${this.urls.delete['imps']}${id}?userName=${this.username}`;
+    const url = `${this.urls.delete['imp']}${id}?userName=${this.username}`;
     return this._http.delete<any>(url).pipe(
       tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
     )
+  }
+
+  getUsers(): Observable<UserEvent[]> {
+    const url = `${this.urls.get['users']}?userName=${this.username}`;
+    return this._http.get<UserEvent[]>(url);
+  }
+
+  getEvents(user: string): Observable<UserEvent[]> {
+    const url = `${this.urls.get['event']}${user}?userName=${this.username}`;
+    return this._http.get<UserEvent[]>(url);
   }
 
   helloWorld(): any {

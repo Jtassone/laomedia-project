@@ -97,8 +97,8 @@ export class AlgorithmComponent implements OnInit {
       error: err => {
         this.state = "error";
         console.log(`Problem loading implementations: ${JSON.stringify(err)}\n\n${err.message}`);
-        this.algorithm = algoData;
-        this.implementations = algoData.imps;
+        // this.algorithm = algoData;
+        // this.implementations = algoData.imps;
       }
     });
     this.newImpForm = this.fb.group({

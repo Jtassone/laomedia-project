@@ -22,9 +22,8 @@ public class BenchmarkService {
                 UUID implementationId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("implementation_id"));
                 UUID instanceId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("instance_id"));
                 UUID machineConfigId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes("machine_config_id"));
-                Benchmark benchmark = new Benchmark(id, date , machineConfigId, instanceId, implementationId);
                 try (ResultSet sqlResponse2 = sqlConnection.createStatement().executeQuery("select * from machine_config")) {
-                    while (sqlResponse.next()) {
+                    while (sqlResponse2.next()) {
                         if (machineConfigId.equals(UUIDUtil.getUUIDFromBytes(sqlResponse2.getBytes("id")))){
                             UUID id2 = UUIDUtil.getUUIDFromBytes(sqlResponse2.getBytes("id"));
                             String core = sqlResponse2.getString("core");
@@ -35,7 +34,8 @@ public class BenchmarkService {
                             String num_threads = sqlResponse2.getString("num_threads");
                             String ram = sqlResponse2.getString("ram");
                             MachineConfig config = new MachineConfig(id2, core, cpu, l1, l2, l3, num_threads, ram);
-                            benchmark = new Benchmark(id, date , machineConfigId, config, instanceId, implementationId);
+                            Benchmark benchmark = new Benchmark(id, date , machineConfigId, config, instanceId, implementationId);
+                            benchmarkList.add(benchmark);
                         }
                     }
                 }
@@ -43,7 +43,6 @@ public class BenchmarkService {
                         System.out.println(e);
                         throw e;
                     }
-                benchmarkList.add(benchmark);
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -54,11 +53,14 @@ public class BenchmarkService {
 
     public static void saveBenchmark(Connection sqlConnection, Benchmark benchmark) throws SQLException {
         try {
-            String sqlQuery = "INSERT INTO benchmarks (id, date, implementationId, instance_id, machine_config_id) " +
-                    "VALUES (uuid_to_bin(" + "\"" + benchmark.id + "\"" + "),\"" + benchmark.date + "\" , uuid_to_bin(" + "\"" + benchmark.implementationId + "\"" + ") ," +
-                    " uuid_to_bin(" + "\"" + benchmark.instanceId + "\"" + ") , " + "uuid_to_bin(" + "\"" + benchmark.machineConfigId + "\"" + "))";
-            System.out.println(sqlQuery);
-            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement("INSERT INTO benchmarks (id, date, implementation_id, instance_id, machine_config_id) VALUES (? , ? , ?, ? , ?)");
+            preparedStatement.setBytes(1, UUIDUtil.getBytesFromUUID(benchmark.id));
+            preparedStatement.setDate(2, (Date) benchmark.date);
+            preparedStatement.setBytes(3, UUIDUtil.getBytesFromUUID(benchmark.implementationId));
+            preparedStatement.setBytes(4, UUIDUtil.getBytesFromUUID(benchmark.instanceId));
+            preparedStatement.setBytes(5, UUIDUtil.getBytesFromUUID(benchmark.machineConfigId));
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;
@@ -67,12 +69,18 @@ public class BenchmarkService {
 
     public static void saveMachineConfig(Connection sqlConnection, MachineConfig machineConfig) throws SQLException {
         try {
-            String sqlQuery = "INSERT INTO machine_config (id, cpu, core, l1, l2, l3, num_threads, ram) " +
-                    "VALUES (uuid_to_bin(" + "\"" + machineConfig.id + "\"" + "),\"" + machineConfig.core + "\" , \"" + machineConfig.cpu + "\" ," +
-                    "\" , \"" + machineConfig.l1 + "\" ," + "\" , \"" + machineConfig.l2 + "\" ," + "\" , \"" + machineConfig.l3 + "\" ," +
-                    "\" , \"" + machineConfig.numThreads + "\" ," + "\" , \"" + machineConfig.ram + ")";
-            System.out.println(sqlQuery);
-            sqlConnection.prepareStatement(sqlQuery).executeUpdate();
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement("INSERT INTO machine_config (id, cpu, core, l1, l2, l3, num_threads, ram) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            preparedStatement.setBytes(1, UUIDUtil.getBytesFromUUID(machineConfig.id));
+            preparedStatement.setString(2, machineConfig.cpu);
+            preparedStatement.setString(3, machineConfig.core);
+            preparedStatement.setString(4, machineConfig.l1);
+            preparedStatement.setString(5, machineConfig.l2);
+            preparedStatement.setString(6, machineConfig.l3);
+            preparedStatement.setString(7, machineConfig.numThreads);
+            preparedStatement.setString(8, machineConfig.ram);
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
             throw e;

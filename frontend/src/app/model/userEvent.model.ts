@@ -1,6 +1,8 @@
 class UserEvent {
-  username: string;
-  event: string;
+  id: string;
+  userName: string;
+  eventVerb: string;
+  eventDetails: string;
 }
 
 export { UserEvent }

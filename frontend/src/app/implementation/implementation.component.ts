@@ -16,7 +16,7 @@ export class ImplementationComponent implements OnInit {
 
   implementations: Implementation[] = [];
   implementation: Implementation;
-  instances: Instance[] = instList;
+  instances: Instance[];
   id: string;
   self: Instance;
   trueId: string;
@@ -39,6 +39,7 @@ export class ImplementationComponent implements OnInit {
       let newInstance: Instance = {
         id: null,
         name: this.impForm.get('name').value,
+        implementationId: this.trueId,
         algorithmId: this.self.algorithmId,
         instanceFileString: b64string
       } as Instance

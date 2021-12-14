@@ -11,7 +11,7 @@ import { IUser } from '../model/user.model';
 export class AdminComponent implements OnInit {
 
   registeredUsers: IUser[] = [];
-  columnsToDisplay = ['user', 'event'];
+  columnsToDisplay = ['user', 'event', 'verb'];
   selectedUser: string;
   events: UserEvent[];
   state: 'loading' | 'ready';
@@ -22,6 +22,7 @@ export class AdminComponent implements OnInit {
       next: data => {
         console.log(data);
         this.events = data;
+        this.selectedUser = user;
       }
     })
   }
@@ -39,7 +40,7 @@ export class AdminComponent implements OnInit {
 
   resetComponent(): void {
     this.events = [];
-    this.selectedUser = 'rstlouis';
+    this.selectedUser = '';
     this.http.getUsers().subscribe({
       next: data => {
         console.log(`Users: ${JSON.stringify(data)}`);

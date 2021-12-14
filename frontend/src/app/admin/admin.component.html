@@ -10,21 +10,26 @@
     <button mat-mini-fab (click)="deleteUser(user.username)">
       <mat-icon>delete</mat-icon>
     </button>
-    <mat-spinner *ngIf="user.username in this.usersToDelete"></mat-spinner>
+    <mat-spinner *ngIf="this.usersToDelete[user.username]"></mat-spinner>
   </mat-list-item>
 </mat-list>
 
-<h2>Activity For Selected User</h2>
+<h2>Activity For Selected User<span *ngIf="this.selectedUser">: {{this.selectedUser}}</span></h2>
 <mat-table [dataSource]="events" class="mat-elevation-z8">
 
   <ng-container matColumnDef="user">
     <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
-    <mat-cell *matCellDef="let event"> {{event.user}} </mat-cell>
+    <mat-cell *matCellDef="let event"> {{event.userName}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="verb">
+    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *matCellDef="let event"> {{event.eventVerb}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="event">
     <mat-header-cell *matHeaderCellDef> Event </mat-header-cell>
-    <mat-cell *matCellDef="let event"> {{event.event}} </mat-cell>
+    <mat-cell *matCellDef="let event"> {{event.eventDetails}} </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>

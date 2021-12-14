@@ -7,6 +7,7 @@ import { Classification } from './model/classification.model';
 import { Algorithm2 } from './model/algorithm.model';
 import Implementation from './model/implementation.model';
 import { UserEvent } from './model/userEvent.model';
+import { IUser } from './model/user.model';
 
 
 
@@ -140,9 +141,9 @@ export class HttpService {
     )
   }
 
-  getUsers(): Observable<UserEvent[]> {
+  getUsers(): Observable<IUser[]> {
     const url = `${this.urls.get['users']}?userName=${this.username}`;
-    return this._http.get<UserEvent[]>(url);
+    return this._http.get<IUser[]>(url);
   }
 
   getEvents(user: string): Observable<UserEvent[]> {

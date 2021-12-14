@@ -13,7 +13,7 @@ public class UserService {
 
     public static List<UserEvent> getUserEvents(Connection sqlConnection, String name) throws SQLException {
         List<UserEvent> userEvents = null;
-        try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("SELECT * from user_Events where name = \"" + name + "\"")) {
+        try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery("SELECT * from user_events where name = \"" + name + "\"")) {
             while (sqlResponse.next()) {
                 byte[] sqlIdBytes = sqlResponse.getBytes("id");
                 UUID id = UUIDUtil.getUUIDFromBytes(sqlIdBytes);

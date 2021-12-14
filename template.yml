@@ -60,6 +60,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -75,6 +76,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.OptionsHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -90,6 +92,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmPostHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -105,6 +108,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmReclassifyHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   deleteAlgorithm:
@@ -114,6 +118,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmDeleteHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -129,6 +134,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Classification.ClassificationHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -144,6 +150,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Classification.ClassificationPostHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -159,6 +166,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Classification.ClassificationDeleteHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -174,6 +182,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Implementation.ImplementationPostHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -189,6 +198,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Implementation.ImplementationHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -204,6 +214,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Implementation.ImplementationDeleteHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -219,6 +230,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Benchmark.BenchmarkHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   postBenchmark:
@@ -228,6 +240,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Benchmark.BenchmarkPostHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   deleteBenchmark:
@@ -237,6 +250,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Benchmark.BenchmarkDeleteHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   mergeClassification:
@@ -246,6 +260,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Classification.MergeClassificationHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   getUsers:
@@ -255,6 +270,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.User.UserHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   getUserEvents:
@@ -264,6 +280,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.User.UserEventHandler
       Runtime: java11
       MemorySize: 256
+      Timeout: 10
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   LambdaExecutionRole:

@@ -35,8 +35,7 @@ public class UserEventHandler implements RequestHandler<APIGatewayProxyRequestEv
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
         try {
-            JSONObject eventBody = new JSONObject(event.getBody());
-            String name = eventBody.getString("userName");
+            String name = event.getPathParameters().get("userName");
             List<UserEvent> userEventsList = UserService.getUserEvents(sqlConnection, name);
             lambdaResponse.setBody(gson.toJson(userEventsList));
             lambdaResponse.setStatusCode(200);

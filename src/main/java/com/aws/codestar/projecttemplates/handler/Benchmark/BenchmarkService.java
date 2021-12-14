@@ -54,7 +54,7 @@ public class BenchmarkService {
 
     public static void saveBenchmark(Connection sqlConnection, Benchmark benchmark) throws SQLException {
         try {
-            PreparedStatement preparedStatement = sqlConnection.prepareStatement("INSERT INTO benchmarks (id, date, implementationId, instance_id, machine_config_id) VALUES (? , ? , ?, ? , ?)");
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement("INSERT INTO benchmarks (id, date, implementation_id, instance_id, machine_config_id) VALUES (? , ? , ?, ? , ?)");
             preparedStatement.setBytes(1, UUIDUtil.getBytesFromUUID(benchmark.id));
             preparedStatement.setDate(2, (Date) benchmark.date);
             preparedStatement.setBytes(3, UUIDUtil.getBytesFromUUID(benchmark.implementationId));

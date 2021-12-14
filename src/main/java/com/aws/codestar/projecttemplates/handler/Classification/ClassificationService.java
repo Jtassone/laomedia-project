@@ -83,13 +83,35 @@ public class ClassificationService {
     public static void deleteClassification(Connection sqlConnection, String id) throws Exception {
         byte[] classificationIdBytes = UUIDUtil.getBytesFromUUID(UUID.fromString(id));
         try {
-            PreparedStatement preparedStatement = sqlConnection.prepareStatement("DELETE FROM classifications WHERE id =?");
+            PreparedStatement preparedStatement = sqlConnection.prepareStatement("DELETE FROM classifications WHERE id = ?");
             preparedStatement.setBytes(1, classificationIdBytes );
             System.out.println(preparedStatement);
-            preparedStatement.executeUpdate();
-
+            ResultSet resultSet1 = preparedStatement.executeQuery();
+            while (resultSet1.next()) {
+                byte[] classificationId = resultSet1.getBytes("id");
+                byte[] parentClassificationId = resultSet1.getBytes("parent_classification_id");
+                if(parentClassificationId != null) {
+                    updateParentId(sqlConnection, parentClassificationId, classificationId);
+                } else {
+                    updateParentId(sqlConnection, null, classificationId);
+                }
+            }
         } catch (Exception e) {
             throw new Exception("Failed to delete Classification: " + e.getMessage());
         }
+    }
+
+    public static void updateParentId(Connection sqlConnection, byte[] parentClassificationId, byte[] classificationId) throws Exception {
+       try{
+           PreparedStatement preparedStatement = sqlConnection.prepareStatement("UPDATE classifications SET parent_classification_id = ? WHERE parent_classification_id = ?";
+           preparedStatement.setBytes(1, parentClassificationId);
+           preparedStatement.setBytes(2, classificationId);
+           System.out.println(preparedStatement);
+           preparedStatement.executeUpdate();
+       } catch (Exception e) {
+           throw new Exception("Failed to delete Classification: " + e.getMessage());
+       }
+
+
     }
 }

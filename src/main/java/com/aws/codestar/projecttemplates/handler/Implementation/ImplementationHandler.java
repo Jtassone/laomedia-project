@@ -27,6 +27,7 @@ public class ImplementationHandler implements RequestHandler<APIGatewayProxyRequ
     }
 
     @Override
+    //TODO what do we do if we have an implementatopm om tje db but it isn't in s3
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         HashMap<String, String> headers = new HashMap<String, String>();

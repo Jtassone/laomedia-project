@@ -34,7 +34,7 @@ public class ClassificationPostHandler implements RequestHandler<APIGatewayProxy
         try {
             JSONObject eventBody = new JSONObject(event.getBody());
             String name = eventBody.getString("name");
-            String userName = eventBody.getString("userName");
+            String userName = event.getQueryStringParameters().get("userName");
             String parentClassificationId = eventBody.optString("parentClassificationId");
             Classification classification;
             System.out.println(parentClassificationId);

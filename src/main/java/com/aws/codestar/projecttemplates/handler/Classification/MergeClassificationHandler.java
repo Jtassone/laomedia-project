@@ -4,7 +4,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.aws.codestar.projecttemplates.handler.User.UserEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
+import com.aws.codestar.projecttemplates.utils.UserEventService;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -33,6 +35,10 @@ public class MergeClassificationHandler implements RequestHandler<APIGatewayProx
             UUID classificationId = UUID.fromString(eventBody.getString("classification1Id"));
             UUID oldClassificationId = UUID.fromString(eventBody.getString("classification2Id"));
             ClassificationService.mergeClassification(sqlConnection, classificationId, oldClassificationId, name);
+            String userName = event.getQueryStringParameters().get("userName");
+            String eventDetails = "classification with the name " + name;
+            UserEvent userEvent = new UserEvent(UUID.randomUUID(), userName, "MERGED", eventDetails);
+            UserEventService.logUserEvent(sqlConnection, userEvent);
             response.setBody("Success");
             response.setStatusCode(200);
         } catch (SQLException e) {

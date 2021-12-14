@@ -5,7 +5,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.aws.codestar.projecttemplates.handler.User.UserEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
+import com.aws.codestar.projecttemplates.utils.UserEventService;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class AlgorithmReclassifyHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -37,6 +40,10 @@ public class AlgorithmReclassifyHandler implements RequestHandler<APIGatewayProx
             String classificationID= eventBody.getString("classificationID");
             String algorithmId = eventBody.getString("algorithmID");
             AlgorithmService.reclassifyAlgorithm(sqlConnection, algorithmId, classificationID);
+            String userName = event.getQueryStringParameters().get("userName");
+            String eventDetails = "algorithm with the id  " + algorithmId + "to classification with the id " + classificationID;
+            UserEvent userEvent = new UserEvent(UUID.randomUUID(), userName, "RECLASSIFY", eventDetails);
+            UserEventService.logUserEvent(sqlConnection, userEvent);
             response.setBody(gson.toJson(algorithmId));
             response.setStatusCode(200);
         } catch (SQLException e) {

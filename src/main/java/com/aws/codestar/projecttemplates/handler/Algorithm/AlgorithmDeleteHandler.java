@@ -4,7 +4,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.aws.codestar.projecttemplates.handler.User.UserEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
+import com.aws.codestar.projecttemplates.utils.UserEventService;
 import com.google.gson.Gson;
 
 
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class AlgorithmDeleteHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -34,6 +37,10 @@ public class AlgorithmDeleteHandler implements RequestHandler<APIGatewayProxyReq
             String id = event.getPathParameters().get("UUID");
             System.out.println(id);
             AlgorithmService.deleteAlgorithms(sqlConnection, id);
+            String userName = event.getQueryStringParameters().get("userName");
+            String eventDetails = "algorithm with the id " + id;
+            UserEvent userEvent = new UserEvent(UUID.randomUUID(), userName, "DELETED", eventDetails);
+            UserEventService.logUserEvent(sqlConnection, userEvent);
             response.setBody(gson.toJson(id));
             response.setStatusCode(200);
         } catch (SQLException e) {

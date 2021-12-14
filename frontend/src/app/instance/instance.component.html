@@ -1,50 +1,122 @@
-<h1>Active Instance: {{instance.name}}</h1>
+<h1>Active Instance: {{id}}</h1>
 
 <h2>Body</h2>
 <mat-card>
   <code>
-    id: {{instance.id}}
+    {{instBody}}
+    <mat-progress-bar *ngIf="instState === 'loading'" mode="indeterminate"></mat-progress-bar>
   </code>
 </mat-card>
 
+<h2>New Instance</h2>
+<form [formGroup]="benchForm">
+  <mat-form-field appearance="fill">
+    <mat-label for="date">date (yyyy-mm-dd)</mat-label>
+    <input matInput id="date" type="text" formControlName="date" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label for="core">core</mat-label>
+    <input matInput id="core" type="text" formControlName="core" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label for="cpu">cpu</mat-label>
+    <input matInput id="cpu" type="text" formControlName="cpu" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label for="l1">l1</mat-label>
+    <input matInput id="l1" type="text" formControlName="l1" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label for="l2">l2</mat-label>
+    <input matInput id="l2" type="text" formControlName="l2" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label for="l3">l3</mat-label>
+    <input matInput id="l3" type="text" formControlName="l3" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label for="numberThreads">numberThreads</mat-label>
+    <input matInput id="numberThreads" type="text" formControlName="numberThreads" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label for="ram">ram</mat-label>
+    <input matInput id="ram" type="text" formControlName="ram" />
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" [disabled]="!this.benchForm.valid || this.formState === 'submitting'" (click)="addBenchmark()">
+    Add Benchmark
+    <mat-progress-bar mode='indeterminate' *ngIf="this.formState==='submitting'"></mat-progress-bar>
+  </button>
+  <p *ngIf="this.formState === 'error'">There was an error submitting the form data. It's possible that the lambda timed out and that the new benchmark will show if the page is reloaded.</p>
+</form>
+
 <h2>Benchmark List</h2>
 
-<mat-table [dataSource]="instance.benchmarks" class="mat-elevation-z8">
-  <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.id}} </mat-cell>
+<p *ngIf="benchmarks.length < 1 && this.benchState === 'ready'">
+  The selected instance has no benchmarks.
+</p>
+<ng-container *ngIf="benchState === 'loading'">
+  <p>Loading Benchmarks</p>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-container>
+
+<mat-table [dataSource]="benchmarks" class="mat-elevation-z8">
+
+  <!-- <ng-container matColumnDef="delete">
+    <mat-header-cell> Delete </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark">
+      <button mat-mini-fab color="warn">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container> -->
+
+  <ng-container matColumnDef="date">
+    <mat-header-cell *matHeaderCellDef> date </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.date}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="core">
-    <mat-header-cell *matHeaderCellDef> Core </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig.core}} </mat-cell>
+    <mat-header-cell *matHeaderCellDef> core </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.core}} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="L1">
-    <mat-header-cell *matHeaderCellDef> L1 </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['L1']}} </mat-cell>
+  <ng-container matColumnDef="cpu">
+    <mat-header-cell *matHeaderCellDef> cpu </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.cpu}} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="L2">
-    <mat-header-cell *matHeaderCellDef> L2 </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['L2']}} </mat-cell>
+  <ng-container matColumnDef="l1">
+    <mat-header-cell *matHeaderCellDef> l1 </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.l1}} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="L3">
-    <mat-header-cell *matHeaderCellDef> L3 </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['L3']}} </mat-cell>
+  <ng-container matColumnDef="l2">
+    <mat-header-cell *matHeaderCellDef> l2 </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.l2}} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="CPU">
-    <mat-header-cell *matHeaderCellDef> CPU </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['CPU']}} </mat-cell>
+  <ng-container matColumnDef="l3">
+    <mat-header-cell *matHeaderCellDef> l3 </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.l3}} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="RAM">
-    <mat-header-cell *matHeaderCellDef> RAM </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig['RAM']}} </mat-cell>
+  <ng-container matColumnDef="numberThreads">
+    <mat-header-cell *matHeaderCellDef> numberThreads </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.numberThreads}} </mat-cell>
   </ng-container>
 
+  <ng-container matColumnDef="ram">
+    <mat-header-cell *matHeaderCellDef> ram </mat-header-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.ram}} </mat-cell>
+  </ng-container>
 
   <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
   <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>

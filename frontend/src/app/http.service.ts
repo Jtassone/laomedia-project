@@ -9,6 +9,7 @@ import Implementation from './model/implementation.model';
 import { UserEvent } from './model/userEvent.model';
 import { IUser } from './model/user.model';
 import { Instance } from './model/instance.model';
+import { Benchmark } from './model/benchmark.model';
 
 
 
@@ -28,17 +29,20 @@ export class HttpService {
       events: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/users/",
       users: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/users",
       inst: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/instances",
+      bench: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/benchmarks",
     }, post: {
       algos: "https://lnpmfr4e8l.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postAlgorithm",
       class: "https://6jj1ay30h6.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postClassification",
       classMerge: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/merge",
       imp: "https://h1l85l4gp8.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postImplementation",
       inst: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/instances",
+      bench: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/benchmarks",
     }, delete: {
       class: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/",
       algos: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/algorithms/",
       imp: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/implementations/",
       user: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/users/",
+      bench: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/benchmarks/",
     }
   }
 
@@ -165,6 +169,28 @@ export class HttpService {
 
   deleteInstance (id: string): Observable<any> {
     const url = `${this.urls.delete['imp']}${id}?userName=${this.username}`;
+    return this._http.delete<any>(url).pipe(
+      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+    )
+  }
+
+  getBenchmarks(): Observable<Benchmark[]> {
+    const url = `${this.urls.get.bench}?userName=${this.username}`;
+    return this._http.get<Benchmark[]>(url).pipe(
+      tap(data => console.log(`List of All Benchmarks: ${JSON.stringify(data)}`))
+    );
+  }
+
+  addBenchmark(bench: Benchmark): Observable<any> {
+    const url = `${this.urls.post.bench}?userName=${this.username}`;
+    const body = bench;
+    return this._http.post<any>(url, body).pipe(
+      tap(data => console.log(`Benchmark added: ${JSON.stringify(data)}`))
+    );
+  }
+
+  deleteBenchmark (id: string): Observable<any> {
+    const url = `${this.urls.delete.bench}${id}?userName=${this.username}`;
     return this._http.delete<any>(url).pipe(
       tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
     )

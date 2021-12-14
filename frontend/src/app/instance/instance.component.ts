@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { instData } from '../data/instances.data';
+import { HttpService } from '../http.service';
 import Benchmark from '../model/benchmark.model';
 import { Instance } from '../model/instance.model';
 
@@ -11,14 +14,99 @@ import { Instance } from '../model/instance.model';
 export class InstanceComponent implements OnInit {
 
   instance: Instance = instData;
+  benchForm: FormGroup;
+  formState: 'loading' | 'ready' | 'submitting' | 'error';
+  instState: 'loading' | 'ready' | 'submitting' | 'error';
+  benchState: 'loading' | 'ready' | 'submitting' | 'error';
+  benchmarks: Benchmark[] = [];
+  id: string;
+  trueId: string;
+  instBody: string;
 
   // columnsToDisplay = ['id', 'machineConfig'];
   expandedElement: Benchmark | null;
-  columnsToDisplay = ['id','core','CPU','L1','L2','L3','RAM']
+  // columnsToDisplay = ['delete', 'date','core','cpu','l1','l2','l3','numberThreads','ram']
+  columnsToDisplay = ['date','core','cpu','l1','l2','l3','numberThreads','ram']
 
-  constructor() { }
+  addBenchmark() {
+    let newBench: Benchmark = {
+      id: null,
+      date: this.benchForm.get('date').value,
+      instanceId: this.instance.id,
+      implementationId: this.instance.implementationId,
+      core: this.benchForm.get('core').value,
+      cpu: this.benchForm.get('cpu').value,
+      l1: this.benchForm.get('l1').value,
+      l2: this.benchForm.get('l2').value,
+      l3: this.benchForm.get('l3').value,
+      numberThreads: this.benchForm.get('numberThreads').value,
+      ram: this.benchForm.get('ram').value,
+    } as Benchmark
+    this.http.addBenchmark(newBench).subscribe({
+      next: data => {
+        console.log(data);
+        this.resetComponent();
+      }, error: err => {
+        this.formState = 'error';
+      }
+    })
+  }
+
+  deleteBenchmark(): void {
+
+  }
+
+  resetComponent(): void {
+    this.formState = 'ready';
+    this.benchState = 'loading';
+    this.instState = 'loading';
+    this.http.getInstances().subscribe({
+      next: data => {
+        for (let inst of data) {
+          if (inst.id = this.id) {
+            this.id = inst.name;
+            this.instance = inst;
+            this.instBody = atob(inst.instanceFileString);
+            this.instState = 'ready';
+          }
+          this.http.getBenchmarks().subscribe({
+            next: data => {
+              console.log(data);
+              this.benchState = 'ready';
+              this.benchmarks = data.filter(inst => inst.id === this.trueId);
+            }
+          });
+        }
+        if (!this.instance){
+          this.instState = 'error';
+        }
+      }, error: err => {
+        this.instState = 'error';
+      }
+    })
+    this.benchForm = this.fb.group({
+      "date": ['', Validators.required],
+      "core": ['', Validators.required],
+      "cpu": ['', Validators.required],
+      "l1": ['', Validators.required],
+      "l2": ['', Validators.required],
+      "l3": ['', Validators.required],
+      "numberThreads": ['', Validators.required],
+      "ram": ['', Validators.required],
+    })
+  }
+
+  constructor(
+    private http: HttpService,
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.trueId = this.id;
+    this.instBody = '-- Loading Instance --'
+    this.resetComponent();
   }
 
 }

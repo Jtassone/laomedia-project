@@ -72,6 +72,22 @@ export class SelectedClassificationComponent implements OnInit {
     })
   }
 
+  reclassifyAlgorithm(id: string): void {
+    this.http.reclassifyAlgorithm(this.reclassification, id).subscribe({
+      next: data => {
+        console.log(data);
+      }
+    });
+  }
+
+  reclassify(): void {
+    for (let i = 0; i < this.algos.length; i++) {
+      if (this.selected[i]) {
+        this.reclassifyAlgorithm(this.algos[i].id)
+      }
+    }
+  }
+
   resetComp(): void {
     this.state = "loading";
     this.formState = "default";

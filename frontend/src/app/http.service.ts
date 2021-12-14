@@ -37,6 +37,7 @@ export class HttpService {
       imp: "https://h1l85l4gp8.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postImplementation",
       inst: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/instances",
       bench: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/benchmarks",
+      reclassify: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/algorithms/reclassify",
     }, delete: {
       class: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/",
       algos: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/algorithms/",
@@ -92,6 +93,14 @@ export class HttpService {
   getAlgorithms(): Observable<Algorithm2[]> {
     const url = `${this.urls.get['algos']}?userName=${this.username}`;
     return this._http.get<Algorithm2[]>(url).pipe(
+      tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
+    )
+  }
+
+  reclassifyAlgorithm(classificationId: string, algorithmId: string): Observable<Algorithm2[]> {
+    const url = `${this.urls.post.reclassify}?userName=${this.username}`;
+    const body = {classificationId, algorithmId}
+    return this._http.post<Algorithm2[]>(url, body).pipe(
       tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
     )
   }

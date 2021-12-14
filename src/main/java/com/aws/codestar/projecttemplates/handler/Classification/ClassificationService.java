@@ -103,7 +103,7 @@ public class ClassificationService {
 
     public static void updateParentId(Connection sqlConnection, byte[] parentClassificationId, byte[] classificationId) throws Exception {
        try{
-           PreparedStatement preparedStatement = sqlConnection.prepareStatement("UPDATE classifications SET parent_classification_id = ? WHERE parent_classification_id = ?";
+           PreparedStatement preparedStatement = sqlConnection.prepareStatement("UPDATE classifications SET parent_classification_id = ? WHERE parent_classification_id = ?");
            preparedStatement.setBytes(1, parentClassificationId);
            preparedStatement.setBytes(2, classificationId);
            System.out.println(preparedStatement);

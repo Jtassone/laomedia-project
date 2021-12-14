@@ -8,6 +8,7 @@ import { Algorithm2 } from './model/algorithm.model';
 import Implementation from './model/implementation.model';
 import { UserEvent } from './model/userEvent.model';
 import { IUser } from './model/user.model';
+import { Instance } from './model/instance.model';
 
 
 
@@ -26,17 +27,18 @@ export class HttpService {
       imp: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-getImplementation",
       events: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/users/",
       users: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/users",
-      inst: "",
+      inst: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/instances",
     }, post: {
       algos: "https://lnpmfr4e8l.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postAlgorithm",
       class: "https://6jj1ay30h6.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postClassification",
       classMerge: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/merge",
       imp: "https://h1l85l4gp8.execute-api.us-east-1.amazonaws.com/default/awscodestar-laomedia-projec-lambda-postImplementation",
-      inst: "",
+      inst: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/instances",
     }, delete: {
       class: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/classifications/",
       algos: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/algorithms/",
       imp: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/implementations/",
+      user: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/users/",
     }
   }
 
@@ -141,13 +143,45 @@ export class HttpService {
     )
   }
 
+  getInstances(): Observable<Instance[]> {
+    const url = `${this.urls.get.inst}?userName=${this.username}`;
+    return this._http.get<Instance[]>(url).pipe(
+      tap(data => console.log(`List of All Instances: ${JSON.stringify(data)}`))
+    );
+  }
+
+  addInstance(inst: Instance): Observable<any> {
+    const url = `${this.urls.post.inst}?userName=${this.username}`;
+    const body = {
+      name: inst.name,
+      algorithmId: inst.algorithmId,
+      instanceFileString: inst.instanceFileString,
+      implementationId: inst.implementationId,
+    }
+    return this._http.post<any>(url, body).pipe(
+      tap(data => console.log(`Instance added: ${JSON.stringify(data)}`))
+    );
+  }
+
+  deleteInstance (id: string): Observable<any> {
+    const url = `${this.urls.delete['imp']}${id}?userName=${this.username}`;
+    return this._http.delete<any>(url).pipe(
+      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+    )
+  }
+
   getUsers(): Observable<IUser[]> {
     const url = `${this.urls.get['users']}?userName=${this.username}`;
     return this._http.get<IUser[]>(url);
   }
 
+  deleteUser(user: string): Observable<any> {
+    const url = `${this.urls.delete['user']}${user}?userName=${this.username}`;
+    return this._http.delete<any>(url);
+  }
+
   getEvents(user: string): Observable<UserEvent[]> {
-    const url = `${this.urls.get['event']}${user}?userName=${this.username}`;
+    const url = `${this.urls.get['events']}${user}?userName=${this.username}`;
     return this._http.get<UserEvent[]>(url);
   }
 

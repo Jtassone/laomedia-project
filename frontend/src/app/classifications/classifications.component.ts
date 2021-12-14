@@ -70,13 +70,13 @@ export class ClassificationsComponent implements OnInit {
     let topClassifications: Classification[] = [];
     for (let c of classifications) {
       classTree[c.id] = c;
+      c.children = [];
     }
     for (let c of classifications) {
       if (c.parentClassificationId){
-        if (!classTree[c.parentClassificationId].children) {
-          classTree[c.parentClassificationId].children = []
+        if (c.parentClassificationId in classTree) {
+          classTree[c.parentClassificationId].children.push(c)
         }
-        classTree[c.parentClassificationId].children.push(c)
       } else {
         topClassifications.push(c);
       }

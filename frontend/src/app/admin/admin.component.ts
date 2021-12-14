@@ -14,9 +14,27 @@ export class AdminComponent implements OnInit {
   columnsToDisplay = ['user', 'event'];
   selectedUser: string;
   events: UserEvent[];
+  state: 'loading' | 'ready';
+  usersToDelete = Object.create({});
 
   selectUser(user: string): void {
-    this.http.getEvents(user);
+    this.http.getEvents(user).subscribe({
+      next: data => {
+        console.log(data);
+        this.events = data;
+      }
+    })
+  }
+
+  deleteUser(user: string): void {
+    this.usersToDelete[user] = true;
+    this.http.deleteUser(user).subscribe({
+      next: data => {
+        console.log(data);
+        delete this.usersToDelete[user];
+        this.resetComponent();
+      }
+    })
   }
 
   resetComponent(): void {
@@ -26,8 +44,10 @@ export class AdminComponent implements OnInit {
       next: data => {
         console.log(`Users: ${JSON.stringify(data)}`);
         this.registeredUsers = data;
+        this.state = 'ready';
       }
     })
+    this.state = 'loading';
   }
 
   constructor(

@@ -38,6 +38,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { SelectedClassificationComponent } from './selected-classification/selected-classification.component';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 Amplify.configure(awsconfig);
 
@@ -69,6 +70,7 @@ Amplify.configure(awsconfig);
     MatListModule,
     MatProgressBarModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
     MatTableModule,
     MatToolbarModule,
     ReactiveFormsModule,

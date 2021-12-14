@@ -3,10 +3,14 @@
 
 <mat-list>
   <mat-list-item *ngFor="let user of registeredUsers">
-    <button mat-mini-fab>
+    <button mat-mini-fab (click)="selectUser(user.username)">
       <mat-icon>search</mat-icon>
     </button>
     {{user.username}}
+    <button mat-mini-fab (click)="deleteUser(user.username)">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <mat-spinner *ngIf="user.username in this.usersToDelete"></mat-spinner>
   </mat-list-item>
 </mat-list>
 

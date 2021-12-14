@@ -36,6 +36,7 @@ public class BenchmarkService {
                             String ram = sqlResponse2.getString("ram");
                             MachineConfig config = new MachineConfig(id2, core, cpu, l1, l2, l3, num_threads, ram);
                             benchmark = new Benchmark(id, date , machineConfigId, config, instanceId, implementationId);
+                            benchmarkList.add(benchmark);
                         }
                     }
                 }
@@ -43,7 +44,6 @@ public class BenchmarkService {
                         System.out.println(e);
                         throw e;
                     }
-                benchmarkList.add(benchmark);
             }
         } catch (SQLException e) {
             System.out.println(e);

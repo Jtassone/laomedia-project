@@ -223,6 +223,36 @@ Resources:
             Path: /implementations
             Method: delete
 
+  getInstance:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getInstance'
+      Handler: com.aws.codestar.projecttemplates.handler.Instance.InstanceHandler
+      Runtime: java11
+      MemorySize: 256
+      Timeout: 10
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
+
+  postInstance:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-postInstance'
+      Handler: com.aws.codestar.projecttemplates.handler.Instance.InstancePostHandler
+      Runtime: java11
+      MemorySize: 256
+      Timeout: 10
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
+
+  deleteInstance:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-deleteInstance'
+      Handler: com.aws.codestar.projecttemplates.handler.Instance.InstanceDeleteHandler
+      Runtime: java11
+      MemorySize: 256
+      Timeout: 10
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
+
   getBenchmarks:
     Type: AWS::Serverless::Function
     Properties:
@@ -268,6 +298,16 @@ Resources:
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-getUsers'
       Handler: com.aws.codestar.projecttemplates.handler.User.UserHandler
+      Runtime: java11
+      MemorySize: 256
+      Timeout: 10
+      Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
+
+  deleteUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-deleteUser'
+      Handler: com.aws.codestar.projecttemplates.handler.User.DeleteUserHandler
       Runtime: java11
       MemorySize: 256
       Timeout: 10

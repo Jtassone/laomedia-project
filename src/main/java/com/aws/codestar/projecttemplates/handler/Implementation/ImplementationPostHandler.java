@@ -5,8 +5,10 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.amazonaws.services.s3.AmazonS3;
+import com.aws.codestar.projecttemplates.handler.User.UserEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
 import com.aws.codestar.projecttemplates.utils.S3Client;
+import com.aws.codestar.projecttemplates.utils.UserEventService;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -38,6 +40,10 @@ public class ImplementationPostHandler implements RequestHandler<APIGatewayProxy
             String algorithmId = eventBody.getString("algorithmId");
             Implementation implementation = new Implementation(name, implementationDetails, UUID.fromString(algorithmId));
             ImplementationService.saveImplementation(sqlConnection,s3Client, implementation);
+            String userName = event.getQueryStringParameters().get("userName");
+            String eventDetails = "Implementat6ion with the name" + name;
+            UserEvent userEvent = new UserEvent(UUID.randomUUID(), userName, "CREATED", eventDetails);
+            UserEventService.logUserEvent(sqlConnection, userEvent);
             response.setBody(gson.toJson(implementation));
             response.setStatusCode(200);
         } catch (SQLException e) {

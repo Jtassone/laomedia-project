@@ -4,7 +4,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.aws.codestar.projecttemplates.handler.User.UserEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
+import com.aws.codestar.projecttemplates.utils.UserEventService;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import java.sql.Connection;
@@ -34,6 +36,10 @@ public class AlgorithmPostHandler implements RequestHandler<APIGatewayProxyReque
             String classificationId = eventBody.getString("classificationId");
             Algorithm algo = new Algorithm(name, algorithmDetails, UUID.fromString(classificationId));
             AlgorithmService.postAlgorithms(sqlConnection, algo);
+            String userName = event.getQueryStringParameters().get("userName");
+            String eventDetails = "algorithm with the name " + name;
+            UserEvent userEvent = new UserEvent(UUID.randomUUID(), userName, "CREATED", eventDetails);
+            UserEventService.logUserEvent(sqlConnection, userEvent);
             response.setBody(gson.toJson(algo));
             response.setStatusCode(200);
         } catch (SQLException e) {

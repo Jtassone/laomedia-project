@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
+import com.aws.codestar.projecttemplates.utils.UserEventService;
 import com.google.gson.Gson;
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 import software.amazon.awssdk.regions.Region;
@@ -14,6 +15,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class DeleteUserHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -40,6 +42,9 @@ public class DeleteUserHandler implements RequestHandler<APIGatewayProxyRequestE
             AdminDeleteUserRequest deleteUserRequest = AdminDeleteUserRequest.builder().userPoolId("us-east-1_lmPiyyHcZ").username(userName).build();
             AdminDeleteUserResponse deleteUserResponse = cognitoClient.adminDeleteUser(deleteUserRequest);
             cognitoClient.close();
+            String eventDetails = "user with the username " + userName;
+            UserEvent userEvent = new UserEvent(UUID.randomUUID(), userName, "DELETED", eventDetails);
+            UserEventService.logUserEvent(sqlConnection, userEvent);
             lambdaResponse.setBody(gson.toJson("success"));
             lambdaResponse.setStatusCode(200);
         } catch (Exception e) {

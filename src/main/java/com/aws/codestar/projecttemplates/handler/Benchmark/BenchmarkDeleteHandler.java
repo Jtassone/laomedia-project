@@ -6,11 +6,14 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.aws.codestar.projecttemplates.handler.Implementation.ImplementationService;
+import com.aws.codestar.projecttemplates.handler.User.UserEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
+import com.aws.codestar.projecttemplates.utils.UserEventService;
 import com.google.gson.Gson;
 
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class BenchmarkDeleteHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -31,6 +34,10 @@ public class BenchmarkDeleteHandler implements RequestHandler<APIGatewayProxyReq
         try {
             String id = event.getPathParameters().get("UUID");
             BenchmarkService.deleteBenchmark(sqlConnection, id);
+            String userName = event.getQueryStringParameters().get("userName");
+            String eventDetails = "benchmark with the id " + id;
+            UserEvent userEvent = new UserEvent(UUID.randomUUID(), userName, "DELETED", eventDetails);
+            UserEventService.logUserEvent(sqlConnection, userEvent);
             response.setBody(gson.toJson(id));
             response.setStatusCode(200);
         } catch (Exception e) {

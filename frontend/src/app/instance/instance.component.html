@@ -8,6 +8,10 @@
   </code>
 </mat-card>
 
+<button mat-flat-button color="primary" *ngIf="instState==='ready'" (click)="inNewTab()">Open Instance in New Tab</button>
+<button mat-flat-button color="primary" *ngIf="instState==='ready'" (click)="downloadFile()">Download This Instance</button>
+
+
 <h2>New Benchmark</h2>
 <form [formGroup]="benchForm">
   <!-- <mat-form-field appearance="fill">
@@ -128,5 +132,3 @@
   <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
   <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
 </mat-table>
-
-<button mat-flat-button color="primary">Download This Instance</button>

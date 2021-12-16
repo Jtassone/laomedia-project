@@ -28,6 +28,12 @@ export class InstanceComponent implements OnInit {
   // columnsToDisplay = ['delete', 'date','core','cpu','l1','l2','l3','numberThreads','ram']
   columnsToDisplay = ['date','core','cpu','l1','l2','l3','numberThreads','ram']
 
+  private setting = {
+    element: {
+      dynamicDownload: null as HTMLElement
+    }
+  }
+
   addBenchmark() {
     let newBench: Benchmark = {
       id: null,
@@ -54,6 +60,32 @@ export class InstanceComponent implements OnInit {
 
   deleteBenchmark(): void {
 
+  }
+
+  inNewTab(): void {
+    const blob = new Blob([this.instBody], {type: 'text/text'});
+    const url = window.URL.createObjectURL(blob);
+    window.open(url);
+  }
+
+  downloadFile(): void {
+    this.dyanmicDownloadByHtmlTag({fileName: `instance-${this.instance.name}.txt`, text: this.instBody})
+  }
+
+  private dyanmicDownloadByHtmlTag(arg: {
+    fileName: string,
+    text: string
+    }) {
+    if (!this.setting.element.dynamicDownload) {
+      this.setting.element.dynamicDownload = document.createElement('a');
+    }
+    const element = this.setting.element.dynamicDownload;
+    const fileType = arg.fileName.indexOf('.json') > -1 ? 'text/json' : 'text/plain';
+    element.setAttribute('href', `data:${fileType};charset=utf-8,${encodeURIComponent(arg.text)}`);
+    element.setAttribute('download', arg.fileName);
+
+    var event = new MouseEvent("click");
+    element.dispatchEvent(event);
   }
 
   resetComponent(): void {

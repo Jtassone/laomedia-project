@@ -73,7 +73,7 @@ export class InstanceComponent implements OnInit {
             next: data => {
               console.log(data);
               this.benchState = 'ready';
-              this.benchmarks = data.filter(inst => inst.id === this.trueId);
+              this.benchmarks = data.filter(inst => inst.instanceId === this.trueId);
             }
           });
         }

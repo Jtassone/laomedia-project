@@ -39,7 +39,7 @@ public class UserEventGetTests {
         Gson gson = new Gson();
 
         APIGatewayProxyRequestEvent getRequest = new APIGatewayProxyRequestEvent()
-                .withQueryStringParameters(Map.of("userName", "testUser"));
+                .withPathParameters(Map.of("userName", "testUser"));
 
         APIGatewayProxyResponseEvent getResponse = this.userEventHandler.handleRequest(
                 getRequest,

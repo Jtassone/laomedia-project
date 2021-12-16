@@ -48,16 +48,16 @@ export class ClassificationComponent implements OnInit {
   }
 
   mergeChildren(): boolean {
-    let ids: string[] = [];
+    let ids: Classification[] = [];
     for (let i = 0; i < this.checked.length; i++) {
       if(this.checked[i]) {
-        ids.push(this.classification.children[i].id)
+        ids.push(this.classification.children[i])
       }
     }
     if (ids.length !== 2) {
       return false;
     }
-    this.http.mergeClassifications('merge-test', ids[0], ids[1]).subscribe({
+    this.http.mergeClassifications(ids[0].name, ids[0].id, ids[1].id).subscribe({
       next: data => {
         console.log(`data: ${data}`);
       }

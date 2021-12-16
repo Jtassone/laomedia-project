@@ -13,9 +13,10 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 })
 export class SelectedClassificationComponent implements OnInit {
 
-  debugMode: boolean = false;
+  debugMode: boolean = true;
   state: string;
   formState: string;
+  reclassifyState: 'ready' | 'loading' | 'submitting' | 'error';
 
   classification: Classification;
   id: string;
@@ -68,14 +69,20 @@ export class SelectedClassificationComponent implements OnInit {
     this.http.deleteAlgorithm(id).subscribe({
       next: data => {
         console.log(`Algorithm deleted: ${JSON.stringify(data)}`);
+        this.resetComp();
       }
     })
   }
 
   reclassifyAlgorithm(id: string): void {
+    this.reclassifyState = 'submitting';
     this.http.reclassifyAlgorithm(this.reclassification, id).subscribe({
       next: data => {
         console.log(data);
+        this.reclassifyState = 'ready';
+        this.resetComp();
+      }, error: err => {
+        this.reclassifyState = 'error';
       }
     });
   }
@@ -91,10 +98,10 @@ export class SelectedClassificationComponent implements OnInit {
   resetComp(): void {
     this.state = "loading";
     this.formState = "default";
+    this.reclassifyState = 'ready';
     this.newAlgoForm = this.fb.group({
       "name": ['', Validators.required],
       "algorithmDetails": ['', Validators.required],
-      // "classificationId": ['', Validators.required]
     });
     this.http.getAlgorithms().subscribe({
       next: data => {

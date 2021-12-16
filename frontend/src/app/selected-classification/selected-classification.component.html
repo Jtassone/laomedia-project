@@ -33,9 +33,13 @@
       <mat-option *ngFor="let c of this.classifications" [value]="c.id">{{c.name}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-flat-button color="primary" [disabled]="!(reclassification && selectionExists())" (click)="reclassify()">Reclassify Selected Algorithms</button>
-  <button mat-flat-button color="warn" (click)="debug()" *ngIf="debugMode">Debug</button>
+  <button mat-flat-button color="primary" [disabled]="!(reclassification && selectionExists()) || reclassifyState === 'submitting'" (click)="reclassify()">
+    Reclassify Selected Algorithms
+    <mat-progress-bar mode='indeterminate' *ngIf="this.reclassifyState==='submitting'"></mat-progress-bar>
+  </button>
+  <!-- <button mat-flat-button color="warn" (click)="debug()" *ngIf="debugMode">Debug</button> -->
 </div>
+<p *ngIf="reclassifyState==='error'">Unable to reclassify selected algorithms</p>
 
 <h2>Add Algorithm</h2>
 <form [formGroup]="newAlgoForm">

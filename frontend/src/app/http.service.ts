@@ -20,7 +20,7 @@ export class HttpService {
 
   baseURL = 'https://8jyixjqsxb.execute-api.us-east-1.amazonaws.com/Prod/';
   username: string = 'UnregisteredUser';
-  delay = 3000;
+  delay = 0;
 
   urls = {
     get: {

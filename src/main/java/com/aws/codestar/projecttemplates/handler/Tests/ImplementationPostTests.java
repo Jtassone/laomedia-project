@@ -6,52 +6,54 @@ import com.aws.codestar.projecttemplates.handler.Algorithm.Algorithm;
 import com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmDeleteHandler;
 import com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmHandler;
 import com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmPostHandler;
+import com.aws.codestar.projecttemplates.handler.Implementation.Implementation;
+import com.aws.codestar.projecttemplates.handler.Implementation.ImplementationHandler;
+import com.aws.codestar.projecttemplates.handler.Implementation.ImplementationPostHandler;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
 import com.google.gson.Gson;
 import org.testng.annotations.Test;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-public class AlgorithmPostTests {
+public class ImplementationPostTests {
 
 
     private RDSClient mockRDSService;
-    private AlgorithmPostHandler algorithmPostHandler;
-    private AlgorithmHandler algorithmHandler;
-    private AlgorithmDeleteHandler algorithmDeleteHandler;
+    private ImplementationPostHandler implementationPostHandler;
     private TestContext context;
+
 
 
     @Test
     public void validRequest() throws SQLException {
-        algorithmPostHandler = new AlgorithmPostHandler();
+        implementationPostHandler = new ImplementationPostHandler();
         context = new TestContext();
         // 1. Arrange
-        Algorithm algorithm = new Algorithm(UUID.randomUUID(), "test algorithm 1", "this is a test algorithm", UUID.fromString("ee2eb871-36a8-484a-bba4-7c3ebd714bdb"));
+        Implementation implementation = new Implementation(UUID.randomUUID(), "test implementation 1", "this is a test implementation", UUID.fromString("ee2eb871-36a8-484a-bba4-7c3ebd714bdb"));
 
 
         // Fake AWS Lambda request from API Gateway
         APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withBody("{\"name\":\"test algorithm 1\", \"classificationId\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bdb\", \"algorithmDetails\": \"this is a test algorithm\"}")
+                .withBody("{\"name\":\"test implementation 1\", \"implementationDetails\": \"this is a test implementation\"," +
+                        "\"algorithmID\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bdb\" }")
                 .withQueryStringParameters(Map.of("userName", "testUser"));
 
 
         // 2. Act
-        APIGatewayProxyResponseEvent response = this.algorithmPostHandler.handleRequest(
+        APIGatewayProxyResponseEvent response = this.implementationPostHandler.handleRequest(
                 request,
                 context
         );
 
         Gson gson = new Gson();
         // 3. Assert
-        Algorithm algorithmResponse = gson.fromJson(response.getBody(), Algorithm.class);
+        Implementation implementationResponse = gson.fromJson(response.getBody(), Implementation.class);
         assertEquals(200, (int) response.getStatusCode());
-        assertEquals(algorithm.name, algorithmResponse.name);
-        assertEquals(algorithm.algorithmDetails, algorithmResponse.algorithmDetails);
+        assertEquals(implementation.name, implementationResponse.name);
+        assertEquals(implementation.implementationDetails, implementationResponse.implementationDetails);
     }
 
 }

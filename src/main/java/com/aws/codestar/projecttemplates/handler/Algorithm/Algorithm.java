@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Algorithm {
 
-    private UUID id;
+    public UUID id;
 
     public String name;
 

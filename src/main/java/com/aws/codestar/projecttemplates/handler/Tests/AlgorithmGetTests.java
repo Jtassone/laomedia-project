@@ -8,16 +8,19 @@ import com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmHandler;
 import com.aws.codestar.projecttemplates.handler.Algorithm.AlgorithmPostHandler;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
 import com.google.gson.Gson;
+import org.junit.jupiter.api.BeforeEach;
 import org.testng.annotations.Test;
-import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-public class AlgorithmPostTests {
+import static org.junit.Assert.assertEquals;
 
+public class AlgorithmGetTests {
 
     private RDSClient mockRDSService;
     private AlgorithmPostHandler algorithmPostHandler;
@@ -25,33 +28,30 @@ public class AlgorithmPostTests {
     private AlgorithmDeleteHandler algorithmDeleteHandler;
     private TestContext context;
 
+    @BeforeEach
+    public void setup() {
+
+    }
+
 
     @Test
-    public void validRequest() throws SQLException {
+    public void validRequest3() throws SQLException {
+        algorithmHandler = new AlgorithmHandler();
         algorithmPostHandler = new AlgorithmPostHandler();
         context = new TestContext();
-        // 1. Arrange
-        Algorithm algorithm = new Algorithm(UUID.randomUUID(), "test algorithm 1", "this is a test algorithm", UUID.fromString("ee2eb871-36a8-484a-bba4-7c3ebd714bdb"));
+        Gson gson = new Gson();
 
-
-        // Fake AWS Lambda request from API Gateway
-        APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withBody("{\"name\":\"test algorithm 1\", \"classificationId\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bdb\", \"algorithmDetails\": \"this is a test algorithm\"}")
+        APIGatewayProxyRequestEvent getRequest = new APIGatewayProxyRequestEvent()
                 .withQueryStringParameters(Map.of("userName", "testUser"));
 
-
-        // 2. Act
-        APIGatewayProxyResponseEvent response = this.algorithmPostHandler.handleRequest(
-                request,
+        APIGatewayProxyResponseEvent getResponse = this.algorithmHandler.handleRequest(
+                getRequest,
                 context
         );
 
-        Gson gson = new Gson();
-        // 3. Assert
-        Algorithm algorithmResponse = gson.fromJson(response.getBody(), Algorithm.class);
-        assertEquals(200, (int) response.getStatusCode());
-        assertEquals(algorithm.name, algorithmResponse.name);
-        assertEquals(algorithm.algorithmDetails, algorithmResponse.algorithmDetails);
+        int originalSize = gson.fromJson(getResponse.getBody(), List.class).size();
+
+        assertEquals(200, (int) getResponse.getStatusCode());
     }
 
 }

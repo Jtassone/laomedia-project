@@ -6,18 +6,6 @@
   <mat-progress-bar mode='indeterminate'></mat-progress-bar>
 </ng-container>
 
-<!-- <mat-list>
-  <mat-list-item *ngFor="let user of registeredUsers">
-    <button mat-mini-fab (click)="selectUser(user.username)">
-      <mat-icon>search</mat-icon>
-    </button>
-    {{user.username}}
-    <button mat-mini-fab (click)="deleteUser(user.username)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-list> -->
-
 <mat-table [dataSource]="registeredUsers" class="mat-elevation-z8" *ngIf="userState==='ready'">
 
   <ng-container matColumnDef="search">
@@ -32,9 +20,8 @@
   <ng-container matColumnDef="delete">
     <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
     <mat-cell *matCellDef="let user">
-      <button mat-mini-fab color="warn" (click)="deleteUser(user.username)" [disabled]="usersToDelete[id] === true">
-        <mat-icon *ngIf="!usersToDelete[id]">delete</mat-icon>
-        <mat-icon *ngIf="usersToDelete[id]">hourglass</mat-icon>
+      <button mat-mini-fab color="warn" (click)="deleteUser(user.username)" [disabled]="usersToDelete[user.username]">
+        <mat-icon>{{usersToDelete[user.username] ? 'hourglass_empty' : 'delete'}}</mat-icon>
       </button>
       <!-- <mat-spinner *ngIf="this.usersToDelete[user.username]"></mat-spinner> -->
     </mat-cell>

@@ -19,6 +19,7 @@ export class ClassificationsComponent implements OnInit {
   classificationList: Classification[];
   root: Classification;
   newClassForm: FormGroup;
+  mergeForm: FormGroup;
 
   resetClassificationsComponent() {
     this.state = "loading";
@@ -42,6 +43,9 @@ export class ClassificationsComponent implements OnInit {
     this.newClassForm = this.fb.group({
       name: ['', Validators.required],
       parent: ['null', Validators.required]
+    });
+    this.mergeForm = this.fb.group({
+      name: ['', Validators.required],
     });
   }
 

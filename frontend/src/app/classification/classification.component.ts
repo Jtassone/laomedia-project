@@ -12,6 +12,7 @@ export class ClassificationComponent implements OnInit {
   @Input() classification: Classification;
   @Input() isRoot = false;
   checked: boolean[];
+  @Input() mergeName: string;
 
   mergable(): boolean {
     let count = 0;
@@ -57,7 +58,7 @@ export class ClassificationComponent implements OnInit {
     if (ids.length !== 2) {
       return false;
     }
-    this.http.mergeClassifications(ids[0].name, ids[0].id, ids[1].id).subscribe({
+    this.http.mergeClassifications(this.mergeName, ids[0].id, ids[1].id).subscribe({
       next: data => {
         console.log(`data: ${data}`);
       }

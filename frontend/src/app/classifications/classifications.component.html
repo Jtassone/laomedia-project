@@ -14,7 +14,15 @@
   <p>There was an error loading the classifications. Please refresh the page.</p>
 </ng-container>
 
-<lao-classification [classification]='this.root' [isRoot]="true"></lao-classification>
+<lao-classification [classification]='this.root' [isRoot]="true" [mergeName]="mergeForm.get('name').value"></lao-classification>
+
+<form [formGroup]="mergeForm">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Merged Classification Name</mat-label>
+    <input matInput id="name" type="text" formControlName="name" />
+  </mat-form-field>
+</form>
 
 <h2>New Classification</h2>
 

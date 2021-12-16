@@ -9,9 +9,9 @@
 <ul *ngIf="this.classification.children && this.classification.children.length > 0">
   <li *ngFor="let c of this.classification.children; index as i">
     <mat-checkbox (change)="toggleCheck(i)"></mat-checkbox>
-    <button mat-flat-button color="primary" class="mrg-btn" [disabled]="!(mergable() && this.checked[i])" (click)="mergeChildren()">
+    <button mat-flat-button color="primary" class="mrg-btn" [disabled]="!(mergable() && this.checked[i] && mergeName)" (click)="mergeChildren()">
       Merge
     </button>
-    <lao-classification [classification]='c'></lao-classification>
+    <lao-classification [classification]='c' [mergeName]='mergeName'></lao-classification>
   </li>
 </ul>

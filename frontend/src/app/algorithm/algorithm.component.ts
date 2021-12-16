@@ -69,6 +69,8 @@ export class AlgorithmComponent implements OnInit {
         console.log(`Deleted implementation ${JSON.stringify(data)}`);
         delete this.toDelete[id];
         this.resetComp();
+      }, error: err => {
+        delete this.toDelete[id];
       }
     })
   }

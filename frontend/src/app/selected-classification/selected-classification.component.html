@@ -18,8 +18,8 @@
     <a [routerLink]="['/algorithm-view', algo.id]">
       {{algo.name}}
     </a>
-    <button mat-mini-fab (click)="deleteAlgo(algo.id)">
-      <mat-icon>delete</mat-icon>
+    <button mat-mini-fab (click)="deleteAlgo(algo.id)" [disabled]="toDelete[algo.id]">
+      <mat-icon>{{toDelete[algo.id] ? 'hourglass_empty' : 'delete'}}</mat-icon>
     </button>
   </li>
 </ul>

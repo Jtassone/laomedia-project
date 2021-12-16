@@ -15,6 +15,7 @@ export class ClassificationComponent implements OnInit {
   checked: boolean[];
   @Input() mergeName: string;
   @Output("resetPage") resetPage: EventEmitter<any> = new EventEmitter();
+  deleting: boolean = false;
 
   mergable(): boolean {
     let count = 0;
@@ -43,9 +44,10 @@ export class ClassificationComponent implements OnInit {
   }
 
   deleteClassification(): void {
+    this.deleting = true;
     this.http.deleteClassification(this.classification.id).subscribe({
       next: data => {
-        console.log(`yay: ${JSON.stringify(data)}`)
+        this.deleting = false;
         this.resetPage.emit();
       }, error: err => {
         this.resetPage.emit();

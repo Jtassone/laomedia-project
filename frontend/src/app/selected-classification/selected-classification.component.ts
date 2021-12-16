@@ -31,6 +31,8 @@ export class SelectedClassificationComponent implements OnInit {
     // "classificationId": ['', Validators.required]
   })
 
+  toDelete: {[key: string]: true} = Object.create({});
+
   toggleCheck(i: number): boolean {
     this.selected[i] = !this.selected[i];
     return this.selected[i];
@@ -66,10 +68,15 @@ export class SelectedClassificationComponent implements OnInit {
   }
 
   deleteAlgo(id: string): void {
+    this.toDelete[id] = true;
     this.http.deleteAlgorithm(id).subscribe({
       next: data => {
+        delete this.toDelete[id]
         console.log(`Algorithm deleted: ${JSON.stringify(data)}`);
         this.resetComp();
+        delete this.toDelete[id]
+      }, error: err => {
+        delete this.toDelete[id]
       }
     })
   }

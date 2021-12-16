@@ -35,6 +35,7 @@ export class InstanceComponent implements OnInit {
   }
 
   addBenchmark() {
+    this.formState = 'submitting';
     let newBench: Benchmark = {
       id: null,
       date: this.benchForm.get('date').value.toISOString().substring(0,10),

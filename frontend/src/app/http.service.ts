@@ -54,14 +54,14 @@ export class HttpService {
   getClassifications(): Observable<Classification[]> {
     const url = `${this.urls.get['class']}?userName=${this.username}`;
     return this._http.get<Classification[]>(url).pipe(
-      tap(data => console.log(`Classifications: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Received classifications`))
     )
   }
 
   getClassification(id: string): Observable<Classification> {
     const url = `${this.urls.get['class']}?userName=${this.username}`;
     return this._http.get<Classification>(url).pipe(
-      tap(data => console.log(`Data: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Received classification`))
     )
   }
 
@@ -69,14 +69,14 @@ export class HttpService {
     const url = `${this.urls.post['class']}?userName=${this.username}`;
     const body = JSON.stringify({name: name, parentClassificationId: parent, userName: this.username});
     return this._http.post<Classification>(url, body).pipe(
-      tap(data => console.log(`Classification added: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Classification added`))
     );
   }
 
   deleteClassification(id: string): Observable<any> {
     const url = `${this.urls.delete['class']}${id}?userName=${this.username}`;
     return this._http.delete<any>(url).pipe(
-      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Deleted Classification`))
     )
   }
 
@@ -88,14 +88,14 @@ export class HttpService {
     }
     const url = `${this.urls.post.classMerge}?userName=${this.username}`;
     return this._http.post<any>(url, body).pipe(
-      tap(data => console.log(`Merge status: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Merged Algorithms`))
     );
   }
 
   getAlgorithms(): Observable<Algorithm2[]> {
     const url = `${this.urls.get['algos']}?userName=${this.username}`;
     return this._http.get<Algorithm2[]>(url).pipe(
-      tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Received Algorithms`))
     )
   }
 
@@ -103,7 +103,7 @@ export class HttpService {
     const url = `${this.urls.post.reclassify}?userName=${this.username}`;
     const body = {classificationId, algorithmId}
     return this._http.post<Algorithm2[]>(url, body).pipe(
-      tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Received Algorithms`))
     )
   }
 
@@ -115,21 +115,21 @@ export class HttpService {
       algorithmDetails
     }
     return this._http.post<any>(url, body).pipe(
-      tap(data => console.log(`List of All Algorithms: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Added Algorithm`))
     );
   }
 
   deleteAlgorithm (id: string): Observable<any> {
     const url = `${this.urls.delete['algos']}${id}?userName=${this.username}`;
     return this._http.delete<any>(url).pipe(
-      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Deleted Algorithm`))
     )
   }
 
   getImplementations(): Observable<Implementation[]> {
     const url = `${this.urls.get['imp']}?userName=${this.username}`;
     return this._http.get<Implementation[]>(url).pipe(
-      tap(data => console.log(`List of All Implementations: ${JSON.stringify(data)}`)),
+      tap(data => console.log(`Received Implementations`)),
       map(data => {
         data.map(imp => {
           imp.implementationDetails = atob(imp.implementationDetails)
@@ -148,21 +148,21 @@ export class HttpService {
       implementationDetails
     }
     return this._http.post<any>(url, body).pipe(
-      tap(data => console.log(`Implementation added: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Added implementation`))
     );
   }
 
   deleteImplementation (id: string): Observable<any> {
     const url = `${this.urls.delete['imp']}${id}?userName=${this.username}`;
     return this._http.delete<any>(url).pipe(
-      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Deleted Implementation`))
     )
   }
 
   getInstances(): Observable<Instance[]> {
     const url = `${this.urls.get.inst}?userName=${this.username}`;
     return this._http.get<Instance[]>(url).pipe(
-      tap(data => console.log(`List of All Instances: ${JSON.stringify(data)}`)),
+      tap(data => console.log(`Received Instances`)),
       delay(this.delay)
     );
   }
@@ -176,21 +176,21 @@ export class HttpService {
       implementationId: inst.implementationId,
     }
     return this._http.post<any>(url, body).pipe(
-      tap(data => console.log(`Instance added: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Instance added`))
     );
   }
 
   deleteInstance (id: string): Observable<any> {
     const url = `${this.urls.delete.inst}${id}?userName=${this.username}`;
     return this._http.delete<any>(url).pipe(
-      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Deleted Instance`))
     )
   }
 
   getBenchmarks(): Observable<Benchmark[]> {
     const url = `${this.urls.get.bench}?userName=${this.username}`;
     return this._http.get<Benchmark[]>(url).pipe(
-      tap(data => console.log(`List of All Benchmarks: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Benchmarks received`))
     );
   }
 
@@ -198,14 +198,14 @@ export class HttpService {
     const url = `${this.urls.post.bench}?userName=${this.username}`;
     const body = bench;
     return this._http.post<any>(url, body).pipe(
-      tap(data => console.log(`Benchmark added: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Added benchmark`))
     );
   }
 
   deleteBenchmark (id: string): Observable<any> {
     const url = `${this.urls.delete.bench}${id}?userName=${this.username}`;
     return this._http.delete<any>(url).pipe(
-      tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
+      tap(data => console.log(`Deleted benchmark`))
     )
   }
 

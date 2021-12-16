@@ -25,7 +25,6 @@ export class AdminComponent implements OnInit {
     this.newUser = user;
     this.http.getEvents(user).subscribe({
       next: data => {
-        console.log(data);
         this.events = data;
         this.selectedUser = user;
         this.eventState = 'ready';
@@ -39,9 +38,10 @@ export class AdminComponent implements OnInit {
     this.usersToDelete[user] = true;
     this.http.deleteUser(user).subscribe({
       next: data => {
-        console.log(data);
         delete this.usersToDelete[user];
         this.resetComponent();
+      }, error: err => {
+        delete this.usersToDelete[user];
       }
     })
   }
@@ -63,7 +63,6 @@ export class AdminComponent implements OnInit {
     this.selectedUser = '';
     this.http.getUsers().subscribe({
       next: data => {
-        console.log(`Users: ${JSON.stringify(data)}`);
         this.registeredUsers = data;
         this.userState = 'ready';
       }

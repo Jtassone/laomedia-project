@@ -29,7 +29,6 @@ export class ClassificationsComponent implements OnInit {
     this.http.getClassifications().subscribe({
       next: data => {
         let valid: Classification[] = this.cleanClassifications(data);
-        console.log(`Classifications: ${JSON.stringify(valid)}`);
         let tree = this.buildClassificationTree(valid);
         this.root = new Classification('root', 'root', [], tree, null);
         this.classificationList = valid;

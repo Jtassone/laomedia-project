@@ -44,9 +44,7 @@ export class ImplementationComponent implements OnInit {
     this.formState = 'submitting';
     let fileReader = new FileReader();
     fileReader.onload = e => {
-      console.log(fileReader.result);
       const b64string = btoa(fileReader.result as string)
-      console.log(b64string);
       let newInstance: Instance = {
         id: null,
         name: this.impForm.get('name').value,

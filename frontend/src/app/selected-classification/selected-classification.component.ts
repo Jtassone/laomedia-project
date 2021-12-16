@@ -72,7 +72,6 @@ export class SelectedClassificationComponent implements OnInit {
     this.http.deleteAlgorithm(id).subscribe({
       next: data => {
         delete this.toDelete[id]
-        console.log(`Algorithm deleted: ${JSON.stringify(data)}`);
         this.resetComp();
         delete this.toDelete[id]
       }, error: err => {
@@ -85,7 +84,6 @@ export class SelectedClassificationComponent implements OnInit {
     this.reclassifyState = 'submitting';
     this.http.reclassifyAlgorithm(this.reclassification, id).subscribe({
       next: data => {
-        console.log(data);
         this.reclassifyState = 'ready';
         this.resetComp();
       }, error: err => {

@@ -38,9 +38,7 @@ export class AlgorithmComponent implements OnInit {
   uploadDocument() {
     let fileReader = new FileReader();
     fileReader.onload = e => {
-      console.log(fileReader.result);
       const b64string = btoa(fileReader.result as string)
-      console.log(b64string);
       this.http.addImplementation(
         this.newImpForm.get('name').value,
         this.algorithm.id,
@@ -66,7 +64,6 @@ export class AlgorithmComponent implements OnInit {
     this.toDelete[id] = true;
     this.http.deleteImplementation(id).subscribe({
       next: data => {
-        console.log(`Deleted implementation ${JSON.stringify(data)}`);
         delete this.toDelete[id];
         this.resetComp();
       }, error: err => {

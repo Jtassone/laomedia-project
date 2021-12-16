@@ -67,7 +67,6 @@ export class ClassificationComponent implements OnInit {
     }
     this.http.mergeClassifications(this.mergeName, ids[0].id, ids[1].id).subscribe({
       next: data => {
-        console.log(`data: ${data}`);
         this.resetPage.emit();
       }, error: err => {
         this.resetPage.emit();

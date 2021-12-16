@@ -14,7 +14,7 @@ export class ClassificationComponent implements OnInit {
   @Input() isRoot = false;
   checked: boolean[];
   @Input() mergeName: string;
-  @Output()("resetPage") resetPage: EventEmitter<any> = new EventEmitter();
+  @Output("resetPage") resetPage: EventEmitter<any> = new EventEmitter();
 
   mergable(): boolean {
     let count = 0;
@@ -72,6 +72,10 @@ export class ClassificationComponent implements OnInit {
       }
     })
     return true
+  }
+
+  resetParent(): void {
+    this.resetPage.emit();
   }
 
   debug(): void {

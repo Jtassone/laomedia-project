@@ -49,6 +49,11 @@ export class ClassificationsComponent implements OnInit {
     });
   }
 
+  resetPage(): void {
+    console.log('Page should be reset');
+    this.resetClassificationsComponent();
+  }
+
   addClassification() {
     this.state = "submitting";
     this.formError = false;

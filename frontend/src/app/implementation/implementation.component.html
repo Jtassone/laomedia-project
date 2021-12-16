@@ -28,14 +28,16 @@
     <a [routerLink]="['/instance-view', inst.id]">
       {{inst.name}}
     </a>
-    <button mat-mini-fab color="warn" (click)="deleteInstance(inst.id)" *ngIf="!toDelete[inst.id]">
-      <mat-icon>delete</mat-icon>
-    </button>
-    <ng-container *ngIf="toDelete[inst.id]">
-      <button mat-mini-fab color="warn" (click)="deleteInstance(inst.id)" disabled>
-        <mat-icon>hourglass_empty</mat-icon>
+    <ng-container *ngIf="isAdmin()">
+      <button mat-mini-fab color="warn" (click)="deleteInstance(inst.id)" *ngIf="!toDelete[inst.id]">
+        <mat-icon>delete</mat-icon>
       </button>
-      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      <ng-container *ngIf="toDelete[inst.id]">
+        <button mat-mini-fab color="warn" (click)="deleteInstance(inst.id)" disabled>
+          <mat-icon>hourglass_empty</mat-icon>
+        </button>
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </ng-container>
     </ng-container>
   </li>
 </ul>

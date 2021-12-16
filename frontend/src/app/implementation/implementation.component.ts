@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Implementation } from '../model/implementation.model';
 import { Instance } from '../model/instance.model';
 import { instList } from '../data/instances.data';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'lao-implementation',
@@ -102,10 +103,14 @@ export class ImplementationComponent implements OnInit {
     })
   }
 
+  isAdmin(): boolean { return this.auth.isAdmin(); }
+  isRegistered(): boolean { return this.auth.isRegistered(); }
+
   constructor(
     private http: HttpService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private auth: AuthService,
   ) { }
 
   resetComp(): void {

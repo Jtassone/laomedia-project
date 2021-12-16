@@ -32,12 +32,17 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    for (let admin of this.adminList) {
-      if (this.username === admin) {
-        return true;
-      }
-    }
-    return false;
+    return this.isLoggedIn();
+    // for (let admin of this.adminList) {
+    //   if (this.username === admin) {
+    //     return true;
+    //   }
+    // }
+    // return false;
+  }
+
+  isRegistered(): boolean {
+    return this.username !== 'UnregisteredUser';
   }
 
   constructor() { }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { HttpService } from '../http.service';
+import { AuthService } from '../auth.service';
 import { Classification } from '../model/classification.model';
 
 @Component({
@@ -32,7 +33,10 @@ export class ClassificationComponent implements OnInit {
     return this.checked[i];
   }
 
-  constructor(private http: HttpService) { }
+  constructor(
+    private http: HttpService,
+    private auth: AuthService,
+  ) { }
 
   ngOnInit(): void {
     this.checked = [];
@@ -77,6 +81,14 @@ export class ClassificationComponent implements OnInit {
 
   resetParent(): void {
     this.resetPage.emit();
+  }
+
+  isAdmin(): boolean {
+    return this.auth.isAdmin();
+  }
+
+  isRegistered(): boolean {
+    return this.auth.isRegistered();
   }
 
   debug(): void {

@@ -2,7 +2,7 @@
   <a [routerLink]="'../classification-view/' + this.classification.id">
     {{this.classification.name}}
   </a>
-  <button mat-mini-fab (click)="deleteClassification()" [disabled]="deleting">
+  <button mat-mini-fab (click)="deleteClassification()" [disabled]="deleting" *ngIf="isAdmin()">
     <mat-icon>{{deleting ? 'hourglass_empty' : 'delete' }}</mat-icon>
   </button>
 </span>

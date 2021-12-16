@@ -23,7 +23,7 @@
     <a [routerLink]="['/implementation-view', imp.id]">
       {{imp.name}}
     </a>
-    <button mat-mini-fab (click)="deleteImplementation(imp.id)" [disabled]="toDelete[imp.id]">
+    <button mat-mini-fab (click)="deleteImplementation(imp.id)" [disabled]="toDelete[imp.id]" *ngIf="isAdmin()">
       <mat-icon>{{toDelete[imp.id] ? 'hourglass_empty' : 'delete'}}</mat-icon>
     </button>
     <mat-spinner *ngIf="toDelete[imp.id]"></mat-spinner>

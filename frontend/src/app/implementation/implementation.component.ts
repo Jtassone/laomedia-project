@@ -40,6 +40,7 @@ export class ImplementationComponent implements OnInit {
   }
 
   uploadDocument() {
+    this.formState = 'submitting';
     let fileReader = new FileReader();
     fileReader.onload = e => {
       console.log(fileReader.result);
@@ -54,7 +55,8 @@ export class ImplementationComponent implements OnInit {
       } as Instance
       this.http.addInstance(newInstance).subscribe({
         next: data => {
-          console.log('hi');
+          this.formState = 'ready';
+          this.resetComp();
         }
       })
     }

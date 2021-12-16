@@ -39,6 +39,8 @@ import { SelectedClassificationComponent } from './selected-classification/selec
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 Amplify.configure(awsconfig);
 
@@ -64,10 +66,12 @@ Amplify.configure(awsconfig);
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatDatepickerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatNativeDateModule,
     MatProgressBarModule,
     MatSelectModule,
     MatProgressSpinnerModule,

@@ -31,8 +31,8 @@ export class InstanceComponent implements OnInit {
   addBenchmark() {
     let newBench: Benchmark = {
       id: null,
-      date: this.benchForm.get('date').value,
-      instanceId: this.instance.id,
+      date: this.benchForm.get('date').value.toISOString().substring(0,10),
+      instanceId: this.trueId,
       implementationId: this.instance.implementationId,
       core: this.benchForm.get('core').value,
       cpu: this.benchForm.get('cpu').value,

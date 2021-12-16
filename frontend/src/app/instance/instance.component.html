@@ -8,11 +8,18 @@
   </code>
 </mat-card>
 
-<h2>New Instance</h2>
+<h2>New Benchmark</h2>
 <form [formGroup]="benchForm">
-  <mat-form-field appearance="fill">
+  <!-- <mat-form-field appearance="fill">
     <mat-label for="date">date (yyyy-mm-dd)</mat-label>
     <input matInput id="date" type="text" formControlName="date" />
+  </mat-form-field> -->
+
+  <mat-form-field color="accent" appearance="fill">
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="picker1" formControlName="date">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -85,37 +92,37 @@
 
   <ng-container matColumnDef="core">
     <mat-header-cell *matHeaderCellDef> core </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.core}} </mat-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig.core}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="cpu">
     <mat-header-cell *matHeaderCellDef> cpu </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.cpu}} </mat-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig.cpu}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="l1">
     <mat-header-cell *matHeaderCellDef> l1 </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.l1}} </mat-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig.l1}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="l2">
     <mat-header-cell *matHeaderCellDef> l2 </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.l2}} </mat-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig.l2}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="l3">
     <mat-header-cell *matHeaderCellDef> l3 </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.l3}} </mat-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig.l3}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="numberThreads">
     <mat-header-cell *matHeaderCellDef> numberThreads </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.numberThreads}} </mat-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig.numberThreads}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="ram">
     <mat-header-cell *matHeaderCellDef> ram </mat-header-cell>
-    <mat-cell *matCellDef="let benchmark"> {{benchmark.ram}} </mat-cell>
+    <mat-cell *matCellDef="let benchmark"> {{benchmark.machineConfig.ram}} </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
@@ -123,4 +130,3 @@
 </mat-table>
 
 <button mat-flat-button color="primary">Download This Instance</button>
-<button mat-flat-button color="primary">Add Instance</button>

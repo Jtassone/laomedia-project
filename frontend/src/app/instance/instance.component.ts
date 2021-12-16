@@ -152,6 +152,9 @@ export class InstanceComponent implements OnInit {
     this.trueId = this.id;
     this.instBody = '-- Loading Instance --'
     this.resetComponent();
+    if (!this.auth.isLoggedIn()) {
+      this.columnsToDisplay = ['date','core','cpu','l1','l2','l3','numberThreads','ram']
+    }
   }
 
 }

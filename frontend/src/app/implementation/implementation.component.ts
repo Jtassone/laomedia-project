@@ -99,7 +99,7 @@ export class ImplementationComponent implements OnInit {
     this.instState = 'loading';
     this.http.getInstances().subscribe({
       next: data => {
-        this.instances = data;
+        this.instances = data.filter(inst => inst.implementationId === this.trueId);
         this.instState = 'ready';
       }, error: err => {
         this.instState = 'error';

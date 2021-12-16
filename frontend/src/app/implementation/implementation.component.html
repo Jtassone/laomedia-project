@@ -21,6 +21,8 @@
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-container>
 
+<p>Selected implementation has no instances.</p>
+
 <ul *ngIf="instState === 'ready'">
   <li *ngFor="let inst of this.instances">
     <a [routerLink]="['/instance-view', inst.id]">
@@ -29,6 +31,7 @@
   </li>
 </ul>
 
+<h2>New Instance</h2>
 <form [formGroup]="impForm">
   <mat-form-field appearance="fill">
     <mat-label for="name">New Instance Name</mat-label>

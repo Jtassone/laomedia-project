@@ -45,6 +45,7 @@ export class HttpService {
       imp: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/implementations/",
       user: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/users/",
       bench: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/benchmarks/",
+      inst: "https://3jot1u1xb5.execute-api.us-east-1.amazonaws.com/default/instances/",
     }
   }
 
@@ -180,7 +181,7 @@ export class HttpService {
   }
 
   deleteInstance (id: string): Observable<any> {
-    const url = `${this.urls.delete['imp']}${id}?userName=${this.username}`;
+    const url = `${this.urls.delete.inst}${id}?userName=${this.username}`;
     return this._http.delete<any>(url).pipe(
       tap(data => console.log(`Data from Delete: ${JSON.stringify(data)}`))
     )

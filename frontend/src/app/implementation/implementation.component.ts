@@ -26,6 +26,7 @@ export class ImplementationComponent implements OnInit {
   state: string;
   impForm: FormGroup;
   instFile: any;
+  toDelete: {[key: string]: boolean} = Object.create({});
 
   private setting = {
     element: {
@@ -57,6 +58,8 @@ export class ImplementationComponent implements OnInit {
         next: data => {
           this.formState = 'ready';
           this.resetComp();
+        }, error: err => {
+          this.formState = 'error';
         }
       })
     }
@@ -87,6 +90,18 @@ export class ImplementationComponent implements OnInit {
 
     var event = new MouseEvent("click");
     element.dispatchEvent(event);
+  }
+
+  deleteInstance(id: string): void {
+    this.toDelete[id] = true;
+    this.http.deleteInstance(id).subscribe({
+      next: data => {
+        this.toDelete[id] = false;
+        this.resetComp();
+      }, error: err => {
+        this.toDelete[id] = false;
+      }
+    })
   }
 
   constructor(

@@ -7,8 +7,10 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.amazonaws.services.s3.AmazonS3;
 import com.aws.codestar.projecttemplates.handler.Implementation.Implementation;
 import com.aws.codestar.projecttemplates.handler.Implementation.ImplementationService;
+import com.aws.codestar.projecttemplates.handler.User.UserEvent;
 import com.aws.codestar.projecttemplates.utils.RDSClient;
 import com.aws.codestar.projecttemplates.utils.S3Client;
+import com.aws.codestar.projecttemplates.utils.UserEventService;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
@@ -48,6 +50,10 @@ public class BenchmarkPostHandler implements RequestHandler<APIGatewayProxyReque
             Benchmark benchmark = new Benchmark(UUID.randomUUID(), Date.valueOf(date), machineConfig.id, UUID.fromString(instanceId), UUID.fromString(implementationId));
             BenchmarkService.saveMachineConfig(sqlConnection, machineConfig);
             BenchmarkService.saveBenchmark(sqlConnection, benchmark);
+            String userName = event.getQueryStringParameters().get("userName");
+            String eventDetails = "benchmark with the id " + benchmark.id;
+            UserEvent userEvent = new UserEvent(UUID.randomUUID(), userName, "CREATED", eventDetails);
+            UserEventService.logUserEvent(sqlConnection, userEvent);
             response.setBody(gson.toJson(benchmark));
             response.setStatusCode(200);
         } catch (SQLException e) {

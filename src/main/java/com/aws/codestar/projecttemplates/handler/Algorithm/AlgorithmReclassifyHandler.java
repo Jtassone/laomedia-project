@@ -37,8 +37,9 @@ public class AlgorithmReclassifyHandler implements RequestHandler<APIGatewayProx
         headers.put("Content-Type", "application/json");
         try {
             JSONObject eventBody = new JSONObject(event.getBody());
-            String classificationID= eventBody.getString("classificationID");
-            String algorithmId = eventBody.getString("algorithmID");
+            System.out.println(eventBody);
+            String classificationID= eventBody.getString("classificationId");
+            String algorithmId = eventBody.getString("algorithmId");
             AlgorithmService.reclassifyAlgorithm(sqlConnection, algorithmId, classificationID);
             String userName = event.getQueryStringParameters().get("userName");
             String eventDetails = "algorithm with the id  " + algorithmId + "to classification with the id " + classificationID;

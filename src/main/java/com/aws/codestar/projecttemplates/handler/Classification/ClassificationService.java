@@ -83,13 +83,16 @@ public class ClassificationService {
     public static void deleteClassification(Connection sqlConnection, String id) throws Exception {
         byte[] classificationIdBytes = UUIDUtil.getBytesFromUUID(UUID.fromString(id));
         try {
+            PreparedStatement selectStatement = sqlConnection.prepareStatement("SELECT * FROM classifications WHERE id = ?");
+            selectStatement.setBytes(1, classificationIdBytes);
+            ResultSet selectResultSet = selectStatement.executeQuery();
             PreparedStatement preparedStatement = sqlConnection.prepareStatement("DELETE FROM classifications WHERE id = ?");
             preparedStatement.setBytes(1, classificationIdBytes );
             System.out.println(preparedStatement);
-            ResultSet resultSet1 = preparedStatement.executeQuery();
-            while (resultSet1.next()) {
-                byte[] classificationId = resultSet1.getBytes("id");
-                byte[] parentClassificationId = resultSet1.getBytes("parent_classification_id");
+            preparedStatement.executeUpdate();
+            while (selectResultSet.next()) {
+                byte[] classificationId = selectResultSet.getBytes("id");
+                byte[] parentClassificationId = selectResultSet.getBytes("parent_classification_id");
                 if(parentClassificationId != null) {
                     updateParentId(sqlConnection, parentClassificationId, classificationId);
                 } else {

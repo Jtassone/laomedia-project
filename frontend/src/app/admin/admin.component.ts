@@ -17,6 +17,7 @@ export class AdminComponent implements OnInit {
   selectedUser: string;
   events: UserEvent[];
   usersToDelete = Object.create({});
+  adminColumns = ['search', 'username', 'confirmed', 'email', 'delete']
 
   selectUser(user: string): void {
     this.eventState = 'loading';
@@ -41,6 +42,15 @@ export class AdminComponent implements OnInit {
         this.resetComponent();
       }
     })
+  }
+
+  getEmail(user: any): string {
+    for (let att of user.attributes) {
+      if (att.name === 'email') {
+        return att.value;
+      }
+    }
+    return '-- no email --';
   }
 
   resetComponent(): void {

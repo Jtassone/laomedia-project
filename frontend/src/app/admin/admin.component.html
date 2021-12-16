@@ -1,7 +1,12 @@
 <h1>Admin View</h1>
 <h2>Registered Users</h2>
 
-<mat-list>
+<ng-container *ngIf="userState === 'loading'">
+  <p>Loading list of users</p>
+  <mat-progress-bar mode='indeterminate'></mat-progress-bar>
+</ng-container>
+
+<!-- <mat-list>
   <mat-list-item *ngFor="let user of registeredUsers">
     <button mat-mini-fab (click)="selectUser(user.username)">
       <mat-icon>search</mat-icon>
@@ -10,14 +15,56 @@
     <button mat-mini-fab (click)="deleteUser(user.username)">
       <mat-icon>delete</mat-icon>
     </button>
-    <mat-spinner *ngIf="this.usersToDelete[user.username]"></mat-spinner>
   </mat-list-item>
-</mat-list>
+</mat-list> -->
 
-<ng-container *ngIf="userState === 'loading'">
-  <p>Loading list of users</p>
-  <mat-progress-bar mode='indeterminate'></mat-progress-bar>
-</ng-container>
+<mat-table [dataSource]="registeredUsers" class="mat-elevation-z8" *ngIf="userState==='ready'">
+
+  <ng-container matColumnDef="search">
+    <mat-header-cell *matHeaderCellDef> Get Activity </mat-header-cell>
+    <mat-cell *matCellDef="let user">
+      <button mat-mini-fab (click)="selectUser(user.username)">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="delete">
+    <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+    <mat-cell *matCellDef="let user">
+      <button mat-mini-fab color="warn" (click)="deleteUser(user.username)" [disabled]="usersToDelete[id] === true">
+        <mat-icon *ngIf="!usersToDelete[id]">delete</mat-icon>
+        <mat-icon *ngIf="usersToDelete[id]">hourglass</mat-icon>
+      </button>
+      <!-- <mat-spinner *ngIf="this.usersToDelete[user.username]"></mat-spinner> -->
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="username">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let user"> {{user.username}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="confirmed">
+    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+    <mat-cell *matCellDef="let user"> {{user.userStatus}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+    <mat-cell *matCellDef="let user"> {{getEmail(user)}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <mat-header-cell *matHeaderCellDef> Date Created </mat-header-cell>
+    <mat-cell *matCellDef="let user"> {{user.userCreateDate.seconds | date}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="adminColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: adminColumns;"></mat-row>
+</mat-table>
+
+
 
 <ng-container *ngIf="userState === 'error'">
   <p><mat-icon>error</mat-icon> Error loading users. Please refresh the page.</p>

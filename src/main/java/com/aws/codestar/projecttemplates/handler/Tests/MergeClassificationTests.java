@@ -34,7 +34,7 @@ public class MergeClassificationTests {
 
         // Fake AWS Lambda request from API Gateway
         APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withBody("{\"newClassificationName\":\"test classification 1\", \"classificationId\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bdb\", " +
+                .withBody("{\"newClassificationName\":\"test classification 1\", \"classification1Id\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bdb\", " +
                         "\"classification2Id\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bd2\"}")
                 .withQueryStringParameters(Map.of("userName", "testUser"));
 

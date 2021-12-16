@@ -41,7 +41,7 @@ public class BenchmarkPostTests {
 
         // Fake AWS Lambda request from API Gateway
         APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withBody("{\"date\":\"2019-23-22\", " +
+                .withBody("{\"date\":\"2021-12-15\", " +
                         "\"instanceId\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bd2\", \"core\": \"1\", \"cpu\": \"2\", \"l1\": \"3\",\"l2\": \"2\",\"l3\": \"3\",\"numberThreads\": \"4\", \"ram\": \"5\"," +
                         "\"implementationId\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bd3\"}")
                 .withQueryStringParameters(Map.of("userName", "testUser"));

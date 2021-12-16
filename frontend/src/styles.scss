@@ -72,3 +72,13 @@ $laomedeia-theme: mat-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+code {
+  white-space: pre;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-rows: 1fr;
+  margin: auto;
+}

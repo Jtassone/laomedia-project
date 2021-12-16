@@ -1,18 +1,27 @@
-<h1>Active Implementation: {{implementation.name}}</h1>
+<h1>Active Implementation: {{id}}</h1>
 
 <h2>Body</h2>
-<ng-container *ngIf="this.state === 'loading'">
+<ng-container *ngIf="this.impState === 'loading'">
   <p>Loading Implementation Details</p>
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-container>
-<mat-card *ngIf="this.state !== 'loading'">
+<mat-card *ngIf="this.impState === 'ready'">
   <code>
     {{implementation.implementationDetails}}
   </code>
 </mat-card>
 
+<button mat-flat-button color="primary" [disabled]="this.impState !== 'ready'" (click)="inNewTab()">Open Implementation In New Tab</button>
+<button mat-flat-button color="primary" [disabled]="this.impState !== 'ready'" (click)="inNewTab()">Open Implementation In New Tab</button>
+
 <h2>Problem Instance List</h2>
-<ul>
+
+<ng-container *ngIf="instState === 'loading'">
+  <p>Loading instances for this implementation.</p>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-container>
+
+<ul *ngIf="instState === 'ready'">
   <li *ngFor="let inst of this.instances">
     <a [routerLink]="['/instance-view', inst.id]">
       {{inst.name}}
@@ -28,11 +37,10 @@
 
   <input id="upload" type="file" formControlName="upload" (change)="fileChanged($event)" />
 
-  <button mat-flat-button color="primary" [disabled]="!this.impForm.valid || this.state === 'submitting'" (click)="addInstance()">
+  <button mat-flat-button color="primary" [disabled]="!this.impForm.valid || this.formState === 'submitting'" (click)="addInstance()">
     Add Implementation
-    <mat-progress-bar mode='indeterminate' *ngIf="this.state==='submitting'"></mat-progress-bar>
+    <mat-progress-bar mode='indeterminate' *ngIf="this.formState==='submitting'"></mat-progress-bar>
   </button>
-  <p *ngIf="this.state === 'error'">There was an error submitting the form data. It's possible that the lambda timed out and that the new implementation will show if the page is reloaded.</p>
+  <p *ngIf="this.formState === 'error'">There was an error submitting the form data. It's possible that the lambda timed out and that the new implementation will show if the page is reloaded.</p>
 </form>
 
-<button mat-flat-button color="primary">Download This Implementation</button>

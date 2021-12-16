@@ -4,7 +4,7 @@ import { HttpService } from '../http.service';
 import { ActivatedRoute } from '@angular/router';
 import Implementation from '../model/implementation.model';
 import {Algorithm, Algorithm2} from '../model/algorithm.model';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'lao-algorithm',
@@ -15,17 +15,15 @@ export class AlgorithmComponent implements OnInit {
 
   state: string = "loading";
   algoState: string = "loading";
+  toDelete: {[key: string]: boolean} = Object.create({});
+
   id: string = "No Algorithm Selected";
   trueId: string;
   algorithm: Algorithm2 = algoData;
   algorithms: Algorithm2[] = [];
   implementations: Implementation[];
   impFile: any;
-  newImpForm = this.fb.group({
-    "name": ['', Validators.required],
-    // "algorithmId": ['', Validators.required],
-    "implementationDetails": ['', Validators.required],
-  });
+  newImpForm: FormGroup;
 
   getValue(): string {
     return JSON.stringify(this.newImpForm.value)
@@ -45,7 +43,6 @@ export class AlgorithmComponent implements OnInit {
       console.log(b64string);
       this.http.addImplementation(
         this.newImpForm.get('name').value,
-        // this.newImpForm.get('algorithmId').value,
         this.algorithm.id,
         b64string
       ).subscribe({
@@ -63,25 +60,15 @@ export class AlgorithmComponent implements OnInit {
   addImp(): void {
     this.state = "submitting";
     this.uploadDocument();
-    // this.http.addImplementation(
-    //   this.newImpForm.get('name').value,
-    //   // this.newImpForm.get('algorithmId').value,
-    //   this.algorithm.id,
-    //   this.newImpForm.get('implementationDetails').value
-    // ).subscribe({
-    //   next: data => {
-    //     this.state = "default";
-    //     this.resetComp();
-    //   }, error: err => {
-    //     this.state = "error";
-    //   }
-    // })
   }
 
   deleteImplementation(id: string): void {
+    this.toDelete[id] = true;
     this.http.deleteImplementation(id).subscribe({
       next: data => {
         console.log(`Deleted implementation ${JSON.stringify(data)}`);
+        delete this.toDelete[id];
+        this.resetComp();
       }
     })
   }
@@ -90,21 +77,17 @@ export class AlgorithmComponent implements OnInit {
     this.state = "loading";
     this.http.getImplementations().subscribe({
       next: data => {
-        // this.implementations = data;
         this.implementations = data.filter(imp => imp.algorithmId === this.trueId);
         this.state = "default";
       },
       error: err => {
         this.state = "error";
         console.log(`Problem loading implementations: ${JSON.stringify(err)}\n\n${err.message}`);
-        // this.algorithm = algoData;
-        // this.implementations = algoData.imps;
       }
     });
     this.newImpForm = this.fb.group({
       "name": ['', Validators.required],
       "upload": ['', Validators.required],
-      "implementationDetails": ['', Validators.required],
     });
   }
 

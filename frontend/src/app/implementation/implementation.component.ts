@@ -14,6 +14,9 @@ import { instList } from '../data/instances.data';
 })
 export class ImplementationComponent implements OnInit {
 
+  impState: 'loading' | 'ready' | 'submitting' | 'error';
+  instState: 'loading' | 'ready' | 'submitting' | 'error';
+  formState: 'loading' | 'ready' | 'submitting' | 'error';
   implementations: Implementation[] = [];
   implementation: Implementation;
   instances: Instance[];
@@ -52,6 +55,11 @@ export class ImplementationComponent implements OnInit {
     fileReader.readAsBinaryString(this.instFile);
   }
 
+  inNewTab(): void {
+    const blob = new Blob([this.implementation.implementationDetails], {type: 'text/text'});
+    const url = window.URL.createObjectURL(blob);
+    window.open(url);
+  }
 
   constructor(
     private http: HttpService,
@@ -59,7 +67,25 @@ export class ImplementationComponent implements OnInit {
     private fb: FormBuilder
   ) { }
 
+  resetComp(): void {
+    this.instState = 'loading';
+    this.http.getInstances().subscribe({
+      next: data => {
+        this.instances = data;
+        this.instState = 'ready';
+      }, error: err => {
+        this.instState = 'error';
+      }
+    })
+    this.impForm = this.fb.group({
+      "name": ['', Validators.required],
+      "upload": ['', Validators.required],
+    })
+  }
+
   ngOnInit(): void {
+    this.impState = 'loading';
+    this.formState = 'ready';
     this.id = this.route.snapshot.paramMap.get('id');
     this.trueId = this.id;
     this.http.getImplementations().subscribe({
@@ -68,29 +94,24 @@ export class ImplementationComponent implements OnInit {
         this.implementations = data.filter(imp => imp.id === this.trueId);
         for (let imp of data) {
           if (imp.id === this.id) {
-            this.id = imp.id;
+            this.id = imp.name;
+            this.trueId = imp.id;
             this.implementation = imp;
             this.self = imp;
           }
         }
         this.state = "default";
+        this.impState = 'ready';
       },
       error: err => {
         this.state = "error";
         console.log(`Problem loading implementations: ${JSON.stringify(err)}\n\n${err.message}`);
         this.implementation = impData;
         this.implementations = impList;
+        this.instState = 'error';
       }
     });
-    this.http.getInstances().subscribe({
-      next: data => {
-        this.instances = data;
-      }
-    })
-    this.impForm = this.fb.group({
-      "name": ['', Validators.required],
-      "upload": ['', Validators.required],
-    })
+    this.resetComp();
   }
 
 }

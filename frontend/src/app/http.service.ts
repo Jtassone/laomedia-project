@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators'
+import { map, tap, delay } from 'rxjs/operators'
 import { Observable } from 'rxjs';
 
 import { Classification } from './model/classification.model';
@@ -20,6 +20,7 @@ export class HttpService {
 
   baseURL = 'https://8jyixjqsxb.execute-api.us-east-1.amazonaws.com/Prod/';
   username: string = 'UnregisteredUser';
+  delay = 3000;
 
   urls = {
     get: {
@@ -133,7 +134,8 @@ export class HttpService {
           imp.implementationDetails = atob(imp.implementationDetails)
         })
         return data;
-      })
+      }),
+      delay(this.delay)
     );
   }
 
@@ -159,7 +161,8 @@ export class HttpService {
   getInstances(): Observable<Instance[]> {
     const url = `${this.urls.get.inst}?userName=${this.username}`;
     return this._http.get<Instance[]>(url).pipe(
-      tap(data => console.log(`List of All Instances: ${JSON.stringify(data)}`))
+      tap(data => console.log(`List of All Instances: ${JSON.stringify(data)}`)),
+      delay(this.delay)
     );
   }
 

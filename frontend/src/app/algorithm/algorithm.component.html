@@ -26,9 +26,7 @@
     <button mat-mini-fab (click)="deleteImplementation(imp.id)">
       <mat-icon>delete</mat-icon>
     </button>
-    <mat-spinner>
-
-    </mat-spinner>
+    <mat-spinner *ngIf="toDelete[imp.id]"></mat-spinner>
   </li>
 </ul>
 
@@ -37,18 +35,6 @@
   <mat-form-field appearance="fill">
     <mat-label for="name">New Implementation Name</mat-label>
     <input matInput id="name" type="text" formControlName="name" />
-  </mat-form-field>
-
-  <mat-form-field appearance="fill" *ngIf="false">
-    <mat-label>Parent Algorithm</mat-label>
-    <mat-select formControlName="algorithmId">
-      <mat-option *ngFor="let a of this.algorithms" [value]="a.id">{{a.name}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label for="implementationDetails">Implementation Details</mat-label>
-    <textarea matInput id="implementationDetails" formControlName="implementationDetails"></textarea>
   </mat-form-field>
 
   <input id="upload" type="file" formControlName="upload" (change)="fileChanged($event)" />

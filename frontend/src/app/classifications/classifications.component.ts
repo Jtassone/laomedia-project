@@ -15,7 +15,7 @@ export class ClassificationsComponent implements OnInit {
   debugMode: boolean = false;
   state: string = "default";
   formError: boolean = false;
-
+  classificationsToDelete: {[key: string]: boolean} = Object.create({});
   classificationList: Classification[];
   root: Classification;
   newClassForm: FormGroup;

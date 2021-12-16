@@ -13,7 +13,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 })
 export class SelectedClassificationComponent implements OnInit {
 
-  debugMode: boolean = true;
+  debugMode: boolean = false;
   state: string;
   formState: string;
 

@@ -24,6 +24,8 @@
   </li>
 </ul>
 <br>
+
+<h2>Reclassify Selected Algorithms</h2>
 <div class="grd">
   <mat-form-field appearance="fill">
     <mat-label>New Classification</mat-label>
@@ -31,7 +33,7 @@
       <mat-option *ngFor="let c of this.classifications" [value]="c.id">{{c.name}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-flat-button color="primary" [disabled]="!(reclassification && selectionExists())" (click)="reclassify()">Reclassify Selected As</button>
+  <button mat-flat-button color="primary" [disabled]="!(reclassification && selectionExists())" (click)="reclassify()">Reclassify Selected Algorithms</button>
   <button mat-flat-button color="warn" (click)="debug()" *ngIf="debugMode">Debug</button>
 </div>
 

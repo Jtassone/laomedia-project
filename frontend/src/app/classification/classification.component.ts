@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 import { HttpService } from '../http.service';
 import { Classification } from '../model/classification.model';
 
@@ -13,6 +14,7 @@ export class ClassificationComponent implements OnInit {
   @Input() isRoot = false;
   checked: boolean[];
   @Input() mergeName: string;
+  @Output()("resetPage") resetPage: EventEmitter<any> = new EventEmitter();
 
   mergable(): boolean {
     let count = 0;
@@ -44,6 +46,9 @@ export class ClassificationComponent implements OnInit {
     this.http.deleteClassification(this.classification.id).subscribe({
       next: data => {
         console.log(`yay: ${JSON.stringify(data)}`)
+        this.resetPage.emit();
+      }, error: err => {
+        this.resetPage.emit();
       }
     });
   }
@@ -61,6 +66,9 @@ export class ClassificationComponent implements OnInit {
     this.http.mergeClassifications(this.mergeName, ids[0].id, ids[1].id).subscribe({
       next: data => {
         console.log(`data: ${data}`);
+        this.resetPage.emit();
+      }, error: err => {
+        this.resetPage.emit();
       }
     })
     return true

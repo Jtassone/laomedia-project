@@ -10,19 +10,24 @@ import { IUser } from '../model/user.model';
 })
 export class AdminComponent implements OnInit {
 
+  userState: 'loading' | 'ready' | 'submitting' | 'error';
+  eventState: 'loading' | 'ready' | 'submitting' | 'error';
   registeredUsers: IUser[] = [];
   columnsToDisplay = ['user', 'event', 'verb'];
   selectedUser: string;
   events: UserEvent[];
-  state: 'loading' | 'ready';
   usersToDelete = Object.create({});
 
   selectUser(user: string): void {
+    this.eventState = 'loading';
     this.http.getEvents(user).subscribe({
       next: data => {
         console.log(data);
         this.events = data;
         this.selectedUser = user;
+        this.eventState = 'ready';
+      }, error: err => {
+        this.eventState = 'error';
       }
     })
   }
@@ -39,16 +44,17 @@ export class AdminComponent implements OnInit {
   }
 
   resetComponent(): void {
+    this.userState = 'loading';
+    this.eventState = 'ready';
     this.events = [];
     this.selectedUser = '';
     this.http.getUsers().subscribe({
       next: data => {
         console.log(`Users: ${JSON.stringify(data)}`);
         this.registeredUsers = data;
-        this.state = 'ready';
+        this.userState = 'ready';
       }
     })
-    this.state = 'loading';
   }
 
   constructor(

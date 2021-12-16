@@ -14,8 +14,29 @@
   </mat-list-item>
 </mat-list>
 
+<ng-container *ngIf="userState === 'loading'">
+  <p>Loading list of users</p>
+  <mat-progress-bar mode='indeterminate'></mat-progress-bar>
+</ng-container>
+
+<ng-container *ngIf="userState === 'error'">
+  <p><mat-icon>error</mat-icon> Error loading users. Please refresh the page.</p>
+</ng-container>
+
 <h2>Activity For Selected User<span *ngIf="this.selectedUser">: {{this.selectedUser}}</span></h2>
-<mat-table [dataSource]="events" class="mat-elevation-z8">
+
+<p *ngIf="!selectedUser && this.eventState === 'ready'">No user selected.</p>
+
+<ng-container *ngIf="eventState === 'loading'">
+  <p>Loading events for user <i>{{selectedUser}}</i></p>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-container>
+
+<p *ngIf="this.eventState === 'error'"><mat-icon>error</mat-icon> Unable to load events for selected user <strong>{{selectedUser}}</strong></p>
+
+<p *ngIf="selectedUser && this.eventState === 'ready' && !events.length">No events for selected user {{selectedUser}}.</p>
+
+<mat-table [dataSource]="events" class="mat-elevation-z8" *ngIf="selectedUser">
 
   <ng-container matColumnDef="user">
     <mat-header-cell *matHeaderCellDef> User </mat-header-cell>

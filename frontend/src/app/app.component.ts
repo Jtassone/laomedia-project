@@ -13,16 +13,17 @@ export class AppComponent {
   title = 'laomedeia';
   user: CognitoUserInterface | undefined;
   authState: AuthState;
-  continueWithoutRegister: boolean = false;
 
   letUserContinue(): void {
-    this.continueWithoutRegister = true;
-    this.auth.logout();
+    this.auth.continueUnregistered();
   }
 
   letUserLeave(): void {
-    this.continueWithoutRegister = false;
     this.auth.logout();
+  }
+
+  isLoggedIn(): boolean {
+    return this.auth.mayContinue();
   }
 
   constructor(
@@ -40,6 +41,8 @@ export class AppComponent {
       if (this.user) {
         this.auth.login(this.user.username);
         this.router.navigate(['/admin']);
+      } else {
+        this.auth.logout();
       }
       this.ngZone.run(
         () => this.ref.detectChanges()

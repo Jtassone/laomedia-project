@@ -22,11 +22,12 @@ export class InstanceComponent implements OnInit {
   id: string;
   trueId: string;
   instBody: string;
+  toDelete: {[key: string]: true} = Object.create({});
 
   // columnsToDisplay = ['id', 'machineConfig'];
   expandedElement: Benchmark | null;
-  // columnsToDisplay = ['delete', 'date','core','cpu','l1','l2','l3','numberThreads','ram']
-  columnsToDisplay = ['date','core','cpu','l1','l2','l3','numberThreads','ram']
+  columnsToDisplay = ['delete', 'date','core','cpu','l1','l2','l3','numberThreads','ram']
+  // columnsToDisplay = ['date','core','cpu','l1','l2','l3','numberThreads','ram']
 
   private setting = {
     element: {
@@ -59,8 +60,16 @@ export class InstanceComponent implements OnInit {
     })
   }
 
-  deleteBenchmark(): void {
-
+  deleteBenchmark(id: string): void {
+    this.toDelete[id] = true;
+    this.http.deleteBenchmark(id).subscribe({
+      next: data => {
+        delete this.toDelete[id]
+        this.resetComponent();
+      }, error: err => {
+        delete this.toDelete[id]
+      }
+    })
   }
 
   inNewTab(): void {

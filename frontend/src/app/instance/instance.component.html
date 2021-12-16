@@ -80,14 +80,15 @@
 
 <mat-table [dataSource]="benchmarks" class="mat-elevation-z8">
 
-  <!-- <ng-container matColumnDef="delete">
-    <mat-header-cell> Delete </mat-header-cell>
+  <ng-container matColumnDef="delete">
+    <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
     <mat-cell *matCellDef="let benchmark">
-      <button mat-mini-fab color="warn">
-        <mat-icon>delete</mat-icon>
+      <button mat-mini-fab color="warn" (click)="deleteBenchmark(benchmark.id)" [disabled]="toDelete[id] === true">
+        <mat-icon *ngIf="!toDelete[id]">delete</mat-icon>
+        <mat-icon *ngIf="toDelete[id]">hourglass</mat-icon>
       </button>
     </mat-cell>
-  </ng-container> -->
+  </ng-container>
 
   <ng-container matColumnDef="date">
     <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>

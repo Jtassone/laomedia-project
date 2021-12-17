@@ -9,11 +9,11 @@
     Admin
   </button>
   <span class="spacer"></span>
-  <span *ngIf="authState === 'signedin' && user" class="username">
+  <span *ngIf="user" class="username">
     {{user.username}}
   </span>
-  <amplify-sign-out mat-flat-button *ngIf="authState === 'signedin' && user"></amplify-sign-out>
-  <ng-container *ngIf="authState !== 'signedin' && !this.isLoggedIn()">
+  <amplify-sign-out mat-flat-button *ngIf="user"></amplify-sign-out>
+  <ng-container *ngIf="!this.isLoggedIn()">
     <button mat-flat-button color="accent" (click)="letUserContinue()">Continue Without Account</button>
   </ng-container>
   <ng-container *ngIf="this.isLoggedIn() && !this.user">
@@ -21,11 +21,11 @@
   </ng-container>
 </mat-toolbar>
 
-<ng-container *ngIf="authState !== 'signedin' && !this.isLoggedIn()">
+<ng-container *ngIf="!this.isLoggedIn()">
   <amplify-authenticator ></amplify-authenticator>
 </ng-container>
 
-<div *ngIf="authState === 'signedin' && user || this.isLoggedIn()" class="App page-container">
+<div *ngIf="user || this.isLoggedIn()" class="App page-container">
     <router-outlet></router-outlet>
 </div>
 

@@ -51,8 +51,8 @@ public class ClassificationService {
             System.out.println(sqlStatement);
             sqlStatement.executeUpdate();
             PreparedStatement algorithmSqlStatement = sqlConnection.prepareStatement( "UPDATE algorithms SET classification_id = ? WHERE classification_id = ?");
-            sqlStatement.setBytes(1, classifictionIdBinary);
-            sqlStatement.setBytes(2, oldClassificaitonIdBinary);
+            algorithmSqlStatement.setBytes(1, classifictionIdBinary);
+            algorithmSqlStatement.setBytes(2, oldClassificaitonIdBinary);
             System.out.println(sqlStatement);
             algorithmSqlStatement.executeUpdate();
         } catch (Exception e) {

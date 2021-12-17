@@ -40,7 +40,6 @@ export class AppComponent {
       this.user = authData as CognitoUserInterface;
       if (this.user) {
         this.auth.login(this.user.username);
-        this.router.navigate(['/admin']);
       } else {
         this.auth.logout();
       }

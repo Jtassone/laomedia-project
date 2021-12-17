@@ -182,7 +182,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Implementation.ImplementationPostHandler
       Runtime: java11
       MemorySize: 256
-      Timeout: 10
+      Timeout: 20
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -198,7 +198,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Implementation.ImplementationHandler
       Runtime: java11
       MemorySize: 256
-      Timeout: 10
+      Timeout: 20
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -214,7 +214,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Implementation.ImplementationDeleteHandler
       Runtime: java11
       MemorySize: 256
-      Timeout: 10
+      Timeout: 20
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
       Events:
         PostEvent:
@@ -230,7 +230,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Instance.InstanceHandler
       Runtime: java11
       MemorySize: 256
-      Timeout: 10
+      Timeout: 20
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   postInstance:
@@ -240,7 +240,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Instance.InstancePostHandler
       Runtime: java11
       MemorySize: 256
-      Timeout: 10
+      Timeout: 20
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   deleteInstance:
@@ -250,7 +250,7 @@ Resources:
       Handler: com.aws.codestar.projecttemplates.handler.Instance.InstanceDeleteHandler
       Runtime: java11
       MemorySize: 256
-      Timeout: 10
+      Timeout: 20
       Role: "arn:aws:iam::617499510690:role/lambda_basic_execution"
 
   getBenchmarks:

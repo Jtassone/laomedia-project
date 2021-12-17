@@ -62,7 +62,6 @@ public class ClassificationService {
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
             throw e;
         }
     }
@@ -75,7 +74,6 @@ public class ClassificationService {
             System.out.println(sqlQuery);
             sqlConnection.prepareStatement(sqlQuery).executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
             throw e;
         }
     }

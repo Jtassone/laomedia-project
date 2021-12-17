@@ -36,7 +36,7 @@ public class InstancePostTests {
 
         // Fake AWS Lambda request from API Gateway
         APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withBody("{\"name\":\"test instance 1\", \"algorithmId\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bdb\", \"implementationId\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bd2\"}")
+                .withBody("{\"name\":\"test instance 1\", \"algorithmId\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bdb\", \"implementationId\": \"ee2eb871-36a8-484a-bba4-7c3ebd714bd2\", \"instanceFileString\": \"VGhpcyBpcyBhIHRlc3QgYmFzZSAgNjQgZW5jb2RlZCBzdHJpbmcuIA==\"}")
                 .withQueryStringParameters(Map.of("userName", "testUser"));
 
 

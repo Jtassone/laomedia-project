@@ -1,0 +1,208 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > BenchmarkService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.aws.codestar.projecttemplates.handler.Benchmark</a>
+</div>
+
+<h1>Coverage Summary for Class: BenchmarkService (com.aws.codestar.projecttemplates.handler.Benchmark)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BenchmarkService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (4/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    78.9%
+  </span>
+  <span class="absValue">
+    (56/71)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.aws.codestar.projecttemplates.handler.Benchmark;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;
+<i class="no-highlight">4</i>&nbsp;import com.aws.codestar.projecttemplates.handler.Implementation.Implementation;
+<i class="no-highlight">5</i>&nbsp;import com.aws.codestar.projecttemplates.utils.UUIDUtil;
+<i class="no-highlight">6</i>&nbsp;import com.aws.codestar.projecttemplates.utils.S3Client;
+<i class="no-highlight">7</i>&nbsp;
+<i class="no-highlight">8</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">9</i>&nbsp;import java.sql.*;
+<i class="no-highlight">10</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">11</i>&nbsp;import java.util.List;
+<i class="no-highlight">12</i>&nbsp;import java.util.UUID;
+<i class="no-highlight">13</i>&nbsp;
+<b class="nc"><i class="no-highlight">14</i>&nbsp;public class BenchmarkService {</b>
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;    public static List&lt;Benchmark&gt; getAllBenchmarks(Connection sqlConnection, S3Client s3Client) throws SQLException, IOException {
+<b class="fc"><i class="no-highlight">17</i>&nbsp;        List&lt;Benchmark&gt; benchmarkList = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">18</i>&nbsp;        try (ResultSet sqlResponse = sqlConnection.createStatement().executeQuery(&quot;select * from benchmarks&quot;)) {</b>
+<b class="fc"><i class="no-highlight">19</i>&nbsp;            while (sqlResponse.next()) {</b>
+<b class="fc"><i class="no-highlight">20</i>&nbsp;                UUID id = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes(&quot;id&quot;));</b>
+<b class="fc"><i class="no-highlight">21</i>&nbsp;                Date date = sqlResponse.getDate(&quot;date&quot;);</b>
+<b class="fc"><i class="no-highlight">22</i>&nbsp;                UUID implementationId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes(&quot;implementation_id&quot;));</b>
+<b class="fc"><i class="no-highlight">23</i>&nbsp;                UUID instanceId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes(&quot;instance_id&quot;));</b>
+<b class="fc"><i class="no-highlight">24</i>&nbsp;                UUID machineConfigId = UUIDUtil.getUUIDFromBytes(sqlResponse.getBytes(&quot;machine_config_id&quot;));</b>
+<b class="fc"><i class="no-highlight">25</i>&nbsp;                try (ResultSet sqlResponse2 = sqlConnection.createStatement().executeQuery(&quot;select * from machine_config&quot;)) {</b>
+<b class="fc"><i class="no-highlight">26</i>&nbsp;                    while (sqlResponse2.next()) {</b>
+<b class="fc"><i class="no-highlight">27</i>&nbsp;                        if (machineConfigId.equals(UUIDUtil.getUUIDFromBytes(sqlResponse2.getBytes(&quot;id&quot;)))){</b>
+<b class="fc"><i class="no-highlight">28</i>&nbsp;                            UUID id2 = UUIDUtil.getUUIDFromBytes(sqlResponse2.getBytes(&quot;id&quot;));</b>
+<b class="fc"><i class="no-highlight">29</i>&nbsp;                            String core = sqlResponse2.getString(&quot;core&quot;);</b>
+<b class="fc"><i class="no-highlight">30</i>&nbsp;                            String cpu = sqlResponse2.getString(&quot;cpu&quot;);</b>
+<b class="fc"><i class="no-highlight">31</i>&nbsp;                            String l1 = sqlResponse2.getString(&quot;l1&quot;);</b>
+<b class="fc"><i class="no-highlight">32</i>&nbsp;                            String l2 = sqlResponse2.getString(&quot;l2&quot;);</b>
+<b class="fc"><i class="no-highlight">33</i>&nbsp;                            String l3 = sqlResponse2.getString(&quot;l3&quot;);</b>
+<b class="fc"><i class="no-highlight">34</i>&nbsp;                            String num_threads = sqlResponse2.getString(&quot;num_threads&quot;);</b>
+<b class="fc"><i class="no-highlight">35</i>&nbsp;                            String ram = sqlResponse2.getString(&quot;ram&quot;);</b>
+<b class="fc"><i class="no-highlight">36</i>&nbsp;                            MachineConfig config = new MachineConfig(id2, core, cpu, l1, l2, l3, num_threads, ram);</b>
+<b class="fc"><i class="no-highlight">37</i>&nbsp;                            Benchmark benchmark = new Benchmark(id, date , machineConfigId, config, instanceId, implementationId);</b>
+<b class="fc"><i class="no-highlight">38</i>&nbsp;                            benchmarkList.add(benchmark);</b>
+<b class="fc"><i class="no-highlight">39</i>&nbsp;                        }</b>
+<i class="no-highlight">40</i>&nbsp;                    }
+<b class="fc"><i class="no-highlight">41</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">42</i>&nbsp;                    catch (SQLException e) {</b>
+<b class="nc"><i class="no-highlight">43</i>&nbsp;                        System.out.println(e);</b>
+<b class="nc"><i class="no-highlight">44</i>&nbsp;                        throw e;</b>
+<b class="fc"><i class="no-highlight">45</i>&nbsp;                    }</b>
+<b class="fc"><i class="no-highlight">46</i>&nbsp;            }</b>
+<b class="fc"><i class="no-highlight">47</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;            System.out.println(e);</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;            throw e;</b>
+<b class="fc"><i class="no-highlight">50</i>&nbsp;        }</b>
+<b class="fc"><i class="no-highlight">51</i>&nbsp;        return benchmarkList;</b>
+<i class="no-highlight">52</i>&nbsp;    }
+<i class="no-highlight">53</i>&nbsp;
+<i class="no-highlight">54</i>&nbsp;    public static void saveBenchmark(Connection sqlConnection, Benchmark benchmark) throws SQLException {
+<i class="no-highlight">55</i>&nbsp;        try {
+<b class="fc"><i class="no-highlight">56</i>&nbsp;            PreparedStatement preparedStatement = sqlConnection.prepareStatement(&quot;INSERT INTO benchmarks (id, date, implementation_id, instance_id, machine_config_id) VALUES (? , ? , ?, ? , ?)&quot;);</b>
+<b class="fc"><i class="no-highlight">57</i>&nbsp;            preparedStatement.setBytes(1, UUIDUtil.getBytesFromUUID(benchmark.id));</b>
+<b class="fc"><i class="no-highlight">58</i>&nbsp;            preparedStatement.setDate(2, (Date) benchmark.date);</b>
+<b class="fc"><i class="no-highlight">59</i>&nbsp;            preparedStatement.setBytes(3, UUIDUtil.getBytesFromUUID(benchmark.implementationId));</b>
+<b class="fc"><i class="no-highlight">60</i>&nbsp;            preparedStatement.setBytes(4, UUIDUtil.getBytesFromUUID(benchmark.instanceId));</b>
+<b class="fc"><i class="no-highlight">61</i>&nbsp;            preparedStatement.setBytes(5, UUIDUtil.getBytesFromUUID(benchmark.machineConfigId));</b>
+<b class="fc"><i class="no-highlight">62</i>&nbsp;            System.out.println(preparedStatement);</b>
+<b class="fc"><i class="no-highlight">63</i>&nbsp;            preparedStatement.executeUpdate();</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i class="no-highlight">65</i>&nbsp;            System.out.println(e);</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;            throw e;</b>
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        }</b>
+<i class="no-highlight">68</i>&nbsp;    }
+<i class="no-highlight">69</i>&nbsp;
+<i class="no-highlight">70</i>&nbsp;    public static void saveMachineConfig(Connection sqlConnection, MachineConfig machineConfig) throws SQLException {
+<i class="no-highlight">71</i>&nbsp;        try {
+<b class="fc"><i class="no-highlight">72</i>&nbsp;            PreparedStatement preparedStatement = sqlConnection.prepareStatement(&quot;INSERT INTO machine_config (id, cpu, core, l1, l2, l3, num_threads, ram) &quot; +</b>
+<i class="no-highlight">73</i>&nbsp;                            &quot;VALUES (?, ?, ?, ?, ?, ?, ?, ?)&quot;);
+<b class="fc"><i class="no-highlight">74</i>&nbsp;            preparedStatement.setBytes(1, UUIDUtil.getBytesFromUUID(machineConfig.id));</b>
+<b class="fc"><i class="no-highlight">75</i>&nbsp;            preparedStatement.setString(2, machineConfig.cpu);</b>
+<b class="fc"><i class="no-highlight">76</i>&nbsp;            preparedStatement.setString(3, machineConfig.core);</b>
+<b class="fc"><i class="no-highlight">77</i>&nbsp;            preparedStatement.setString(4, machineConfig.l1);</b>
+<b class="fc"><i class="no-highlight">78</i>&nbsp;            preparedStatement.setString(5, machineConfig.l2);</b>
+<b class="fc"><i class="no-highlight">79</i>&nbsp;            preparedStatement.setString(6, machineConfig.l3);</b>
+<b class="fc"><i class="no-highlight">80</i>&nbsp;            preparedStatement.setString(7, machineConfig.numThreads);</b>
+<b class="fc"><i class="no-highlight">81</i>&nbsp;            preparedStatement.setString(8, machineConfig.ram);</b>
+<b class="fc"><i class="no-highlight">82</i>&nbsp;            System.out.println(preparedStatement);</b>
+<b class="fc"><i class="no-highlight">83</i>&nbsp;            preparedStatement.executeUpdate();</b>
+<b class="nc"><i class="no-highlight">84</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i class="no-highlight">85</i>&nbsp;            System.out.println(e);</b>
+<b class="nc"><i class="no-highlight">86</i>&nbsp;            throw e;</b>
+<b class="fc"><i class="no-highlight">87</i>&nbsp;        }</b>
+<i class="no-highlight">88</i>&nbsp;    }
+<i class="no-highlight">89</i>&nbsp;
+<i class="no-highlight">90</i>&nbsp;    public static void deleteBenchmark(Connection sqlConnection,String id) throws SQLException{
+<b class="fc"><i class="no-highlight">91</i>&nbsp;        UUID benchmarkId = UUID.fromString(id);</b>
+<i class="no-highlight">92</i>&nbsp;        try {
+<b class="fc"><i class="no-highlight">93</i>&nbsp;            PreparedStatement preparedStatement = sqlConnection.prepareStatement(&quot;DELETE FROM benchmarks WHERE id = ?&quot;);</b>
+<b class="fc"><i class="no-highlight">94</i>&nbsp;            preparedStatement.setBytes(1, UUIDUtil.getBytesFromUUID(benchmarkId));</b>
+<b class="fc"><i class="no-highlight">95</i>&nbsp;            System.out.println(preparedStatement);</b>
+<b class="fc"><i class="no-highlight">96</i>&nbsp;            preparedStatement.executeUpdate();</b>
+<b class="nc"><i class="no-highlight">97</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i class="no-highlight">98</i>&nbsp;            System.out.println(e);</b>
+<b class="nc"><i class="no-highlight">99</i>&nbsp;            throw e;</b>
+<b class="fc"><i class="no-highlight">100</i>&nbsp;        }</b>
+<i class="no-highlight">101</i>&nbsp;    }
+<i class="no-highlight">102</i>&nbsp;
+<i class="no-highlight">103</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-12-16 21:42</div>
+</div>
+</body>
+</html>

@@ -53,12 +53,8 @@ public class BenchmarkPostTests {
                 context
         );
 
-        Gson gson = new Gson();
         // 3. Assert
-        Benchmark benchmarkResponse = gson.fromJson(response.getBody(), Benchmark.class);
         assertEquals(200, (int) response.getStatusCode());
-        assertEquals(benchmark.date, benchmarkResponse.date);
-
     }
 
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -6,6 +7,7 @@ import { Injectable } from '@angular/core';
 export class AuthService {
 
   username: string = 'UnregisteredUser';
+  continue: boolean = false;
   adminList = [
     'rstlouis',
     'testing',
@@ -16,11 +18,14 @@ export class AuthService {
 
   login(user: string): boolean {
     this.username = user;
+    this.continue = true;
     return true;
   }
 
   logout(): void {
+    this.continue = false;
     this.username = 'UnregisteredUser';
+    this.router.navigateByUrl('/');
   }
 
   isLoggedIn(): boolean {
@@ -32,13 +37,27 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    for (let admin of this.adminList) {
-      if (this.username === admin) {
-        return true;
-      }
-    }
-    return false;
+    return this.isLoggedIn();
+    // for (let admin of this.adminList) {
+    //   if (this.username === admin) {
+    //     return true;
+    //   }
+    // }
+    // return false;
   }
 
-  constructor() { }
+  continueUnregistered(): void {
+    this.continue = true;
+    this.username = 'UnregisteredUser';
+  }
+
+  mayContinue(): boolean {
+    return this.continue;
+  }
+
+  isRegistered(): boolean {
+    return this.username !== 'UnregisteredUser';
+  }
+
+  constructor(private router: Router) { }
 }

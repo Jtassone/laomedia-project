@@ -31,6 +31,8 @@ export class SelectedClassificationComponent implements OnInit {
     // "classificationId": ['', Validators.required]
   })
 
+  toDelete: {[key: string]: true} = Object.create({});
+
   toggleCheck(i: number): boolean {
     this.selected[i] = !this.selected[i];
     return this.selected[i];
@@ -66,10 +68,14 @@ export class SelectedClassificationComponent implements OnInit {
   }
 
   deleteAlgo(id: string): void {
+    this.toDelete[id] = true;
     this.http.deleteAlgorithm(id).subscribe({
       next: data => {
-        console.log(`Algorithm deleted: ${JSON.stringify(data)}`);
+        delete this.toDelete[id]
         this.resetComp();
+        delete this.toDelete[id]
+      }, error: err => {
+        delete this.toDelete[id]
       }
     })
   }
@@ -78,7 +84,6 @@ export class SelectedClassificationComponent implements OnInit {
     this.reclassifyState = 'submitting';
     this.http.reclassifyAlgorithm(this.reclassification, id).subscribe({
       next: data => {
-        console.log(data);
         this.reclassifyState = 'ready';
         this.resetComp();
       }, error: err => {
@@ -93,6 +98,38 @@ export class SelectedClassificationComponent implements OnInit {
         this.reclassifyAlgorithm(this.algos[i].id)
       }
     }
+  }
+
+  cleanClassifications(classifications: Classification[]): Classification[] {
+    let clean: Classification[] = [];
+    let parents: {[key: string]: string} = Object.create({});
+    for (let c of classifications) {
+      if (!c.parentClassificationId) {
+        parents[c.id] = 'root';
+      } else {
+        parents[c.id] = c.parentClassificationId;
+      }
+    }
+    for (let c of classifications) {
+      if (!c.parentClassificationId) {
+        clean.push(c);
+        continue;
+      }
+      let parId: string = c.parentClassificationId;
+      let visited: {[key: string]: boolean} = Object.create({});
+      while(parId !== null) {
+        if (parents[parId] in visited) {
+          break;
+        }
+        if (parents[parId] === 'root') {
+          clean.push(c);
+          break;
+        }
+        visited[parId] = true;
+        parId = parents[parId];
+      }
+    }
+    return clean;
   }
 
   resetComp(): void {
@@ -138,7 +175,7 @@ export class SelectedClassificationComponent implements OnInit {
     this.trueId = this.id;
     this.http.getClassifications().subscribe({
       next: data => {
-        this.classifications = data;
+        this.classifications = this.cleanClassifications(data);
         for (let clss of this.classifications) {
           if (this.id === clss.id) {
             this.id = clss.name;  // Set a name rather than an ID

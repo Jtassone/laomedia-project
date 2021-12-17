@@ -83,9 +83,8 @@
   <ng-container matColumnDef="delete">
     <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
     <mat-cell *matCellDef="let benchmark">
-      <button mat-mini-fab color="warn" (click)="deleteBenchmark(benchmark.id)" [disabled]="toDelete[id] === true">
-        <mat-icon *ngIf="!toDelete[id]">delete</mat-icon>
-        <mat-icon *ngIf="toDelete[id]">hourglass</mat-icon>
+      <button mat-mini-fab color="warn" (click)="deleteBenchmark(benchmark.id)" [disabled]="toDelete[benchmark.id] === true">
+        <mat-icon> {{toDelete[benchmark.id] ? 'hourglass_empty' : 'delete'}}</mat-icon>
       </button>
     </mat-cell>
   </ng-container>

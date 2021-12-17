@@ -18,8 +18,8 @@
     <a [routerLink]="['/algorithm-view', algo.id]">
       {{algo.name}}
     </a>
-    <button mat-mini-fab (click)="deleteAlgo(algo.id)">
-      <mat-icon>delete</mat-icon>
+    <button mat-mini-fab (click)="deleteAlgo(algo.id)" [disabled]="toDelete[algo.id]">
+      <mat-icon>{{toDelete[algo.id] ? 'hourglass_empty' : 'delete'}}</mat-icon>
     </button>
   </li>
 </ul>
@@ -37,7 +37,6 @@
     Reclassify Selected Algorithms
     <mat-progress-bar mode='indeterminate' *ngIf="this.reclassifyState==='submitting'"></mat-progress-bar>
   </button>
-  <!-- <button mat-flat-button color="warn" (click)="debug()" *ngIf="debugMode">Debug</button> -->
 </div>
 <p *ngIf="reclassifyState==='error'">Unable to reclassify selected algorithms</p>
 

@@ -15,15 +15,16 @@ export class AdminComponent implements OnInit {
   registeredUsers: IUser[] = [];
   columnsToDisplay = ['user', 'event', 'verb'];
   selectedUser: string;
+  newUser: string;
   events: UserEvent[];
   usersToDelete = Object.create({});
   adminColumns = ['search', 'username', 'confirmed', 'email', 'delete']
 
   selectUser(user: string): void {
     this.eventState = 'loading';
+    this.newUser = user;
     this.http.getEvents(user).subscribe({
       next: data => {
-        console.log(data);
         this.events = data;
         this.selectedUser = user;
         this.eventState = 'ready';
@@ -37,9 +38,10 @@ export class AdminComponent implements OnInit {
     this.usersToDelete[user] = true;
     this.http.deleteUser(user).subscribe({
       next: data => {
-        console.log(data);
         delete this.usersToDelete[user];
         this.resetComponent();
+      }, error: err => {
+        delete this.usersToDelete[user];
       }
     })
   }
@@ -55,12 +57,12 @@ export class AdminComponent implements OnInit {
 
   resetComponent(): void {
     this.userState = 'loading';
+    this.newUser = '';
     this.eventState = 'ready';
     this.events = [];
     this.selectedUser = '';
     this.http.getUsers().subscribe({
       next: data => {
-        console.log(`Users: ${JSON.stringify(data)}`);
         this.registeredUsers = data;
         this.userState = 'ready';
       }

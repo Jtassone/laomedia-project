@@ -28,6 +28,17 @@
     <a [routerLink]="['/instance-view', inst.id]">
       {{inst.name}}
     </a>
+    <ng-container *ngIf="isAdmin()">
+      <button mat-mini-fab color="warn" (click)="deleteInstance(inst.id)" *ngIf="!toDelete[inst.id]">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <ng-container *ngIf="toDelete[inst.id]">
+        <button mat-mini-fab color="warn" (click)="deleteInstance(inst.id)" disabled>
+          <mat-icon>hourglass_empty</mat-icon>
+        </button>
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </ng-container>
+    </ng-container>
   </li>
 </ul>
 
@@ -41,7 +52,7 @@
   <input id="upload" type="file" formControlName="upload" (change)="fileChanged($event)" />
 
   <button mat-flat-button color="primary" [disabled]="!this.impForm.valid || this.formState === 'submitting'" (click)="addInstance()">
-    Add Implementation
+    Add Instance
     <mat-progress-bar mode='indeterminate' *ngIf="this.formState==='submitting'"></mat-progress-bar>
   </button>
   <p *ngIf="this.formState === 'error'">There was an error submitting the form data. It's possible that the lambda timed out and that the new implementation will show if the page is reloaded.</p>

@@ -14,7 +14,7 @@
   <p>There was an error loading the classifications. Please refresh the page.</p>
 </ng-container>
 
-<lao-classification [classification]='this.root' [isRoot]="true" [mergeName]="mergeForm.get('name').value" (resetPage)="resetClassificationsComponent()"></lao-classification>
+<lao-classification [classification]='this.root' [isRoot]="true" [mergeName]="mergeForm.get('name').value" (resetPage)="resetPage()"></lao-classification>
 
 <form [formGroup]="mergeForm">
 
@@ -48,5 +48,4 @@
     <p>There was an error submitting the form. This may be a lambda timeout, in which case refreshing the page should show the new classification.</p>
   </ng-container>
 </form>
-<button mat-flat-button color="warn" (click)="debug()" *ngIf="this.debugMode">Debug</button>
 

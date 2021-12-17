@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import Implementation from '../model/implementation.model';
 import {Algorithm, Algorithm2} from '../model/algorithm.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'lao-algorithm',
@@ -38,9 +39,7 @@ export class AlgorithmComponent implements OnInit {
   uploadDocument() {
     let fileReader = new FileReader();
     fileReader.onload = e => {
-      console.log(fileReader.result);
       const b64string = btoa(fileReader.result as string)
-      console.log(b64string);
       this.http.addImplementation(
         this.newImpForm.get('name').value,
         this.algorithm.id,
@@ -66,12 +65,16 @@ export class AlgorithmComponent implements OnInit {
     this.toDelete[id] = true;
     this.http.deleteImplementation(id).subscribe({
       next: data => {
-        console.log(`Deleted implementation ${JSON.stringify(data)}`);
         delete this.toDelete[id];
         this.resetComp();
+      }, error: err => {
+        delete this.toDelete[id];
       }
     })
   }
+
+  isAdmin(): boolean { return this.auth.isAdmin(); }
+  isRegistered(): boolean { return this.auth.isRegistered(); }
 
   resetComp(): void {
     this.state = "loading";
@@ -94,7 +97,8 @@ export class AlgorithmComponent implements OnInit {
   constructor(
     private http: HttpService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private auth: AuthService,
   ) { }
 
   ngOnInit(): void {

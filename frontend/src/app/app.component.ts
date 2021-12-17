@@ -1,4 +1,5 @@
 import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { onAuthUIStateChange, CognitoUserInterface, AuthState } from '@aws-amplify/ui-components';
 import { AuthService } from './auth.service';
 import { HttpService } from './http.service';
@@ -12,17 +13,17 @@ export class AppComponent {
   title = 'laomedeia';
   user: CognitoUserInterface | undefined;
   authState: AuthState;
-  continueWithoutRegister: boolean = false;
 
   letUserContinue(): void {
-    this.continueWithoutRegister = true;
-    this.http.username = 'UnregisteredUser';
-    this.auth.logout();
+    this.auth.continueUnregistered();
   }
 
   letUserLeave(): void {
-    this.continueWithoutRegister = false;
     this.auth.logout();
+  }
+
+  isLoggedIn(): boolean {
+    return this.auth.mayContinue();
   }
 
   constructor(
@@ -30,6 +31,7 @@ export class AppComponent {
     private ngZone: NgZone,
     private http: HttpService,
     private auth: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -37,8 +39,10 @@ export class AppComponent {
       this.authState = authState;
       this.user = authData as CognitoUserInterface;
       if (this.user) {
-        this.http.username = this.user.username;
         this.auth.login(this.user.username);
+        this.router.navigate(['/admin']);
+      } else {
+        this.auth.logout();
       }
       this.ngZone.run(
         () => this.ref.detectChanges()

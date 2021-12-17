@@ -28,10 +28,10 @@ export class ClassificationsComponent implements OnInit {
     this.root = new Classification('root', 'root', [], [], null);
     this.http.getClassifications().subscribe({
       next: data => {
-        console.log(`Classifications: ${JSON.stringify(data)}`);
-        let tree = this.buildClassificationTree(data);
+        let valid: Classification[] = this.cleanClassifications(data);
+        let tree = this.buildClassificationTree(valid);
         this.root = new Classification('root', 'root', [], tree, null);
-        this.classificationList = data;
+        this.classificationList = valid;
         this.state="default";
       }, error: err => {
         this.state="error";
@@ -47,6 +47,11 @@ export class ClassificationsComponent implements OnInit {
     this.mergeForm = this.fb.group({
       name: ['', Validators.required],
     });
+  }
+
+  resetPage(): void {
+    console.log('Page should be reset');
+    this.resetClassificationsComponent();
   }
 
   addClassification() {
@@ -67,6 +72,38 @@ export class ClassificationsComponent implements OnInit {
         this.state = "default";
       }
     });
+  }
+
+  cleanClassifications(classifications: Classification[]): Classification[] {
+    let clean: Classification[] = [];
+    let parents: {[key: string]: string} = Object.create({});
+    for (let c of classifications) {
+      if (!c.parentClassificationId) {
+        parents[c.id] = 'root';
+      } else {
+        parents[c.id] = c.parentClassificationId;
+      }
+    }
+    for (let c of classifications) {
+      if (!c.parentClassificationId) {
+        clean.push(c);
+        continue;
+      }
+      let parId: string = c.parentClassificationId;
+      let visited: {[key: string]: boolean} = Object.create({});
+      while(parId !== null) {
+        if (parents[parId] in visited) {
+          break;
+        }
+        if (parents[parId] === 'root') {
+          clean.push(c);
+          break;
+        }
+        visited[parId] = true;
+        parId = parents[parId];
+      }
+    }
+    return clean;
   }
 
   buildClassificationTree (classifications: Classification[]): Classification[] {

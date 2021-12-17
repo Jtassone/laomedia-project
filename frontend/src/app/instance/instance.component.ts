@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { instData } from '../data/instances.data';
 import { HttpService } from '../http.service';
 import Benchmark from '../model/benchmark.model';
@@ -52,7 +53,6 @@ export class InstanceComponent implements OnInit {
     } as Benchmark
     this.http.addBenchmark(newBench).subscribe({
       next: data => {
-        console.log(data);
         this.resetComponent();
       }, error: err => {
         this.formState = 'error';
@@ -113,7 +113,6 @@ export class InstanceComponent implements OnInit {
           }
           this.http.getBenchmarks().subscribe({
             next: data => {
-              console.log(data);
               this.benchState = 'ready';
               this.benchmarks = data.filter(inst => inst.instanceId === this.trueId);
             }
@@ -138,10 +137,14 @@ export class InstanceComponent implements OnInit {
     })
   }
 
+  isAdmin(): boolean { return this.auth.isAdmin(); }
+  isRegistered(): boolean { return this.auth.isRegistered(); }
+
   constructor(
     private http: HttpService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private auth: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -149,6 +152,9 @@ export class InstanceComponent implements OnInit {
     this.trueId = this.id;
     this.instBody = '-- Loading Instance --'
     this.resetComponent();
+    if (!this.auth.isLoggedIn()) {
+      this.columnsToDisplay = ['date','core','cpu','l1','l2','l3','numberThreads','ram']
+    }
   }
 
 }

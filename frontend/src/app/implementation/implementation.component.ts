@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Implementation } from '../model/implementation.model';
 import { Instance } from '../model/instance.model';
 import { instList } from '../data/instances.data';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'lao-implementation',
@@ -26,6 +27,7 @@ export class ImplementationComponent implements OnInit {
   state: string;
   impForm: FormGroup;
   instFile: any;
+  toDelete: {[key: string]: boolean} = Object.create({});
 
   private setting = {
     element: {
@@ -43,9 +45,7 @@ export class ImplementationComponent implements OnInit {
     this.formState = 'submitting';
     let fileReader = new FileReader();
     fileReader.onload = e => {
-      console.log(fileReader.result);
       const b64string = btoa(fileReader.result as string)
-      console.log(b64string);
       let newInstance: Instance = {
         id: null,
         name: this.impForm.get('name').value,
@@ -57,6 +57,8 @@ export class ImplementationComponent implements OnInit {
         next: data => {
           this.formState = 'ready';
           this.resetComp();
+        }, error: err => {
+          this.formState = 'error';
         }
       })
     }
@@ -89,10 +91,26 @@ export class ImplementationComponent implements OnInit {
     element.dispatchEvent(event);
   }
 
+  deleteInstance(id: string): void {
+    this.toDelete[id] = true;
+    this.http.deleteInstance(id).subscribe({
+      next: data => {
+        this.toDelete[id] = false;
+        this.resetComp();
+      }, error: err => {
+        this.toDelete[id] = false;
+      }
+    })
+  }
+
+  isAdmin(): boolean { return this.auth.isAdmin(); }
+  isRegistered(): boolean { return this.auth.isRegistered(); }
+
   constructor(
     private http: HttpService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private auth: AuthService,
   ) { }
 
   resetComp(): void {

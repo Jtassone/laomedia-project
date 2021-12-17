@@ -23,8 +23,8 @@
     <a [routerLink]="['/implementation-view', imp.id]">
       {{imp.name}}
     </a>
-    <button mat-mini-fab (click)="deleteImplementation(imp.id)">
-      <mat-icon>delete</mat-icon>
+    <button mat-mini-fab (click)="deleteImplementation(imp.id)" [disabled]="toDelete[imp.id]" *ngIf="isAdmin()">
+      <mat-icon>{{toDelete[imp.id] ? 'hourglass_empty' : 'delete'}}</mat-icon>
     </button>
     <mat-spinner *ngIf="toDelete[imp.id]"></mat-spinner>
   </li>
@@ -45,5 +45,3 @@
   </button>
   <p *ngIf="this.state === 'error'">There was an error submitting the form data. It's possible that the lambda timed out and that the new implementation will show if the page is reloaded.</p>
 </form>
-
-<button mat-flat-button color="warn" (click)="debug()">Debug</button>
